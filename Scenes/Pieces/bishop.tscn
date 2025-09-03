@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://4nkrtqohtjmw"]
+
+[ext_resource type="PackedScene" uid="uid://decoeggntlkto" path="res://Scenes/Pieces/Piece.tscn" id="1_cgogy"]
+[ext_resource type="Texture2D" uid="uid://dfvwbjevlnxap" path="res://Sprites/CrazyPenguins-5D-Chess-Set-0.1.0/white_bishop.svg" id="2_u5b1v"]
+
+[node name="bishop" instance=ExtResource("1_cgogy")]
+texture = ExtResource("2_u5b1v")
+directions = 2
+specialFlags = 2

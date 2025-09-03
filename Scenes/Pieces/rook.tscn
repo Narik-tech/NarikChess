@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb65rop0d5x5m"]
+
+[ext_resource type="PackedScene" uid="uid://decoeggntlkto" path="res://Scenes/Pieces/Piece.tscn" id="1_ht6x0"]
+[ext_resource type="Texture2D" uid="uid://83yhexnvv8ua" path="res://Sprites/CrazyPenguins-5D-Chess-Set-0.1.0/white_rook.svg" id="2_xfx5q"]
+
+[node name="rook" instance=ExtResource("1_ht6x0")]
+texture = ExtResource("2_xfx5q")
+directions = 1
+specialFlags = 2

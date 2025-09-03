@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhw40nh280arx"]
+
+[ext_resource type="PackedScene" uid="uid://decoeggntlkto" path="res://Scenes/Pieces/Piece.tscn" id="1_5wvk2"]
+[ext_resource type="Texture2D" uid="uid://cgc4t7fkvglqd" path="res://Sprites/CrazyPenguins-5D-Chess-Set-0.1.0/white_pawn.svg" id="2_yp78i"]
+
+[node name="Pawn" instance=ExtResource("1_5wvk2")]
+texture = ExtResource("2_yp78i")
+directions = 3
+specialFlags = 1
