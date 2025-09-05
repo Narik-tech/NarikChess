@@ -1,30 +1,7 @@
 extends Node
 
-static func combinationsAggregate(items: Array, r: int) -> Array[Vector4i]:
-	var n := items.size()
-	if r < 0 or r > n:
-		return []
-	var result = []
-	_combine_rec(items, 0, r, [], result)
-	var final: Array[Vector4i] = []
-	for array in result:
-		var sum
-		for vec in array: 
-			if sum == null: sum = vec
-			else: sum += vec
-		final.append(sum)
-	return final
-
-static func _combine_rec(items: Array, start: int, r: int, curr: Array, out: Array) -> void:
-	if r == 0:
-		out.append(curr.duplicate())
-		return
-	var last_start := items.size() - r
-	for i in range(start, last_start + 1):
-		curr.append(items[i])
-		_combine_rec(items, i + 1, r - 1, curr, out)
-		curr.pop_back()
-
+func _ready():
+	calculate_agonals()
 
 static func instanceSceneAtCoord(coord, parent, scene):
 	var instance = scene.instantiate()
@@ -32,3 +9,35 @@ static func instanceSceneAtCoord(coord, parent, scene):
 		instance.position = coord
 	parent.add_child(instance)
 	return instance
+
+static var uniagonals: Array[Vector4i]
+static var diagonals: Array[Vector4i]
+static var triagonals: Array[Vector4i]
+static var quadragonals: Array[Vector4i]
+static var knight: Array[Vector4i]
+
+static func calculate_agonals():
+	var start = -2
+	var end = 3
+	var mult = Vector4i(2,1,1,1)
+	for x in range(start, end):
+		for y in range(start, end):
+			for z in range(start, end):
+				for w in range(start, end):
+					var vec = Vector4i(x,y,z,w)
+					var dims = 0 if vec.x == 0 else 1 
+					dims += 0 if vec.y == 0 else 1
+					dims += 0 if vec.z == 0 else 1 
+					dims += 0 if vec.w == 0 else 1
+					var magnitude = abs(vec.x) + abs(vec.y) + abs(vec.z) + abs(vec.w)
+					if dims != magnitude:
+						if magnitude == 3: 
+							knight.append(vec*mult)
+					elif magnitude == 1: 
+						uniagonals.append(vec*mult)
+					elif magnitude == 2: 
+						diagonals.append(vec*mult)
+					elif magnitude == 3: 
+						triagonals.append(vec*mult)
+					elif magnitude == 4: 
+						quadragonals.append(vec*mult)

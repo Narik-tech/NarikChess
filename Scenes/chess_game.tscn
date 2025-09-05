@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://ca8xd7ra6en0h"]
+
+[ext_resource type="Script" uid="uid://bkstioe7xue8q" path="res://Scripts/chess_game.gd" id="1_ov1fv"]
+[ext_resource type="Script" uid="uid://wfpt25m8phqm" path="res://Scripts/camera_pan.gd" id="2_qxrlw"]
+[ext_resource type="Script" uid="uid://o4ohxqxvdj54" path="res://Scripts/5dchess.gd" id="3_ov1fv"]
+
+[node name="ChessGame" type="Node"]
+script = ExtResource("1_ov1fv")
+
+[node name="CameraPan" type="Camera2D" parent="."]
+position = Vector2(50.255, 74.38)
+zoom = Vector2(0.615, 0.615)
+script = ExtResource("2_qxrlw")
+
+[node name="5DChess" type="Node" parent="."]
+script = ExtResource("3_ov1fv")

@@ -26,6 +26,8 @@ project/assembly_name="5D Chess Godot"
 [global_group]
 
 Highlight=""
+Board=""
+Piece=""
 
 [input]
 

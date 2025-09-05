@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://5pds7b28iwb4" path="res://Sprites/CrazyPenguins-5D-Chess-Set-0.1.0/white_queen.svg" id="1_fjwsf"]
 [ext_resource type="Script" uid="uid://bn47gfbg17e1f" path="res://Scripts/piece.gd" id="2_n8tet"]
 
-[node name="Piece" type="TextureRect"]
+[node name="Piece" type="TextureRect" groups=["Piece"]]
 offset_right = 1200.0
 offset_bottom = 1200.0
 scale = Vector2(0.04, 0.04)
