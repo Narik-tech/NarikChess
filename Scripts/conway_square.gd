@@ -47,7 +47,7 @@ static func instanceBlock(coord):
 
 static func reset():
 	blockDict.clear()
-	#tempPlayerBlocks.clear()
+	pieceDict.clear()
 
 func preTick():
 	blockDict[self.full_coord] = -1
