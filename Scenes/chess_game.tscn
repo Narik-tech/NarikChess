@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bkstioe7xue8q" path="res://Scripts/chess_game.gd" id="1_ov1fv"]
 [ext_resource type="Script" uid="uid://wfpt25m8phqm" path="res://Scripts/camera_pan.gd" id="2_qxrlw"]
-[ext_resource type="Script" uid="uid://o4ohxqxvdj54" path="res://Scripts/5dchess.gd" id="3_ov1fv"]
+[ext_resource type="Script" uid="uid://b6wp1qbd66t5m" path="res://Scenes/turn_indicator.gd" id="4_ha7jq"]
 
 [node name="ChessGame" type="Node"]
 script = ExtResource("1_ov1fv")
@@ -12,5 +12,55 @@ position = Vector2(50.255, 74.38)
 zoom = Vector2(0.615, 0.615)
 script = ExtResource("2_qxrlw")
 
-[node name="5DChess" type="Node" parent="."]
-script = ExtResource("3_ov1fv")
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Submit" type="Button" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -61.0
+offset_top = 47.0
+offset_right = 154.0
+offset_bottom = 99.0
+grow_horizontal = 2
+scale = Vector2(1.20228, 1.19062)
+text = "Submit Move
+"
+
+[node name="Undo" type="Button" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -310.0
+offset_top = 42.0
+offset_right = -116.0
+offset_bottom = 96.0
+grow_horizontal = 2
+scale = Vector2(1.20228, 1.19062)
+text = "Undo
+"
+
+[node name="Restart" type="Button" parent="CanvasLayer"]
+offset_left = 19.0
+offset_top = 140.0
+offset_right = 213.0
+offset_bottom = 194.0
+scale = Vector2(1.20387, 1.19957)
+text = "Restart"
+
+[node name="TurnIndicator" type="RichTextLabel" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 39.0
+offset_top = -116.0
+offset_right = 475.0
+offset_bottom = -17.0
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 72
+text = "White Turn"
+script = ExtResource("4_ha7jq")
+
+[connection signal="pressed" from="CanvasLayer/Submit" to="." method="_on_submit_pressed"]
+[connection signal="pressed" from="CanvasLayer/Undo" to="." method="_on_undo_pressed"]
+[connection signal="pressed" from="CanvasLayer/Restart" to="." method="_on_restart_pressed"]

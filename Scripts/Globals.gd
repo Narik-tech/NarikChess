@@ -20,24 +20,27 @@ static func calculate_agonals():
 	var start = -2
 	var end = 3
 	var mult = Vector4i(2,1,1,1)
-	for x in range(start, end):
-		for y in range(start, end):
-			for z in range(start, end):
-				for w in range(start, end):
-					var vec = Vector4i(x,y,z,w)
-					var dims = 0 if vec.x == 0 else 1 
-					dims += 0 if vec.y == 0 else 1
-					dims += 0 if vec.z == 0 else 1 
-					dims += 0 if vec.w == 0 else 1
-					var magnitude = abs(vec.x) + abs(vec.y) + abs(vec.z) + abs(vec.w)
-					if dims != magnitude:
-						if magnitude == 3: 
-							knight.append(vec*mult)
-					elif magnitude == 1: 
-						uniagonals.append(vec*mult)
-					elif magnitude == 2: 
-						diagonals.append(vec*mult)
-					elif magnitude == 3: 
-						triagonals.append(vec*mult)
-					elif magnitude == 4: 
-						quadragonals.append(vec*mult)
+	for x in range(start, end): for y in range(start, end): for z in range(start, end): for w in range(start, end):
+		var vec = Vector4i(x,y,z,w)
+		var mag = magnitude(vec)
+		if dims_count(vec) != mag:
+			if mag == 3: 
+				knight.append(vec*mult)
+		elif mag == 1: 
+			uniagonals.append(vec*mult)
+		elif mag == 2: 
+			diagonals.append(vec*mult)
+		elif mag == 3: 
+			triagonals.append(vec*mult)
+		elif mag == 4: 
+			quadragonals.append(vec*mult)
+
+static func dims_count(vec: Vector4i) -> int:
+	var dims = 0 if vec.x == 0 else 1 
+	dims += 0 if vec.y == 0 else 1
+	dims += 0 if vec.z == 0 else 1 
+	dims += 0 if vec.w == 0 else 1
+	return dims
+
+static func magnitude(vec: Vector4i) -> int:
+	return abs(vec.x) + abs(vec.y) + abs(vec.z) + abs(vec.w)

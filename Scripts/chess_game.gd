@@ -4,16 +4,21 @@ extends Node
 ### Piece Coords ###
 #### (T,L,x,y)  ####
 
+static var chess_5d := preload("res://Scenes/5dchess.tscn")
+
 static var singleton : ChessGame
-var chess_client
+var chess_client: Chess5d
 var selected_piece: Vector4i
-var isWhiteTurn
+
+func game_start():
+	if chess_client != null: chess_client.queue_free
+	chess_client = chess_5d.instantiate()
+	self.add_child(chess_client)
+	chess_client.start_game()
 
 func _ready():
 	singleton = self
-	chess_client = $"5DChess"
-	chess_client.start_game()
-
+	game_start()
 
 func _on_piece_selected(coord: Vector4i):
 	selected_piece = coord
@@ -22,3 +27,15 @@ func _on_piece_selected(coord: Vector4i):
 
 func _on_piece_destination_selected(coord: Vector4i):
 	chess_client.make_move(selected_piece, coord)
+
+
+func _on_submit_pressed() -> void:
+	chess_client.submit_turn()
+
+
+func _on_undo_pressed() -> void:
+	chess_client.undo()
+
+
+func _on_restart_pressed() -> void:
+	get_tree().reload_current_scene()

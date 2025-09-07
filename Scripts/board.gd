@@ -1,11 +1,21 @@
 class_name Board
 extends Node
 
-const boardInterval = 440
+static var board_interval = 480
+const time_plus = Vector2i(1,0)
+
 var coord: Vector2i:
 	set(val):
 		coord = val
 		recalculateBoardPosition()
+
+var is_white: bool:
+	get:
+		return coord.x % 2 == 0
+
+var chess_4d: Chess5d:
+	get:
+		return get_parent()
 
 static var board_scene := preload("res://Scenes/board.tscn")
 static var pawn := preload("res://Scenes/Pieces/pawn.tscn")
@@ -22,13 +32,22 @@ static func new_board(parent: Node, isWhite: bool = true):
 	parent.add_child(instance)
 	return instance
 
-	
+func board_playable() -> bool:
+	if is_white != chess_4d.is_white_turn:
+		return false
+	if chess_4d.get_board(coord + time_plus) != null:
+		return false
+	return true
+
 func duplicate_board(coord) -> Node:
+	#var instance = self.duplicate()
+	#instance.coord = Vector2i(coord.x, coord.y)
+	#return instance
 	var instance = load("res://Scenes/board.tscn").instantiate()
 	instance.coord = Vector2i(coord.x, coord.y)
 	for piece in get_children():
 		if piece.is_in_group("Piece"):
-			instance.instance_piece(piece.resource, piece.coord, piece.isWhite)
+			instance.instance_piece(piece.resource, piece.coord, piece.is_white, piece.has_moved)
 	return instance
 
 
@@ -37,6 +56,7 @@ func move_piece(piece, coord: Vector4i):
 	piece.full_coord = coord
 	piece.position = Vector2i(stepSize.x * coord.z, stepSize.x * coord.w)
 	piece.get_parent().remove_child(piece)
+	piece.has_moved = true
 	self.add_child(piece)
 
 func place_highlight(placeCoord: Vector2i):
@@ -54,16 +74,17 @@ func place_highlight(placeCoord: Vector2i):
 		#print("No piece found at ", coord)
 
 func recalculateBoardPosition():
-	var vec =  Vector2i(coord.x * boardInterval, coord.y * boardInterval)
+	var vec =  Vector2i(coord.x * board_interval, coord.y * board_interval)
 	self.position = vec
-	$BoardOutline.color = Color.LIGHT_GRAY if coord.x % 2 == 0 else Color.DIM_GRAY
+	$BoardOutline.color = Color.LIGHT_GRAY if is_white else Color.DIM_GRAY
 
-func instance_piece(piece: PackedScene, placeCoord: Vector2i, isWhite: bool = true) -> void:
+func instance_piece(piece: PackedScene, placeCoord: Vector2i, isWhite: bool = true, has_moved: bool = false) -> void:
 	var stepSize = $BoardTexture.size / 8
 	var instance = Globals.instanceSceneAtCoord(Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y), self, piece)
-	instance.SetColor(isWhite)
+	instance.set_color(isWhite)
 	instance.coord = Vector2i(placeCoord.x, placeCoord.y)
 	instance.resource = piece
+	instance.has_moved = has_moved
 
 func createBaseBoard():
 	# Place pawns
