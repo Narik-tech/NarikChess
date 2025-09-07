@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="5D Chess Godot"
-run/main_scene="uid://ca8xd7ra6en0h"
+run/main_scene="uid://b0lb35vhu6rsl"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 
@@ -28,6 +28,7 @@ project/assembly_name="5D Chess Godot"
 Highlight=""
 Board=""
 Piece=""
+blocks=""
 
 [input]
 

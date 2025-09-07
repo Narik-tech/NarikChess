@@ -55,7 +55,18 @@ func make_move(origin: Vector4i, dest: Vector4i):
 	new_boards[origin_board.coord] = origin_board
 	new_boards[dest_board.coord] = dest_board
 	move_stack.append(new_boards)
-	
+	for board in new_boards.values():
+		var blocks := []
+		for block in board.get_children():
+			if block.is_in_group("Piece"):
+				block.preTick()
+			if block.is_in_group("blocks"):
+				blocks.append(block)
+		for block:ConwaySquare in blocks: block.preTick()
+		for block:ConwaySquare in blocks: block.tick()
+		ConwaySquare.instanceAll()
+		ConwaySquare.reset()
+		
 	clear_highlights()
 	boardstate_changed.emit()
 
@@ -81,6 +92,7 @@ func show_legal_moves(vec: Vector4i):
 		var dims = Globals.dims_count(dir)
 		var mag = 1
 		while(coord_valid(squareToMove)):
+			if get_block(squareToMove) != null: break
 			var dest_piece = get_piece(squareToMove)
 			
 			if dest_piece != null and dest_piece.is_white == piece_to_move.is_white:
@@ -126,7 +138,13 @@ func get_piece(vec: Vector4i):
 	if arr.size() == 1:
 		return arr[0]
 	return null
-	
+
+func get_block(vec: Vector4i):
+	var arr = get_tree().get_nodes_in_group("blocks").filter(func(piece): return vec == piece.full_coord)
+	if arr.size() == 1:
+		return arr[0]
+	return null
+
 func get_board(vec) -> Board:
 	var arr = get_tree().get_nodes_in_group("Board").filter(func(board): return Vector2i(vec.x, vec.y) == board.coord)
 	if arr.size() == 1:

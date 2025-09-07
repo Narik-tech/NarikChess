@@ -25,6 +25,7 @@ static var rook := preload("res://Scenes/Pieces/rook.tscn")
 static var king := preload("res://Scenes/Pieces/king.tscn")
 static var queen := preload("res://Scenes/Pieces/queen.tscn")
 static var legalMoveHighlight  := preload("res://Scenes/legal_move_highlight.tscn")
+static var conway_square := preload("res://Scenes/conway_square.tscn")
 
 static func new_board(parent: Node, isWhite: bool = true):
 	var instance = board_scene.instantiate()
@@ -48,6 +49,8 @@ func duplicate_board(coord) -> Node:
 	for piece in get_children():
 		if piece.is_in_group("Piece"):
 			instance.instance_piece(piece.resource, piece.coord, piece.is_white, piece.has_moved)
+		if piece.is_in_group("blocks"):
+			instance.place_conway(piece.coord)
 	return instance
 
 
@@ -59,12 +62,18 @@ func move_piece(piece, coord: Vector4i):
 	piece.has_moved = true
 	self.add_child(piece)
 
-func place_highlight(placeCoord: Vector2i):
+func place_highlight(place_coord: Vector2i):
 	var stepSize = $BoardTexture.size / 8
-	var instance = Globals.instanceSceneAtCoord(Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y), self, legalMoveHighlight)
-	instance.coord = Vector4i(coord.x, coord.y, placeCoord.x, placeCoord.y)
+	var instance = Globals.instanceSceneAtCoord(Vector2(stepSize.x * place_coord.x, stepSize.y * place_coord.y), self, legalMoveHighlight)
+	instance.coord = Vector4i(coord.x, coord.y, place_coord.x, place_coord.y)
 	return instance
-	#
+
+func place_conway(place_coord: Vector2i):
+	var stepSize = $BoardTexture.size / 8
+	var instance = Globals.instanceSceneAtCoord(Vector2(stepSize.x * place_coord.x, stepSize.y * place_coord.y), self, conway_square)
+	instance.full_coord = Vector4i(coord.x, coord.y, place_coord.x, place_coord.y)
+	return instance
+
 #func remove_piece(coord: Vector2i) -> void:
 	#if board.has(coord):
 		#var removed = board[coord]
@@ -117,3 +126,7 @@ func createBaseBoard():
 	# Place kings
 	instance_piece(king, Vector2i(4, 0), false)
 	instance_piece(king, Vector2i(4, 7))
+	
+	if ChessGame.singleton.conway_time:
+		for x in range(3,5): for y in range(3,5):
+			place_conway(Vector2i(x,y))

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://btu1e08q0sijc"]
+
+[ext_resource type="Script" uid="uid://bmrigayjhqvmo" path="res://Scripts/conway_square.gd" id="1_ekjo1"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ekjo1"]
+
+[node name="ConwaySquare" type="Sprite2D" groups=["blocks"]]
+scale = Vector2(0.03125, 8)
+texture = SubResource("GradientTexture1D_ekjo1")
+centered = false
+script = ExtResource("1_ekjo1")

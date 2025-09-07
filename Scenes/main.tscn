@@ -1,7 +1,25 @@
 [gd_scene load_steps=2 format=3 uid="uid://b0lb35vhu6rsl"]
 
-[ext_resource type="PackedScene" uid="uid://ca8xd7ra6en0h" path="res://Scenes/chess_game.tscn" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://cr71sjlxb52ck" path="res://Scenes/main.gd" id="1_jjgbg"]
 
 [node name="Main" type="Node"]
+script = ExtResource("1_jjgbg")
 
-[node name="Game" parent="." instance=ExtResource("1_jjgbg")]
+[node name="MainMenu" type="CanvasLayer" parent="."]
+
+[node name="5DChess" type="Button" parent="MainMenu"]
+offset_left = 552.0
+offset_top = 169.0
+offset_right = 705.0
+offset_bottom = 228.0
+text = "5D Chess"
+
+[node name="ConwayChess" type="Button" parent="MainMenu"]
+offset_left = 552.0
+offset_top = 240.0
+offset_right = 705.0
+offset_bottom = 298.0
+text = "Conway Chess"
+
+[connection signal="pressed" from="MainMenu/5DChess" to="." method="_on_5d_chess_pressed"]
+[connection signal="pressed" from="MainMenu/ConwayChess" to="." method="_on_conway_chess_pressed"]

@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://btu1e08q0sijc"]
+
+[ext_resource type="Script" uid="uid://bmrigayjhqvmo" path="res://Scripts/conway_square.gd" id="1_ekjo1"]
+
+[sub_resource type="Gradient" id="Gradient_8yanl"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0, 0.8, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ekjo1"]
+gradient = SubResource("Gradient_8yanl")
+
+[node name="ConwaySquare" type="Sprite2D" groups=["blocks"]]
+scale = Vector2(0.186, 48)
+texture = SubResource("GradientTexture1D_ekjo1")
+centered = false
+script = ExtResource("1_ekjo1")

@@ -7,6 +7,7 @@ extends Node
 static var chess_5d := preload("res://Scenes/5dchess.tscn")
 
 static var singleton : ChessGame
+var conway_time: bool = false
 var chess_client: Chess5d
 var selected_piece: Vector4i
 

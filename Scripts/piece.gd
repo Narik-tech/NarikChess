@@ -81,4 +81,23 @@ func _on_gui_input(event: InputEvent) -> void:
 		return
 	
 	piece_selected.emit(full_coord)
-		
+
+
+
+func preTick():
+	ConwaySquare.blockDict[self.full_coord] = -1
+	ConwaySquare.pieceDict[self.full_coord] = -1
+	
+	for pos in getNearby():
+		if(ConwaySquare.pieceDict.has(pos)):
+			if(ConwaySquare.pieceDict[pos] == -1): continue
+			ConwaySquare.pieceDict[pos] += 1
+		else:
+			ConwaySquare.pieceDict[pos] = 1
+
+func getNearby():
+	var out: Array = []
+	for z in range(-1,2,1): for w in range(-1,2,1):
+			if(z==0 && w==0): continue
+			out.append(Vector4i(board.coord.x,board.coord.y,z,w) + Vector4i(0,0,coord.x,coord.y))
+	return out
