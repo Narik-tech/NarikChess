@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://ca8xd7ra6en0h"]
 
-[ext_resource type="Script" uid="uid://bkstioe7xue8q" path="res://Scripts/chess_game.gd" id="1_ov1fv"]
-[ext_resource type="Script" uid="uid://wfpt25m8phqm" path="res://Scripts/camera_pan.gd" id="2_qxrlw"]
-[ext_resource type="Script" uid="uid://b6wp1qbd66t5m" path="res://Scenes/turn_indicator.gd" id="4_ha7jq"]
+[ext_resource type="Script" uid="uid://bkstioe7xue8q" path="res://scripts/chess_game.gd" id="1_ov1fv"]
+[ext_resource type="Script" uid="uid://wfpt25m8phqm" path="res://scripts/camera_pan.gd" id="2_qxrlw"]
+[ext_resource type="Script" uid="uid://b6wp1qbd66t5m" path="res://scenes/turn_indicator.gd" id="4_ha7jq"]
 
 [node name="ChessGame" type="Node"]
 script = ExtResource("1_ov1fv")

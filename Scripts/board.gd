@@ -18,12 +18,12 @@ var chess_4d: Chess5d:
 		return get_parent()
 
 static var board_scene := preload("res://Scenes/board.tscn")
-static var pawn := preload("res://Scenes/Pieces/pawn.tscn")
-static var bishop := preload("res://Scenes/Pieces/bishop.tscn")
-static var knight := preload("res://Scenes/Pieces/knight.tscn")
-static var rook := preload("res://Scenes/Pieces/rook.tscn")
-static var king := preload("res://Scenes/Pieces/king.tscn")
-static var queen := preload("res://Scenes/Pieces/queen.tscn")
+static var pawn := preload("res://Scenes/Pieces/pawn.tres")
+static var bishop := preload("res://Scenes/Pieces/bishop.tres")
+static var knight := preload("res://Scenes/Pieces/knight.tres")
+static var rook := preload("res://Scenes/Pieces/rook.tres")
+static var king := preload("res://Scenes/Pieces/king.tres")
+static var queen := preload("res://scenes/pieces/queen.tres")
 static var legalMoveHighlight  := preload("res://Scenes/legal_move_highlight.tscn")
 
 static func new_board(parent: Node, isWhite: bool = true):
@@ -47,7 +47,7 @@ func duplicate_board(coord) -> Node:
 	instance.coord = Vector2i(coord.x, coord.y)
 	for piece in get_children():
 		if piece.is_in_group("Piece"):
-			instance.instance_piece(piece.resource, piece.coord, piece.is_white, piece.has_moved)
+			instance.instance_piece(piece.piece_def, piece.coord, piece.is_white, piece.has_moved)
 	return instance
 
 
@@ -78,13 +78,13 @@ func recalculateBoardPosition():
 	self.position = vec
 	$BoardOutline.color = Color.LIGHT_GRAY if is_white else Color.DIM_GRAY
 
-func instance_piece(piece: PackedScene, placeCoord: Vector2i, isWhite: bool = true, has_moved: bool = false) -> void:
+func instance_piece(piece_def: ChessPieceDef, placeCoord: Vector2i, isWhite: bool = true, has_moved: bool = false) -> void:
 	var stepSize = $BoardTexture.size / 8
-	var instance = Globals.instanceSceneAtCoord(Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y), self, piece)
-	instance.set_color(isWhite)
+	var instance = ChessPiece.instance(piece_def, isWhite)
+	instance.position = Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y)
 	instance.coord = Vector2i(placeCoord.x, placeCoord.y)
-	instance.resource = piece
 	instance.has_moved = has_moved
+	self.add_child(instance)
 
 func createBaseBoard():
 	# Place pawns

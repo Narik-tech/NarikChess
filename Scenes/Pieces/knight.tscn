@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://bm8oaa7fwil6v"]
-
-[ext_resource type="PackedScene" uid="uid://decoeggntlkto" path="res://Scenes/Pieces/Piece.tscn" id="1_ik0at"]
-[ext_resource type="Texture2D" uid="uid://htnics7jcbln" path="res://Sprites/CrazyPenguins-5D-Chess-Set-0.1.0/white_knight.svg" id="2_13nyu"]
-
-[node name="knight" instance=ExtResource("1_ik0at")]
-texture = ExtResource("2_13nyu")
-directions = 16

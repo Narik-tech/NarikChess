@@ -86,7 +86,7 @@ func show_legal_moves(vec: Vector4i):
 			if dest_piece != null and dest_piece.is_white == piece_to_move.is_white:
 				break
 				
-			if piece_to_move.pawn:
+			if piece_to_move.piece_def.pawn:
 				if dims == 1 and dest_piece != null: break
 				if dims == 2 and dest_piece == null: break
 				
@@ -94,7 +94,7 @@ func show_legal_moves(vec: Vector4i):
 			
 			if dest_piece: break
 			
-			if piece_to_move.rider or (piece_to_move.pawn and !piece_to_move.has_moved and mag == 1):
+			if piece_to_move.piece_def.rider or (piece_to_move.piece_def.pawn and !piece_to_move.has_moved and mag == 1):
 				squareToMove += dir
 				mag += 1
 			else: 

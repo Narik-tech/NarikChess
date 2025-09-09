@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dkr0kwmksncey"]
 
-[ext_resource type="Script" uid="uid://csowctq53vytc" path="res://Scripts/board.gd" id="1_p0ybc"]
-[ext_resource type="Texture2D" uid="uid://cvwf8ax6xsnih" path="res://Sprites/chessBoard.png" id="2_2wvcj"]
+[ext_resource type="Script" uid="uid://csowctq53vytc" path="res://scripts/board.gd" id="1_p0ybc"]
+[ext_resource type="Texture2D" uid="uid://cvwf8ax6xsnih" path="res://sprites/chessBoard.png" id="2_2wvcj"]
 
 [node name="Board" type="Node2D" groups=["Board"]]
 script = ExtResource("1_p0ybc")

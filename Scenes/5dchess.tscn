@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dp8y7jqouk46g"]
 
-[ext_resource type="Script" uid="uid://o4ohxqxvdj54" path="res://Scripts/5dchess.gd" id="1_pi0rx"]
-[ext_resource type="Script" uid="uid://cfd3waac0w4b1" path="res://Scenes/present_line.gd" id="2_kku4w"]
+[ext_resource type="Script" uid="uid://o4ohxqxvdj54" path="res://scripts/5dchess.gd" id="1_pi0rx"]
+[ext_resource type="Script" uid="uid://cfd3waac0w4b1" path="res://scenes/present_line.gd" id="2_kku4w"]
 
 [node name="5Dchess" type="Node2D"]
 script = ExtResource("1_pi0rx")

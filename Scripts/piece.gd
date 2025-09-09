@@ -1,10 +1,11 @@
-class_name Piece
+class_name ChessPiece
 extends TextureRect
 
 signal piece_selected(coord: Vector4i)
 
 var coord: Vector2i
-
+var piece_def: ChessPieceDef
+static var piece := preload("res://scenes/pieces/Piece.tscn")
 var resource: PackedScene
 var is_white: bool = true
 var has_moved: bool = false
@@ -19,6 +20,13 @@ var full_coord: Vector4i:
 	set(val):
 		coord.x = val.z
 		coord.y = val.w
+
+static func instance(resource: ChessPieceDef, is_white: bool):
+	var instance: ChessPiece = piece.instantiate()
+	instance.piece_def = resource
+	instance.texture = resource.white_texture
+	instance.set_color(is_white)
+	return instance
 
 func _ready() -> void:
 	piece_selected.connect(ChessGame.singleton._on_piece_selected)
@@ -52,15 +60,15 @@ func set_color(isWhitePiece: bool):
 
 func get_direction_vectors() -> Array[Vector4i]:
 	var vecs: Array[Vector4i] = []
-	if uniagonal:
-		vecs.append_array(Globals.uniagonals.filter(is_forward) if pawn else Globals.uniagonals)
-	if diagonal: 
-		vecs.append_array(Globals.diagonals.filter(is_forward) if pawn else Globals.diagonals)
-	if triagonal: 
+	if piece_def.uniagonal:
+		vecs.append_array(Globals.uniagonals.filter(is_forward) if piece_def.pawn else Globals.uniagonals)
+	if piece_def.diagonal: 
+		vecs.append_array(Globals.diagonals.filter(is_forward) if piece_def.pawn else Globals.diagonals)
+	if piece_def.triagonal: 
 		vecs.append_array(Globals.triagonals)
-	if quadragonal: 
+	if piece_def.quadragonal: 
 		vecs.append_array(Globals.quadragonals)
-	if knight: 
+	if piece_def.knight: 
 		vecs.append_array(Globals.knight)
 	return vecs
 
