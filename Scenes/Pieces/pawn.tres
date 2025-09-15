@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ChessPieceDef" load_steps=3 format=3 uid="uid://bt8onu168q64q"]
 
-[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://resources/chess_piece.gd" id="1_ldshq"]
+[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://resources/chess_piece_def.gd" id="1_ldshq"]
 [ext_resource type="Texture2D" uid="uid://chxdp8ykn7a63" path="res://sprites/CrazyPenguins-5D-Chess-Set/white_pawn.svg" id="2_rviw0"]
 
 [resource]

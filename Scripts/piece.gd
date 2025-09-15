@@ -1,15 +1,14 @@
-class_name ChessPiece
+## base class for all objects occupying a space on the board
+class_name Piece
 extends TextureRect
 
-signal piece_selected(coord: Vector4i)
+signal on_piece_clicked(piece: Piece)
 
 var coord: Vector2i
-var piece_def: ChessPieceDef
-var is_white: bool = true
-var has_moved: bool = false
 var board: Board:
 	get:
 		return get_parent()
+
 var full_coord: Vector4i:
 	get:
 		var p = get_parent()
@@ -18,36 +17,11 @@ var full_coord: Vector4i:
 		coord.x = val.z
 		coord.y = val.w
 
-static var piece := preload("res://scenes/pieces/Piece.tscn")
-static func instance(resource: ChessPieceDef, is_white: bool):
-	var instance: ChessPiece = piece.instantiate()
-	instance.piece_def = resource
-	instance.texture = resource.white_texture
-	instance.set_color(is_white)
-	return instance
-
-func _ready() -> void:
-	piece_selected.connect(ChessGame.singleton._on_piece_selected)
-
-func set_color(isWhitePiece: bool):
-	if isWhitePiece:
-		is_white = true
-		modulate = Color.WHITE
-	else: 
-		is_white = false
-		modulate = Color.DIM_GRAY
-
-func get_direction_vectors() -> Array[Vector4i]:
-	return piece_def.get_direction_vectors(is_white)
+func _on_click():
+	pass
 
 func _on_gui_input(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed):
 		return
-	
-	if not board.board_playable():
-		return
-	
-	if not board.is_white == is_white:
-		return
-	
-	piece_selected.emit(full_coord)
+	on_piece_clicked.emit(self)
+	_on_click()

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ChessPieceDef" load_steps=3 format=3 uid="uid://bpn6khy5ctoig"]
 
-[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://resources/chess_piece.gd" id="1_wtj1d"]
+[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://resources/chess_piece_def.gd" id="1_wtj1d"]
 [ext_resource type="Texture2D" uid="uid://bogdkua8k7kha" path="res://sprites/CrazyPenguins-5D-Chess-Set/white_knight.svg" id="2_62cg4"]
 
 [resource]

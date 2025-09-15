@@ -16,6 +16,7 @@ var is_white_turn: bool = true:
 @onready var present = $Present_Line
 
 func submit_turn() -> bool:
+	calculate_present()
 	if present.is_white == is_white_turn:
 		return false
 	move_stack.clear()
@@ -45,10 +46,10 @@ func make_move(origin: Vector4i, dest: Vector4i):
 	var origin_board = next_board(origin)
 	
 	#remove any piece at destination
-	var dest_piece = get_piece(dest + time_plus)
+	var dest_piece = dest_board.get_piece(dest)
 	if dest_piece != null: dest_piece.queue_free()
 	
-	dest_board.move_piece(get_piece(origin + time_plus), dest)
+	dest_board.move_piece(origin_board.get_piece(origin), dest)
 	
 	#queue boards for undo
 	var new_boards = {}
@@ -108,8 +109,10 @@ func calculate_present():
 	var black = 0
 	var white = 0
 	for board in get_boards():
-		if board.coord.y < black: black = board.coord.y
-		if board.coord.y > white: white = board.coord.y
+		if board.coord.y < black: 
+			black = board.coord.y
+		if board.coord.y > white: 
+			white = board.coord.y
 	var max = -black + 1
 	var min = -white - 1
 	var present_position: int = 1000000
@@ -128,14 +131,15 @@ func get_piece(vec: Vector4i):
 	return null
 	
 func get_board(vec) -> Board:
-	var arr = get_tree().get_nodes_in_group("Board").filter(func(board): return Vector2i(vec.x, vec.y) == board.coord)
-	if arr.size() == 1:
-		return arr[0]
-	return null
+	var boards = get_boards().filter(func(board): return Vector2i(vec.x, vec.y) == board.coord)
+	assert(boards.size() < 2)
+	return boards.front()
 
 func get_boards() -> Array:
-	return get_tree().get_nodes_in_group("Board")
-	
+	var boards = get_tree().get_nodes_in_group("Board").filter(Globals.is_valid_node)
+	return boards
+
+
 ## returns the proper line for a new timeline based on the original board coordinate
 func new_line_position(coord) -> int:
 	var isWhite = coord.x % 2 == 0

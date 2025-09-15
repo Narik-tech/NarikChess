@@ -44,3 +44,10 @@ static func dims_count(vec: Vector4i) -> int:
 
 static func magnitude(vec: Vector4i) -> int:
 	return abs(vec.x) + abs(vec.y) + abs(vec.z) + abs(vec.w)
+
+static func is_valid_node(node: Node) -> bool:
+	if not is_instance_valid(node):
+		return false
+	if node.is_queued_for_deletion():
+		return false
+	return true

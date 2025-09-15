@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ChessPieceDef" load_steps=3 format=3 uid="uid://ub6387nfqofg"]
 
-[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://resources/chess_piece.gd" id="1_pc3o6"]
+[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://resources/chess_piece_def.gd" id="1_pc3o6"]
 [ext_resource type="Texture2D" uid="uid://c80q4eouwtrgm" path="res://sprites/CrazyPenguins-5D-Chess-Set/white_rook.svg" id="2_sqmq0"]
 
 [resource]
