@@ -1,4 +1,4 @@
-class_name Chess5d
+class_name ChessLogic
 extends Node
 
 static var board := preload("res://Scenes/board.tscn")
@@ -13,7 +13,7 @@ var is_white_turn: bool = true:
 		is_white_turn = val
 		turn_changed.emit(is_white_turn)
 		
-@onready var present = $Present_Line
+@onready var present = $PresentLine
 
 func submit_turn() -> bool:
 	calculate_present()
@@ -33,7 +33,7 @@ func undo():
 
 func _ready() -> void:
 	boardstate_changed.connect(calculate_present)
-	turn_changed.connect($"../CanvasLayer/TurnIndicator"._on_turn_changed)
+	turn_changed.connect($"../ChessUI/TurnIndicator"._on_turn_changed)
 
 func start_game():
 	Board.new_board(self)
@@ -125,6 +125,7 @@ func coord_valid(piece_vec: Vector4i) -> bool:
 	return not (piece_vec.z < 0 or piece_vec.z > 7 or piece_vec.w < 0 or piece_vec.w > 7 or get_board(piece_vec) == null)
 
 func get_piece(vec: Vector4i):
+	return get_board(vec).get_piece(vec)
 	var arr = get_tree().get_nodes_in_group("Piece").filter(func(piece): return vec == piece.full_coord)
 	if arr.size() == 1:
 		return arr[0]
@@ -138,7 +139,6 @@ func get_board(vec) -> Board:
 func get_boards() -> Array:
 	var boards = get_tree().get_nodes_in_group("Board").filter(Globals.is_valid_node)
 	return boards
-
 
 ## returns the proper line for a new timeline based on the original board coordinate
 func new_line_position(coord) -> int:

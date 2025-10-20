@@ -15,7 +15,7 @@ var is_white: bool:
 	get:
 		return coord.x % 2 == 0
 
-var chess_4d: Chess5d:
+var chess_4d: ChessLogic:
 	get:
 		return get_parent()
 

@@ -4,15 +4,15 @@ extends Node
 ### Piece Coords ###
 #### (T,L,x,y)  ####
 
-static var chess_5d := preload("res://Scenes/5dchess.tscn")
+static var chess_logic := preload("res://scenes/chess_logic.tscn")
 
 static var singleton : ChessGame
-var chess_client: Chess5d
+var chess_client: ChessLogic
 var selected_piece: Vector4i
 
 func game_start():
-	if chess_client != null: chess_client.queue_free
-	chess_client = chess_5d.instantiate()
+	if chess_client != null: chess_client.queue_free()
+	chess_client = chess_logic.instantiate()
 	self.add_child(chess_client)
 	chess_client.start_game()
 
