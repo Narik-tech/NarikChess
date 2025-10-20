@@ -3,11 +3,10 @@ A client for four-dimensional Chess.  (commonly known as 5D Chess).
 Piece set by CrazyPenguin https://github.com/CrazyPenguin0111/CrazyPenguins-5D-Chess-Set
 
 TODO:
-Refactor
 
-End game when a king is taken
+Game of life Chess with decoupled implementation compatible with other mods
 
-Game of life Chess
+Sliding tile chess??
 
 Spell Chess
 
