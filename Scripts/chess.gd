@@ -1,12 +1,14 @@
-class_name ChessGame
+class_name Chess
 extends Node
 
 ### Piece Coords ###
 #### (T,L,x,y)  ####
 
-static var chess_logic := preload("res://scenes/chess_logic.tscn")
+signal _on_starting_board_created(board: Board)
 
-static var singleton : ChessGame
+static var chess_logic := preload("res://scenes/chess_logic.tscn")
+static var singleton : Chess
+
 var chess_client: ChessLogic
 var selected_piece: Vector4i
 
@@ -15,6 +17,10 @@ func game_start():
 	chess_client = chess_logic.instantiate()
 	self.add_child(chess_client)
 	chess_client.start_game()
+
+func load_mods(mods: Array[Mod]):
+	for mod in mods:
+		self.add_child(mod)
 
 func _ready():
 	singleton = self

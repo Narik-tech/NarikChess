@@ -17,7 +17,7 @@ static func instance(resource: ChessPieceDef, is_white: bool):
 	return instance
 
 func _ready() -> void:
-	piece_selected.connect(ChessGame.singleton._on_piece_selected)
+	piece_selected.connect(Chess.singleton._on_piece_selected)
 
 func set_color(isWhitePiece: bool):
 	if isWhitePiece:

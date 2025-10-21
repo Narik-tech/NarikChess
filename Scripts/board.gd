@@ -15,7 +15,7 @@ var is_white: bool:
 	get:
 		return coord.x % 2 == 0
 
-var chess_4d: ChessLogic:
+var chess_logic: ChessLogic:
 	get:
 		return get_parent()
 
@@ -33,25 +33,17 @@ static func new_board(parent: Node, isWhite: bool = true):
 	var instance = board_scene.instantiate()
 	instance.createBaseBoard()
 	parent.add_child(instance)
+	Chess.singleton._on_starting_board_created.emit(instance)
 	return instance
 	
-
-#func _ready():
-	#$BoardBounds.size = Vector2i.ONE * block_pixel_size * board_size
-	#$BoardBounds/Background.size = Vector2i.ONE * board_size
-	#$BoardBounds/Background.scale = Vector2i.ONE * block_pixel_size/2
-
 func board_playable() -> bool:
-	if is_white != chess_4d.is_white_turn:
+	if is_white != chess_logic.is_white_turn:
 		return false
-	if chess_4d.get_board(coord + time_plus) != null:
+	if chess_logic.get_board(coord + time_plus) != null:
 		return false
 	return true
 
 func duplicate_board(coord) -> Node:
-	#var instance = self.duplicate()
-	#instance.coord = Vector2i(coord.x, coord.y)
-	#return instance
 	var instance = load("res://Scenes/board.tscn").instantiate()
 	instance.coord = Vector2i(coord.x, coord.y)
 	for piece in get_children():

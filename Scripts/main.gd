@@ -11,14 +11,23 @@ func _ready():
 		checkbox.text = mod
 		$MainMenu/Mods.add_child(checkbox)
 
+func _on_start_pressed() -> void:
+	var instance: Chess = chess.instantiate()
+	
+	var selected_mods: Array[Mod] = []
+	for child in $MainMenu/Mods.get_children():
+		if child is CheckBox and child.button_pressed:
+			var scene_path: String = mod_dict.get(child.text)
+			var ps := load(scene_path)
+			selected_mods.append(ps.instantiate())
+	
+	instance.load_mods(selected_mods)
+	change_scene(instance)
+
 func change_scene(scene: Node):
 	for child in get_children():
 		child.queue_free()
 	add_child(scene)
-
-func _on_start_pressed() -> void:
-	var instance:ChessGame = chess.instantiate()
-	change_scene(instance)
 
 func create_mod_dict() -> Dictionary[String, String]:
 	var dir := DirAccess.open(mod_path)
