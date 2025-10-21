@@ -34,14 +34,11 @@ func _on_piece_selected(coord: Vector4i):
 func _on_piece_destination_selected(coord: Vector4i):
 	chess_client.make_move(selected_piece, coord)
 
-
 func _on_submit_pressed() -> void:
 	chess_client.submit_turn()
 
-
 func _on_undo_pressed() -> void:
 	chess_client.undo()
-
 
 func _on_restart_pressed() -> void:
 	get_tree().reload_current_scene()

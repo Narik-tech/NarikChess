@@ -29,7 +29,7 @@ static var queen := preload("res://scenes/pieces/queen.tres")
 static var board_scene := preload("res://Scenes/board.tscn")
 static var legalMoveHighlight  := preload("res://Scenes/legal_move_highlight.tscn")
 
-static func new_board(parent: Node, isWhite: bool = true):
+static func new_board(parent: Node):
 	var instance = board_scene.instantiate()
 	instance.createBaseBoard()
 	parent.add_child(instance)
@@ -44,7 +44,7 @@ func board_playable() -> bool:
 	return true
 
 func duplicate_board(coord) -> Node:
-	var instance = load("res://Scenes/board.tscn").instantiate()
+	var instance = board_scene.instantiate()
 	instance.coord = Vector2i(coord.x, coord.y)
 	for piece in get_children():
 		if piece.is_in_group("Piece"):

@@ -126,10 +126,6 @@ func coord_valid(piece_vec: Vector4i) -> bool:
 
 func get_piece(vec: Vector4i):
 	return get_board(vec).get_piece(vec)
-	var arr = get_tree().get_nodes_in_group("Piece").filter(func(piece): return vec == piece.full_coord)
-	if arr.size() == 1:
-		return arr[0]
-	return null
 	
 func get_board(vec) -> Board:
 	var boards = get_boards().filter(func(board): return Vector2i(vec.x, vec.y) == board.coord)
