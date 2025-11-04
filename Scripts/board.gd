@@ -52,7 +52,11 @@ func duplicate_board(coord) -> Node:
 	return instance
 
 func get_piece(vec) -> Piece:
-	return get_children().filter(func(p): return p is Piece and p.coord == piece_coord(vec)).front()
+	var pieces = get_children().filter(func(p): return p is Piece and p.coord == piece_coord(vec))
+	if pieces.size() > 0:
+		return pieces.front()
+	else:
+		return null
 
 func move_piece(piece, coord: Vector4i):
 	var stepSize = $BoardTexture.size / 8

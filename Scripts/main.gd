@@ -1,10 +1,12 @@
 extends Node
 
+const TEST_SCRIPT := "res://tests/test_chess_game.gd"
 static var chess := preload("res://Scenes/chess.tscn")
 const mod_path := "res://mods"
 var mod_dict : Dictionary[String, String]
 
 func _ready():
+	run_tests()
 	mod_dict = create_mod_dict()
 	for mod in mod_dict:
 		var checkbox = CheckBox.new()
@@ -45,3 +47,7 @@ func create_mod_dict() -> Dictionary[String, String]:
 		file_name = dir.get_next()
 	dir.list_dir_end()
 	return scenes
+
+func run_tests():
+	var test_node := preload(TEST_SCRIPT).new()
+	self.add_child(test_node)

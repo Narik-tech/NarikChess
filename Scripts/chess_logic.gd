@@ -130,6 +130,7 @@ func get_piece(vec: Vector4i):
 func get_board(vec) -> Board:
 	var boards = get_boards().filter(func(board): return Vector2i(vec.x, vec.y) == board.coord)
 	assert(boards.size() < 2)
+	if boards.size() != 1: return null
 	return boards.front()
 
 func get_boards() -> Array:
