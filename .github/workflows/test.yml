@@ -16,10 +16,14 @@ jobs:
       # Download Godot headless/server build
       - name: Download Godot
         run: |
-          GODOT_VERSION=4.3
-          wget https://downloads.tuxfamily.org/godotengine/$GODOT_VERSION/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip -O godot.zip
+          # this URL pattern is from the official download archive
+          # https://godotengine.org/download/archive/4.5-stable/ :contentReference[oaicite:1]{index=1}
+          URL="https://godotengine.org/download/archive/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+          echo "Downloading $URL"
+          curl -L "$URL" -o godot.zip
           unzip godot.zip
-          mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
+          # resulting filename usually: Godot_v4.5-stable_linux.x86_64
+          mv Godot_v${GODOT_VERSION}_linux.x86_64 godot
           chmod +x godot
 
       # Run the project headless and capture output
