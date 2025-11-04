@@ -18,8 +18,8 @@ jobs:
       - name: Download Godot
         run: |
           # this URL pattern is from the official download archive
-          # https://godotengine.org/download/archive/4.5-stable/ :contentReference[oaicite:1]{index=1}
-          URL="https://godotengine.org/download/archive/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+
+          URL="https://downloads.godotengine.org/?version=4.5&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
           echo "Downloading $URL"
           curl -L "$URL" -o godot.zip
           unzip godot.zip
