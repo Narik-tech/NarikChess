@@ -9,11 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      GODOT_VERSION: "4.5-stable"   # change if needed
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Download Godot headless/server build
       - name: Download Godot
         run: |
           # this URL pattern is from the official download archive
@@ -26,13 +27,9 @@ jobs:
           mv Godot_v${GODOT_VERSION}_linux.x86_64 godot
           chmod +x godot
 
-      # Run the project headless and capture output
-      - name: Run Godot project
-        id: run_godot
+      - name: Run Godot headless
         run: |
           set -e
-          # run the game once; --headless to avoid GUI
-          # change --path . to your project folder if needed
           ./godot --headless --path . > godot.log 2>&1 || true
           cat godot.log
           if grep -q "TestChessGame: PASS" godot.log; then
@@ -42,7 +39,6 @@ jobs:
             exit 1
           fi
 
-      # optional: upload log so you can inspect in PR
       - name: Upload log
         uses: actions/upload-artifact@v4
         if: always()
