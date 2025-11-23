@@ -1,7 +1,7 @@
 extends Node
 
 const TEST_SCRIPT := "res://tests/test_chess_game.gd"
-static var chess := preload("res://Scenes/chess.tscn")
+static var chess := preload("res://scenes/chess.tscn")
 const mod_path := "res://mods"
 var mod_dict : Dictionary[String, String]
 
