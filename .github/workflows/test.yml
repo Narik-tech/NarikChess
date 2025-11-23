@@ -39,7 +39,6 @@ jobs:
           set -e
           ./godot --headless --path . > godot.log 2>&1 || true
           cat godot.log
-          echo godot.log
           if grep -q "TestChessGame: PASS" godot.log; then
             echo "Godot test passed."
           else
