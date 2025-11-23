@@ -39,7 +39,7 @@ jobs:
           set -e  # fail on first non-zero exit code
 
           # Fail immediately if Godot hits a parse/runtime error
-          timeout 15 ./godot --headless --path . -- --run-tests > godot.log 2>&1
+          timeout 15 ./godot --headless --path . --run-tests > godot.log 2>&1
 
           # Show the log in the Actions output
           cat godot.log
