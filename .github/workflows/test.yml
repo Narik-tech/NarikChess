@@ -26,7 +26,14 @@ jobs:
           # resulting filename usually: Godot_v4.5-stable_linux.x86_64
           mv Godot_v${GODOT_VERSION}_linux.x86_64 godot
           chmod +x godot
-
+      # ----------------------------------------------------
+      # WARM-UP EDITOR STEP (fixes UID cache issues)
+      # ----------------------------------------------------
+      - name: Initialize Godot project (generate .godot cache)
+        run: |
+          set -e
+          ./godot --headless --editor --quit --path .
+      # ----------------------------------------------------
       - name: Run Godot headless
         run: |
           set -e
