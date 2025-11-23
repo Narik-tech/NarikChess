@@ -19,15 +19,15 @@ var chess_logic: ChessLogic:
 	get:
 		return get_parent()
 
-static var pawn := preload("res://Scenes/Pieces/pawn.tres")
-static var bishop := preload("res://Scenes/Pieces/bishop.tres")
-static var knight := preload("res://Scenes/Pieces/knight.tres")
-static var rook := preload("res://Scenes/Pieces/rook.tres")
-static var king := preload("res://Scenes/Pieces/king.tres")
+static var pawn := preload("res://scenes/pieces/pawn.tres")
+static var bishop := preload("res://scenes/pieces/bishop.tres")
+static var knight := preload("res://scenes/pieces/knight.tres")
+static var rook := preload("res://scenes/pieces/rook.tres")
+static var king := preload("res://scenes/pieces/king.tres")
 static var queen := preload("res://scenes/pieces/queen.tres")
 
-static var board_scene := preload("res://Scenes/board.tscn")
-static var legalMoveHighlight  := preload("res://Scenes/legal_move_highlight.tscn")
+static var board_scene := preload("res://scenes/board.tscn")
+static var legalMoveHighlight  := preload("res://scenes/legal_move_highlight.tscn")
 
 static func new_board(parent: Node):
 	var instance = board_scene.instantiate()

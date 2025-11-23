@@ -1,7 +1,7 @@
 class_name ChessLogic
 extends Node
 
-static var board := preload("res://Scenes/board.tscn")
+static var board := preload("res://scenes/board.tscn")
 
 signal boardstate_changed()
 signal turn_changed(white_turn: bool)
