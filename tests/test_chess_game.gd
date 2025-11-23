@@ -5,10 +5,13 @@ const _ChessGame = preload("res://scenes/chess.tscn")
 var _errors: Array[String] = []
 
 func _ready():
-	run()
-	get_tree().quit()
+	var args = OS.get_cmdline_args()
+	if "--run-tests" in args:
+		run_tests()
+		get_tree().quit()
+		return
 
-func run() -> bool:
+func run_tests() -> bool:
 	var chess_game : Chess = _ChessGame.instantiate()
 	add_child(chess_game)
 
