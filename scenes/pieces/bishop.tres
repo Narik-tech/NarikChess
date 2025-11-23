@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ChessPieceDef" load_steps=3 format=3 uid="uid://d23y84uttaahb"]
+
+[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://scripts/chess_piece_def.gd" id="1_n7rgx"]
+[ext_resource type="Texture2D" uid="uid://c3epnw3bc03yw" path="res://sprites/CrazyPenguins-5D-Chess-Set/white_bishop.svg" id="2_f8ma7"]
+
+[resource]
+script = ExtResource("1_n7rgx")
+white_texture = ExtResource("2_f8ma7")
+uniagonal = false
+diagonal = true
+triagonal = false
+quadragonal = false
+knight = false
+pawn = false
+rider = true
+metadata/_custom_type_script = "uid://b7olitqm78mbo"
