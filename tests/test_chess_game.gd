@@ -6,6 +6,7 @@ var _errors: Array[String] = []
 
 func _ready():
 	run()
+	get_tree().quit()
 
 func run() -> bool:
 	var chess_game : Chess = _ChessGame.instantiate()
