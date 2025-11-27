@@ -28,7 +28,7 @@ static func calculate_agonals():
 				knight.append(vec*mult)
 		elif mag == 1: 
 			uniagonals.append(vec*mult)
-		elif mag == 2: 
+		elif mag == 2:
 			diagonals.append(vec*mult)
 		elif mag == 3: 
 			triagonals.append(vec*mult)

@@ -15,6 +15,7 @@ func run_tests() -> bool:
 	var chess_game : Chess = _ChessGame.instantiate()
 	add_child(chess_game)
 
+	#Test Base Mode	
 	var from_coord := Vector4i(0, 0, 5, 1)
 	chess_game._on_piece_selected(from_coord)
 	_expect_equal(chess_game.selected_piece, from_coord, "_on_piece_selected should update the selected_piece value")
@@ -43,5 +44,5 @@ func _report() -> bool:
 
 	print("TestChessGame: FAIL")
 	for error in _errors:
-		print("Error: " + error)
+		print("TestFail: " + error)
 	return false

@@ -51,3 +51,4 @@ func create_mod_dict() -> Dictionary[String, String]:
 func run_tests():
 	var test_node := preload(TEST_SCRIPT).new()
 	self.add_child(test_node)
+	test_node.run_tests()

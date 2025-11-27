@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ChessPieceDef" load_steps=3 format=3 uid="uid://bfrwvoko0h4ah"]
 
 [ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://scripts/chess_piece_def.gd" id="1_6gedj"]
-[ext_resource type="Texture2D" uid="uid://cst6qnkr7b5sm" path="res://sprites/CrazyPenguins-5D-Chess-Set/white_king.svg" id="2_1qa2g"]
+[ext_resource type="Texture2D" uid="uid://n60usn78e5w" path="res://sprites/CrazyPenguins-5D-Chess-Set/white_king.svg" id="2_1qa2g"]
 
 [resource]
 script = ExtResource("1_6gedj")
@@ -10,7 +10,4 @@ uniagonal = true
 diagonal = true
 triagonal = true
 quadragonal = true
-knight = false
-pawn = false
-rider = false
 metadata/_custom_type_script = "uid://b7olitqm78mbo"

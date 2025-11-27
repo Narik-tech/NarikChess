@@ -9,11 +9,12 @@ var has_moved: bool = false
 
 
 static var piece := preload("res://scenes/pieces/chess_piece.tscn")
-static func instance(resource: ChessPieceDef, is_white: bool):
+
+static func inst(resource: ChessPieceDef, white: bool) -> ChessPiece:
 	var instance: ChessPiece = piece.instantiate()
 	instance.piece_def = resource
 	instance.texture = resource.white_texture
-	instance.set_color(is_white)
+	instance.set_color(white)
 	return instance
 
 func _ready() -> void:
