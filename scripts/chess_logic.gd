@@ -42,14 +42,16 @@ func start_game():
 
 func make_move(origin: Vector4i, dest: Vector4i):
 	#create boards associated with move
-	var dest_board = next_board(dest, true)
-	var origin_board = next_board(origin)
+	var dest_board: Board = next_board(dest, true)
+	var origin_board: Board = next_board(origin)
 	
 	#remove any piece at destination
 	var dest_piece = dest_board.get_piece(dest)
 	if dest_piece != null: dest_piece.queue_free()
 	
-	dest_board.move_piece(origin_board.get_piece(origin), dest)
+	var origin_piece: ChessPiece = origin_board.get_piece(origin)
+	origin_piece.has_moved = true
+	dest_board.place_piece(origin_piece, Vector2i(dest.z, dest.w))
 	
 	#queue boards for undo
 	var new_boards = {}

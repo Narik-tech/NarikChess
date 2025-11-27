@@ -60,14 +60,6 @@ func get_piece(vec) -> Piece:
 	else:
 		return null
 
-func move_piece(piece, coord: Vector4i):
-	var stepSize = $BoardTexture.size / 8
-	piece.full_coord = coord
-	piece.position = Vector2i(stepSize.x * coord.z, stepSize.x * coord.w)
-	piece.get_parent().remove_child(piece)
-	piece.has_moved = true
-	self.add_child(piece)
-
 func place_highlight(placeCoord: Vector2i):
 	var stepSize = $BoardTexture.size / 8
 	var instance = Globals.instanceSceneAtCoord(Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y), self, legalMoveHighlight)
@@ -83,6 +75,8 @@ func place_piece(piece: Piece, placeCoord: Vector2i):
 	var stepSize = $BoardTexture.size / 8
 	piece.position = Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y)
 	piece.coord = Vector2i(placeCoord.x, placeCoord.y)
+	if piece.get_parent() == self: return
+	if piece.get_parent(): piece.get_parent().remove_child(piece)
 	self.add_child(piece)
 
 func piece_coord(vec) -> Vector2i:
