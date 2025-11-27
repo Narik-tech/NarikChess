@@ -27,7 +27,6 @@ static var king := preload("res://scenes/pieces/king.tres")
 static var queen := preload("res://scenes/pieces/queen.tres")
 
 static var board_scene := preload("res://scenes/board.tscn")
-static var legalMoveHighlight  := preload("res://scenes/legal_move_highlight.tscn")
 
 static func new_board(parent: Node):
 	var instance = board_scene.instantiate()
@@ -54,17 +53,11 @@ func duplicate_board(coord) -> Board:
 	return instance
 
 func get_piece(vec) -> Piece:
-	var pieces = get_children().filter(func(p): return p is Piece and p.coord == piece_coord(vec))
+	var pieces = get_children().filter(func(p): return p is Piece and p.is_overlay == false and p.coord == piece_coord(vec))
 	if pieces.size() > 0:
 		return pieces.front()
 	else:
 		return null
-
-func place_highlight(placeCoord: Vector2i):
-	var stepSize = $BoardTexture.size / 8
-	var instance = Globals.instanceSceneAtCoord(Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y), self, legalMoveHighlight)
-	instance.coord = Vector4i(coord.x, coord.y, placeCoord.x, placeCoord.y)
-	return instance
 
 func recalculateBoardPosition():
 	var vec =  Vector2i(coord.x * board_interval, coord.y * board_interval)

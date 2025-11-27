@@ -1,8 +1,10 @@
 ## base class for all objects occupying a space on the board
 class_name Piece
-extends TextureRect
+extends Control
 
 signal on_piece_clicked(piece: Piece)
+
+var is_overlay: bool = false
 
 var coord: Vector2i
 var board: Board:

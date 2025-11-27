@@ -1,11 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://iqji3l5neqxc"]
 
-[ext_resource type="Script" uid="uid://s25pyu0881x8" path="res://scripts/legal_move_highlight.gd" id="1_aexi2"]
+[ext_resource type="Script" uid="uid://s25pyu0881x8" path="res://scripts/legal_move_highlight.gd" id="1_w2rrd"]
 
 [node name="LegalMoveHighlight" type="ColorRect" groups=["Highlight"]]
 offset_right = 48.0
 offset_bottom = 48.0
 color = Color(1, 0.454902, 1, 0.572549)
-script = ExtResource("1_aexi2")
+script = ExtResource("1_w2rrd")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

@@ -93,7 +93,7 @@ func show_legal_moves(vec: Vector4i):
 				if dims == 1 and dest_piece != null: break
 				if dims == 2 and dest_piece == null: break
 				
-			get_board(squareToMove).place_highlight(Vector2i(squareToMove.z,squareToMove.w))
+			get_board(squareToMove).place_piece(MoveHighlight.inst(), Vector2i(squareToMove.z,squareToMove.w))
 			
 			if dest_piece: break
 			
