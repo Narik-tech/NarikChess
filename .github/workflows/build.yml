@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GODOT_VERSION: "4.5"             # adjust to your Godot version
+      GODOT_VERSION: "4.5-stable"
       GODOT_HEADLESS: "Godot_v4.5-stable_linux.x86_64"
       PROJECT_PATH: "."                  # change if project.godot is in a subfolder
 
