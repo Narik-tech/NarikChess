@@ -21,18 +21,51 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Start"
 
-[node name="Mods" type="BoxContainer" parent="MainMenu"]
+[node name="Options" type="BoxContainer" parent="MainMenu"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 89.0
-offset_top = -75.0
-offset_right = 348.0
-offset_bottom = -16.0
+offset_left = 91.0
+offset_top = -110.0
+offset_right = 268.0
+offset_bottom = 96.0
 grow_horizontal = 2
 grow_vertical = 2
 vertical = true
+
+[node name="Modes" type="VBoxContainer" parent="MainMenu/Options"]
+custom_minimum_size = Vector2(0, 86.575)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MainMenu/Options/Modes"]
+custom_minimum_size = Vector2(0, 31.965)
+layout_mode = 2
+text = "Modes
+"
+
+[node name="Options" type="OptionButton" parent="MainMenu/Options/Modes"]
+layout_mode = 2
+item_count = 1
+popup/item_0/text = "SampleMode"
+popup/item_0/id = 0
+
+[node name="Mods" type="BoxContainer" parent="MainMenu/Options"]
+layout_mode = 2
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MainMenu/Options/Mods"]
+custom_minimum_size = Vector2(0, 31.965)
+layout_mode = 2
+text = "Variants"
+
+[node name="SampleDisplay" type="CheckBox" parent="MainMenu/Options/Mods"]
+layout_mode = 2
+text = "SampleText"
+
+[node name="SampleDisplay3" type="CheckBox" parent="MainMenu/Options/Mods"]
+layout_mode = 2
+text = "SampleText"
 
 [connection signal="pressed" from="MainMenu/Start" to="." method="_on_start_pressed"]

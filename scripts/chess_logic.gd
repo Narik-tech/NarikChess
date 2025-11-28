@@ -81,6 +81,10 @@ func show_legal_moves(vec: Vector4i):
 	clear_highlights()
 	var piece_to_move = get_piece(vec)
 	for dir in piece_to_move.get_direction_vectors():
+		if Chess.singleton.is_classic_chess:
+			if dir.x != 0 or dir.y != 0:
+				continue
+		
 		var squareToMove = dir + vec
 		var dims = Globals.dims_count(dir)
 		var mag = 1

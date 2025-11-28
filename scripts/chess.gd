@@ -12,6 +12,7 @@ static var singleton : Chess
 
 var chess_logic: ChessLogic
 var selected_piece: Vector4i
+var is_classic_chess: bool = false
 
 func game_start():
 	if chess_logic != null: chess_logic.queue_free()

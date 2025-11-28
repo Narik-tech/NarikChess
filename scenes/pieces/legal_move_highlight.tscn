@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://iqji3l5neqxc"]
 
-[ext_resource type="Script" uid="uid://s25pyu0881x8" path="res://scripts/legal_move_highlight.gd" id="1_w2rrd"]
+[ext_resource type="Script" uid="uid://s25pyu0881x8" path="res://scripts/piece_scripts/legal_move_highlight.gd" id="1_w2rrd"]
 
 [node name="LegalMoveHighlight" type="ColorRect" groups=["Highlight"]]
 offset_right = 48.0

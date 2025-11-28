@@ -4,7 +4,7 @@ extends Control
 
 signal on_piece_clicked(piece: Piece)
 
-static var piece_script = preload("res://scripts/piece.gd")
+static var piece_script = preload("res://scripts/piece_scripts/piece.gd")
 static var square_scene = preload("res://scenes/pieces/square.tscn")
 
 var is_overlay: bool = false
