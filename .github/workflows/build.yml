@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GODOT_VERSION: "4.5-stable"
-      GODOT_HEADLESS: "Godot_v4.5-stable_linux.x86_64"
+      GODOT_VERSION: "4.5.1-stable"
+      GODOT_HEADLESS: "Godot_v4.5.1-stable_linux.x86_64"
       PROJECT_PATH: "."                  # change if project.godot is in a subfolder
 
     steps:
@@ -22,11 +22,11 @@ jobs:
         run: |
           # this URL pattern is from the official download archive
 
-          URL="https://downloads.godotengine.org/?version=4.5&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
+          URL="https://downloads.godotengine.org/?version=4.5.1&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
           echo "Downloading $URL"
           curl -L "$URL" -o godot.zip
           unzip godot.zip
-          # resulting filename usually: Godot_v4.5-stable_linux.x86_64
+          # resulting filename usually: Godot_v4.5.1-stable_linux.x86_64
           mv Godot_v${GODOT_VERSION}_linux.x86_64 godot
           chmod +x godot
       # ----------------------------------------------------
