@@ -19,12 +19,12 @@ var chess_logic: ChessLogic:
 	get:
 		return get_parent()
 
-static var pawn := preload("res://scenes/pieces/pawn.tres")
-static var bishop := preload("res://scenes/pieces/bishop.tres")
-static var knight := preload("res://scenes/pieces/knight.tres")
-static var rook := preload("res://scenes/pieces/rook.tres")
-static var king := preload("res://scenes/pieces/king.tres")
-static var queen := preload("res://scenes/pieces/queen.tres")
+static var pawn := preload("res://piece_definitions/pawn.tres")
+static var bishop := preload("res://piece_definitions/bishop.tres")
+static var knight := preload("res://piece_definitions/knight.tres")
+static var rook := preload("res://piece_definitions/rook.tres")
+static var king := preload("res://piece_definitions/king.tres")
+static var queen := preload("res://piece_definitions/queen.tres")
 
 static var board_scene := preload("res://scenes/board.tscn")
 
@@ -46,10 +46,14 @@ func duplicate_board(coord) -> Board:
 	var instance: Board = board_scene.instantiate()
 	instance.coord = Vector2i(coord.x, coord.y)
 	for piece in get_children():
-		if piece.is_in_group("Piece"):
-			var new_piece = ChessPiece.inst(piece.piece_def, piece.is_white)
-			new_piece.has_moved = piece.has_moved
-			instance.place_piece(new_piece, piece.coord)
+		if piece is Piece:
+			if piece is ChessPiece:
+				var new_piece = ChessPiece.inst(piece.piece_def, piece.is_white)
+				new_piece.has_moved = piece.has_moved
+				instance.place_piece(new_piece, piece.coord)
+			else:
+				var new_piece = piece.duplicate()
+				instance.place_piece(new_piece, piece.coord)
 	return instance
 
 func get_piece(vec) -> Piece:

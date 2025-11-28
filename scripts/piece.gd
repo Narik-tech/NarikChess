@@ -4,6 +4,9 @@ extends Control
 
 signal on_piece_clicked(piece: Piece)
 
+static var piece_script = preload("res://scripts/piece.gd")
+static var square_scene = preload("res://scenes/pieces/square.tscn")
+
 var is_overlay: bool = false
 
 var coord: Vector2i
@@ -18,6 +21,10 @@ var full_coord: Vector4i:
 	set(val):
 		coord.x = val.z
 		coord.y = val.w
+
+func blocks_movement(_piece_moving: ChessPiece) -> bool:
+	push_warning("blocks_movement function not set on piece " + name + ", defaulting to false.")
+	return false
 
 func _on_click():
 	pass

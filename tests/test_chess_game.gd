@@ -23,8 +23,8 @@ func run_tests() -> bool:
 	var to_coord := Vector4i(0, 0, 5, 2)
 	chess_game._on_piece_destination_selected(to_coord)
 	chess_game._on_submit_pressed()
-	_expect_true(chess_game.chess_client.get_piece(Vector4i(1, 0, 5, 2)) != null, "e3 should be occupied")
-	_expect_true(chess_game.chess_client.get_piece(Vector4i(1, 0, 5, 1)) == null, "e2 should be empty")
+	_expect_true(chess_game.chess_logic.get_piece(Vector4i(1, 0, 5, 2)) != null, "e3 should be occupied")
+	_expect_true(chess_game.chess_logic.get_piece(Vector4i(1, 0, 5, 1)) == null, "e2 should be empty")
 	chess_game.queue_free()
 
 	return _report()

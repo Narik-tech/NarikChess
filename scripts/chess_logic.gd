@@ -49,17 +49,18 @@ func make_move(origin: Vector4i, dest: Vector4i):
 	var dest_piece = dest_board.get_piece(dest)
 	if dest_piece != null: dest_piece.queue_free()
 	
-	var origin_piece: ChessPiece = origin_board.get_piece(origin)
-	origin_piece.has_moved = true
-	dest_board.place_piece(origin_piece, Vector2i(dest.z, dest.w))
+	var piece_moving: ChessPiece = origin_board.get_piece(origin)
+	piece_moving.has_moved = true
+	dest_board.place_piece(piece_moving, Vector2i(dest.z, dest.w))
 	
 	#queue boards for undo
 	var new_boards = {}
 	new_boards[origin_board.coord] = origin_board
 	new_boards[dest_board.coord] = dest_board
 	move_stack.append(new_boards)
-	
 	clear_highlights()
+	
+	Chess.singleton._on_move_made.emit(piece_moving, origin_board, dest_board)
 	boardstate_changed.emit()
 
 
@@ -86,7 +87,7 @@ func show_legal_moves(vec: Vector4i):
 		while(coord_valid(squareToMove)):
 			var dest_piece = get_piece(squareToMove)
 			
-			if dest_piece != null and dest_piece.is_white == piece_to_move.is_white:
+			if dest_piece != null and dest_piece.blocks_movement(piece_to_move):
 				break
 				
 			if piece_to_move.piece_def.pawn:
@@ -126,7 +127,7 @@ func calculate_present():
 func coord_valid(piece_vec: Vector4i) -> bool:
 	return not (piece_vec.z < 0 or piece_vec.z > 7 or piece_vec.w < 0 or piece_vec.w > 7 or get_board(piece_vec) == null)
 
-func get_piece(vec: Vector4i):
+func get_piece(vec: Vector4i) -> Piece:
 	return get_board(vec).get_piece(vec)
 	
 func get_board(vec) -> Board:

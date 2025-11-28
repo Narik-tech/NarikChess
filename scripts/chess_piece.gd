@@ -16,6 +16,9 @@ static func inst(resource: ChessPieceDef, white: bool) -> ChessPiece:
 	instance.texture = resource.white_texture
 	instance.set_color(white)
 	return instance
+	
+func blocks_movement(_piece_moving: ChessPiece) -> bool:
+	return _piece_moving.is_white == self.is_white
 
 func _ready() -> void:
 	piece_selected.connect(Chess.singleton._on_piece_selected)

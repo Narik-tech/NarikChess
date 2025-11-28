@@ -21,7 +21,7 @@ func _on_start_pressed() -> void:
 		if child is CheckBox and child.button_pressed:
 			var scene_path: String = mod_dict.get(child.text)
 			var ps := load(scene_path)
-			selected_mods.append(ps.instantiate())
+			selected_mods.append(ps.new())
 	
 	instance.load_mods(selected_mods)
 	change_scene(instance)
@@ -36,14 +36,21 @@ func create_mod_dict() -> Dictionary[String, String]:
 	if dir == null:
 		push_error("Cannot open folder: %s" % mod_path)
 	
-	var scenes : Dictionary[String, String] = {}
+	var scenes: Dictionary[String, String] = {}
 	dir.list_dir_begin()
 	var file_name := dir.get_next()
+
 	while file_name != "":
-		if not dir.current_is_dir() and file_name.ends_with(".tscn"):
+		if not dir.current_is_dir() and file_name.ends_with(".gd"):
 			var full_path := mod_path.path_join(file_name)
-			var base_name := file_name.get_basename()  # removes extension
-			scenes[base_name] = full_path
+			var script := load(full_path)
+
+			# Validate script type before accepting
+			if script is GDScript:
+				var inst = script.new()
+				if inst is Mod:
+					var base_name := file_name.get_basename()
+					scenes[base_name] = full_path
 		file_name = dir.get_next()
 	dir.list_dir_end()
 	return scenes
