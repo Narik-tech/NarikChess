@@ -1,0 +1,74 @@
+name: Godot CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      GODOT_VERSION: "4.5.1"             # adjust to your Godot version
+      GODOT_HEADLESS: "Godot_v4.5.1-stable_linux.x86_64"
+      URL: "https://downloads.godotengine.org/?version=4.5&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
+      PROJECT_PATH: "."                  # change if project.godot is in a subfolder
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Godot
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/godot
+          key: godot-${{ env.GODOT_VERSION }}
+
+      - name: Download Godot headless
+        run: |
+          mkdir -p ~/.cache/godot
+          if [ ! -f "~/.cache/godot/${GODOT_HEADLESS}.zip" ]; then
+            wget -O ~/.cache/godot/${GODOT_HEADLESS}.zip \
+              {URL}
+          fi
+          unzip -o ~/.cache/godot/${GODOT_HEADLESS}.zip -d ~/.cache/godot
+          chmod +x ~/.cache/godot/${GODOT_HEADLESS}
+
+      - name: Run tests (headless)
+        run: |
+          ~/.cache/godot/${GODOT_HEADLESS} \
+            --headless \
+            --path $PROJECT_PATH \
+            --run-tests
+
+      - name: Export Linux
+        run: |
+          ~/.cache/godot/${GODOT_HEADLESS} \
+            --headless \
+            --path $PROJECT_PATH \
+            --export-release "Linux" \
+            build/game-linux.x86_64
+
+      - name: Export Windows
+        run: |
+          ~/.cache/godot/${GODOT_HEADLESS} \
+            --headless \
+            --path $PROJECT_PATH \
+            --export-release "Windows" \
+            build/game-windows.exe
+
+      # Optional: export Web
+      # - name: Export Web
+      #   run: |
+      #     ~/.cache/godot/${GODOT_HEADLESS} \
+      #       --headless \
+      #       --path $PROJECT_PATH \
+      #       --export-release "Web" \
+      #       build/web/index.html
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-builds
+          path: build/
