@@ -39,12 +39,12 @@ jobs:
       # ----------------------------------------------------
       - name: Export Linux
         run: |
-          ./godot --headless --path . --headless --path --export-release "Linux" \
+          ./godot --headless --path . --export-release "Linux" \
           build/game-linux.x86_64
 
       - name: Export Windows
         run: |
-          ./godot --headless --path . --headless --path --export-release "Windows" \
+          ./godot --headless --path . --export-release "Windows" \
           build/game-windows.exe
 
       # Optional: export Web
