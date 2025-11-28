@@ -1,0 +1,63 @@
+name: Godot CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      GODOT_VERSION: "4.5-stable"
+      GODOT_HEADLESS: "Godot_v4.5-stable_linux.x86_64"
+      PROJECT_PATH: "."                  # change if project.godot is in a subfolder
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Godot
+        run: |
+          # this URL pattern is from the official download archive
+
+          URL="https://downloads.godotengine.org/?version=4.5&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
+          echo "Downloading $URL"
+          curl -L "$URL" -o godot.zip
+          unzip godot.zip
+          # resulting filename usually: Godot_v4.5-stable_linux.x86_64
+          mv Godot_v${GODOT_VERSION}_linux.x86_64 godot
+          chmod +x godot
+      # ----------------------------------------------------
+      # WARM-UP EDITOR STEP (fixes UID cache issues)
+      # ----------------------------------------------------
+      - name: Initialize Godot project (generate .godot cache)
+        run: |
+          set -e
+          ./godot --headless --editor --quit --path .
+      # ----------------------------------------------------
+      - name: Export Linux
+        run: |
+          ./godot --headless --path . --export-release "Linux" \
+          build/game-linux.x86_64
+
+      - name: Export Windows
+        run: |
+          ./godot --headless --path . --export-release "Windows" \
+          build/game-windows.exe
+
+      # Optional: export Web
+      # - name: Export Web
+      #   run: |
+      #     ~/.cache/godot/${GODOT_HEADLESS} \
+      #       --headless \
+      #       --path $PROJECT_PATH \
+      #       --export-release "Web" \
+      #       build/web/index.html
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-builds
+          path: build/
