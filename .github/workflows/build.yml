@@ -10,9 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GODOT_VERSION: "4.5.1"             # adjust to your Godot version
-      GODOT_HEADLESS: "Godot_v4.5.1-stable_linux.x86_64"
-      URL: "https://downloads.godotengine.org/?version=4.5&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
+      GODOT_VERSION: "4.5"             # adjust to your Godot version
+      GODOT_HEADLESS: "Godot_v4.5-stable_linux.x86_64"
       PROJECT_PATH: "."                  # change if project.godot is in a subfolder
 
     steps:
@@ -30,7 +29,7 @@ jobs:
           mkdir -p ~/.cache/godot
           if [ ! -f "~/.cache/godot/${GODOT_HEADLESS}.zip" ]; then
             wget -O ~/.cache/godot/${GODOT_HEADLESS}.zip \
-              {URL}
+              https://downloads.godotengine.org/?version=4.5&flavor=stable&slug=linux.x86_64.zip&platform=linux.64
           fi
           unzip -o ~/.cache/godot/${GODOT_HEADLESS}.zip -d ~/.cache/godot
           chmod +x ~/.cache/godot/${GODOT_HEADLESS}
