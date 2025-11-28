@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GODOT_VERSION: "4.5.1-stable"
+      GODOT_VERSION: "4.5.1"
+      GODOT_FLAVOR: "stable"
       GODOT_HEADLESS: "Godot_v4.5.1-stable_linux.x86_64"
-      PROJECT_PATH: "."                  # change if project.godot is in a subfolder
+      PROJECT_PATH: "."
+      GODOT_TEMPLATES_DIR: "$HOME/.local/share/godot/export_templates/4.5.1.stable"
 
     steps:
       - name: Checkout
@@ -22,13 +24,23 @@ jobs:
         run: |
           # this URL pattern is from the official download archive
 
-          URL="https://downloads.godotengine.org/?version=4.5.1&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
+          URL="https://downloads.godotengine.org/?version=4.5&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
           echo "Downloading $URL"
           curl -L "$URL" -o godot.zip
           unzip godot.zip
-          # resulting filename usually: Godot_v4.5.1-stable_linux.x86_64
+          # resulting filename usually: Godot_v4.5-stable_linux.x86_64
           mv Godot_v${GODOT_VERSION}_linux.x86_64 godot
           chmod +x godot
+
+      - name: Download export templates
+        run: |
+          set -e
+          mkdir -p "${GODOT_TEMPLATES_DIR}"
+          TEMPLATES_URL="https://downloads.godotengine.org/download/4.5.1/Godot_v4.5.1-stable_export_templates.tpz"
+          echo "Downloading export templates from: $TEMPLATES_URL"
+          curl -L "$TEMPLATES_URL" -o templates.tpz
+          unzip templates.tpz -d "${GODOT_TEMPLATES_DIR}"
+          ls -R "${GODOT_TEMPLATES_DIR}"
       # ----------------------------------------------------
       # WARM-UP EDITOR STEP (fixes UID cache issues)
       # ----------------------------------------------------
