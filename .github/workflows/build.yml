@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GODOT_VERSION: "4.5.1"
-      GODOT_FLAVOR: "stable"
+      GODOT_VERSION: "4.5.1-stable"
       GODOT_HEADLESS: "Godot_v4.5.1-stable_linux.x86_64"
       PROJECT_PATH: "."
       GODOT_TEMPLATES_DIR: "$HOME/.local/share/godot/export_templates/4.5.1.stable"
@@ -24,7 +23,7 @@ jobs:
         run: |
           # this URL pattern is from the official download archive
 
-          URL="https://downloads.godotengine.org/?version=4..15&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
+          URL="https://downloads.godotengine.org/?version=4.5.1&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
           echo "Downloading $URL"
           curl -L "$URL" -o godot.zip
           unzip godot.zip
