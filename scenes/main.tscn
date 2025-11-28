@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://b0lb35vhu6rsl"]
+[gd_scene load_steps=3 format=3 uid="uid://b0lb35vhu6rsl"]
 
 [ext_resource type="Script" uid="uid://bb3xuoi5nvxqo" path="res://scripts/main.gd" id="1_o5qli"]
+[ext_resource type="Texture2D" uid="uid://bomyhj8otrc0n" path="res://sprites/spaceship_chess.png" id="2_0wfyh"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_o5qli")
@@ -33,6 +34,8 @@ offset_right = 268.0
 offset_bottom = 96.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 vertical = true
 
 [node name="Modes" type="VBoxContainer" parent="MainMenu/Options"]
@@ -67,5 +70,17 @@ text = "SampleText"
 [node name="SampleDisplay3" type="CheckBox" parent="MainMenu/Options/Mods"]
 layout_mode = 2
 text = "SampleText"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_0wfyh")
+expand_mode = 1
+stretch_mode = 6
 
 [connection signal="pressed" from="MainMenu/Start" to="." method="_on_start_pressed"]
