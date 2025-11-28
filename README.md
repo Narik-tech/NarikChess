@@ -1,7 +1,9 @@
 Narik Chess
 Game Modes
 4D Chess
+
 •	Pieces move normally plus can move back in time creating branches
+
 •	Also known as 5D Chess 
 Classic Chess
 •	The classic
