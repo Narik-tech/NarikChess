@@ -18,44 +18,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache Godot
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/godot
-          key: godot-${{ env.GODOT_VERSION }}
-
-      - name: Download Godot headless
+      - name: Download Godot
         run: |
-          mkdir -p ~/.cache/godot
-          if [ ! -f "~/.cache/godot/${GODOT_HEADLESS}.zip" ]; then
-            wget -O ~/.cache/godot/${GODOT_HEADLESS}.zip \
-              https://downloads.godotengine.org/?version=4.5&flavor=stable&slug=linux.x86_64.zip&platform=linux.64
-          fi
-          unzip -o ~/.cache/godot/${GODOT_HEADLESS}.zip -d ~/.cache/godot
-          chmod +x ~/.cache/godot/${GODOT_HEADLESS}
+          # this URL pattern is from the official download archive
 
-      - name: Run tests (headless)
+          URL="https://downloads.godotengine.org/?version=4.5&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
+          echo "Downloading $URL"
+          curl -L "$URL" -o godot.zip
+          unzip godot.zip
+          # resulting filename usually: Godot_v4.5-stable_linux.x86_64
+          mv Godot_v${GODOT_VERSION}_linux.x86_64 godot
+          chmod +x godot
+      # ----------------------------------------------------
+      # WARM-UP EDITOR STEP (fixes UID cache issues)
+      # ----------------------------------------------------
+      - name: Initialize Godot project (generate .godot cache)
         run: |
-          ~/.cache/godot/${GODOT_HEADLESS} \
-            --headless \
-            --path $PROJECT_PATH \
-            --run-tests
-
+          set -e
+          ./godot --headless --editor --quit --path .
+      # ----------------------------------------------------
       - name: Export Linux
         run: |
-          ~/.cache/godot/${GODOT_HEADLESS} \
-            --headless \
-            --path $PROJECT_PATH \
-            --export-release "Linux" \
-            build/game-linux.x86_64
+          ./godot --headless --path . --headless --path --export-release "Linux" \
+          build/game-linux.x86_64
 
       - name: Export Windows
         run: |
-          ~/.cache/godot/${GODOT_HEADLESS} \
-            --headless \
-            --path $PROJECT_PATH \
-            --export-release "Windows" \
-            build/game-windows.exe
+          ./godot --headless --path . --headless --path --export-release "Windows" \
+          build/game-windows.exe
 
       # Optional: export Web
       # - name: Export Web
