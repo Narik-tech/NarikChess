@@ -5,3 +5,4 @@
 godot-tests.log
 godot.log
 .vscode/settings.json
+build/
