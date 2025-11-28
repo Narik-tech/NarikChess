@@ -41,6 +41,10 @@ func _on_start_pressed() -> void:
 			var ps := load(scene_path)
 			selected_mods.append(ps.new())
 	
+	var mode_dropdown = $MainMenu/Options/Modes/Options
+	var mode_path = game_mode_dict.get(mode_dropdown.get_item_text(mode_dropdown.selected))
+	selected_mods.append(load(mode_path).new())
+	
 	instance.load_mods(selected_mods)
 	change_scene(instance)
 

@@ -14,12 +14,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -66.5
-offset_top = -77.035
-offset_right = 66.5
-offset_bottom = -36.035156
+offset_left = -877.0
+offset_top = -145.0
+offset_right = -665.0
+offset_bottom = -91.99994
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_font_sizes/font_size = 25
 text = "Start"
 
 [node name="Options" type="BoxContainer" parent="MainMenu"]
@@ -28,10 +29,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 91.0
-offset_top = -110.0
-offset_right = 268.0
-offset_bottom = 96.0
+offset_left = -887.0
+offset_top = -46.0
+offset_right = -627.105
+offset_bottom = 364.39
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -39,12 +40,13 @@ size_flags_vertical = 3
 vertical = true
 
 [node name="Modes" type="VBoxContainer" parent="MainMenu/Options"]
-custom_minimum_size = Vector2(0, 86.575)
+custom_minimum_size = Vector2(0, 97.365)
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MainMenu/Options/Modes"]
-custom_minimum_size = Vector2(0, 31.965)
+custom_minimum_size = Vector2(0, 39.93)
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
 text = "Modes
 "
 
@@ -61,6 +63,7 @@ vertical = true
 [node name="RichTextLabel" type="RichTextLabel" parent="MainMenu/Options/Mods"]
 custom_minimum_size = Vector2(0, 31.965)
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 20
 text = "Variants"
 
 [node name="SampleDisplay" type="CheckBox" parent="MainMenu/Options/Mods"]
