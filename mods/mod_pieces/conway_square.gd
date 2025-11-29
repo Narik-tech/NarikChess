@@ -1,4 +1,4 @@
-# Summary: Board overlay piece that blocks movement and represents a Conway life cell.
+## Summary: Board overlay piece that blocks movement and represents a Conway life cell.
 class_name ConwaySquare
 extends Piece
 

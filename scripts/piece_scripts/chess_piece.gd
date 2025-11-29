@@ -1,4 +1,4 @@
-# Summary: Represents a movable chess piece with color, movement rules, and selection handling.
+## Summary: Represents a movable chess piece with color, movement rules, and selection handling.
 class_name ChessPiece
 extends Piece
 

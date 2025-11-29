@@ -1,4 +1,4 @@
-# Summary: Base mod hook that exposes board and move callbacks for gameplay extensions.
+## Summary: Base mod hook that exposes board and move callbacks for gameplay extensions.
 ## All scripts extending Mod automatically added as selectable option
 ## Override functions to determine mod functionality
 class_name Mod

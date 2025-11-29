@@ -1,4 +1,4 @@
-# Summary: Resource defining chess piece visuals, movement vectors, and pawn behavior helpers.
+## Summary: Resource defining chess piece visuals, movement vectors, and pawn behavior helpers.
 @tool
 extends Resource
 class_name ChessPieceDef

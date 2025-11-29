@@ -1,4 +1,4 @@
-# Summary: Default mode that preserves multiverse travel rules for the 4D chess experience.
+## Summary: Default mode that preserves multiverse travel rules for the 4D chess experience.
 ## default mode, also known as 5d chess with multiverse time travel
 class_name Chess_4D
 extends Mod

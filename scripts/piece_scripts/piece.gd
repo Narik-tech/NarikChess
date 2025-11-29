@@ -1,4 +1,4 @@
-# Summary: Base control for board occupants, handling position metadata and click signalling.
+## Summary: Base control for board occupants, handling position metadata and click signalling.
 ## base class for all objects occupying a space on the board
 class_name Piece
 extends Control

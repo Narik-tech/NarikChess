@@ -1,4 +1,4 @@
-# Summary: Label that updates text and color to reflect whose turn it is.
+## Summary: Label that updates text and color to reflect whose turn it is.
 extends RichTextLabel
 
 func _on_turn_changed(white_turn: bool) -> void:

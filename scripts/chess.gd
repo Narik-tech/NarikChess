@@ -1,4 +1,4 @@
-# Summary: Central game node that spawns logic, handles selection inputs, and relays UI actions for a match session.
+## Summary: Central game node that spawns logic, handles selection inputs, and relays UI actions for a match session.
 class_name Chess
 extends Node
 
