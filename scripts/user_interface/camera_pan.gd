@@ -1,3 +1,4 @@
+## Summary: Camera controller that pans and zooms based on input actions.
 extends Camera2D
 
 const speed = 10

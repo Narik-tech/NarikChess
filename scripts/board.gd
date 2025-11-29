@@ -1,3 +1,4 @@
+## Represents a single board instance, managing piece placement, duplication, and spatial attributes.
 class_name Board
 extends Node
 

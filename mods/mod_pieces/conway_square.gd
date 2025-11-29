@@ -1,3 +1,4 @@
+## Piece that blocks movement and represents a Conway life cell.
 class_name ConwaySquare
 extends Piece
 

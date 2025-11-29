@@ -1,3 +1,4 @@
+## Mod that seeds Conway squares and advances their lifecycle after each move.
 extends Mod
 
 ## add conway squares to center

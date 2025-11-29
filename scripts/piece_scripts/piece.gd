@@ -1,4 +1,4 @@
-## base class for all objects occupying a space on the board
+## Base control for board occupants, handling position metadata and click signalling.
 class_name Piece
 extends Control
 

@@ -1,3 +1,4 @@
+## Summary: UI element that indicates the currently playable timeline column.
 class_name Present
 extends ColorRect
 
