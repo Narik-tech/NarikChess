@@ -1,6 +1,5 @@
-## Summary: Base mod hook that exposes board and move callbacks for gameplay extensions.
-## All scripts extending Mod automatically added as selectable option
-## Override functions to determine mod functionality
+## Base mod hook that exposes board and move callbacks for gameplay extensions.
+
 class_name Mod
 
 extends Node

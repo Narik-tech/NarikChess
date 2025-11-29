@@ -1,4 +1,4 @@
-## Summary: Coordinates board state, turn flow, move execution, and legal move highlighting across timelines.
+## Coordinates board state, turn flow, move execution, and legal move highlighting across timelines.
 class_name ChessLogic
 extends Node
 
