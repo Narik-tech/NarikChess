@@ -1,3 +1,4 @@
+# Summary: Entry point that runs tests, loads available mods and modes, and starts selected game scenes.
 extends Node
 
 const TEST_SCRIPT := "res://tests/test_chess_game.gd"

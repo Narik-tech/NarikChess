@@ -1,3 +1,4 @@
+# Summary: Overlay node that marks legal destinations and emits selection events.
 class_name MoveHighlight
 extends Piece
 

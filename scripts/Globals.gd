@@ -1,3 +1,4 @@
+# Summary: Provides shared helpers for vector calculations, validity checks, and precomputed movement directions.
 extends Node
 
 func _ready():
