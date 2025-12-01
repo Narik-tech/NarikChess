@@ -17,3 +17,11 @@ func _on_starting_board(_board: Board):
 
 func _on_move_made(_piece: Piece, _origin_board: Board, _dest_board: Board):
 	pass
+
+## If a move cannot be played, returns a string indicating why
+func _can_play_move(origin: Vector4i, dest: Vector4i):
+	return true
+
+## If a turn cannot be submitted, returns a string indicating why
+func _can_submit_turn():
+	return true

@@ -25,6 +25,13 @@ func load_mods(mods: Array[Mod]):
 	for mod in mods:
 		self.add_child(mod)
 
+func get_mods() -> Array[Mod]:
+	var mods: Array[Mod] = []
+	for c in get_children():
+		if c is Mod:
+			mods.append(c)
+	return mods
+
 func _ready():
 	singleton = self
 	game_start()
@@ -33,11 +40,20 @@ func _on_piece_selected(coord: Vector4i):
 	selected_piece = coord
 	chess_logic.show_legal_moves(selected_piece)
 
-
 func _on_piece_destination_selected(coord: Vector4i):
+	for mod: Mod in get_mods():
+		var can_play = mod._can_play_move(selected_piece, coord)
+		if can_play != true:
+			print_debug("Cannot play move, reason: " + can_play)
+			return
 	chess_logic.make_move(selected_piece, coord)
 
 func _on_submit_pressed() -> void:
+	for mod: Mod in get_mods():
+		var can_submit = mod._can_submit_turn()
+		if can_submit != true:
+			print_debug("Cannot submit turn, reason: " + can_submit)
+			return
 	chess_logic.submit_turn()
 
 func _on_undo_pressed() -> void:
