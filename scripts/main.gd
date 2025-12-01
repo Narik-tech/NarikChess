@@ -55,8 +55,6 @@ func change_scene(scene: Node):
 	add_child(scene)
 
 func create_mod_dict(path: String) -> Dictionary[String, String]:
-	print("[MOD] Scanning path:", path)
-
 	var dir := DirAccess.open(path)
 	if dir == null:
 		push_error("[MOD] Cannot open folder: %s" % path)
@@ -68,8 +66,6 @@ func create_mod_dict(path: String) -> Dictionary[String, String]:
 	var file_name := dir.get_next()
 
 	while file_name != "":
-		print("[MOD] Found entry:", file_name)
-
 		if dir.current_is_dir():
 			print("[MOD]   Skipped (is directory)")
 		else:
@@ -84,19 +80,11 @@ func create_mod_dict(path: String) -> Dictionary[String, String]:
 			if not is_script_like:
 				print("[MOD]   Skipped (not script-like file)")
 			else:
-				# Normalize to the canonical *.gd resource path.
-				# file_name.get_basename():
-				#   "4D Chess.gd.remap" -> "4D Chess.gd"
-				#   "4D Chess.gdc"     -> "4D Chess"
-				# calling get_basename() again strips the .gd -> "4D Chess"
 				var mod_name := file_name.get_basename().get_basename()
 				var full_path := path.path_join("%s.gd" % mod_name)
-
-				print("[MOD]   Treating as script:", full_path)
-
 				var script = load(full_path)
 				if script == null:
-					print("[MOD]   ERROR: failed to load script")
+					push_error("[MOD]   ERROR: failed to load script")
 				elif not (script is GDScript):
 					print("[MOD]   Skipped (not GDScript). Type:", typeof(script))
 				else:
