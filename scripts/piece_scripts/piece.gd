@@ -2,7 +2,7 @@
 class_name Piece
 extends Control
 
-signal on_piece_clicked(piece: Piece)
+signal on_piece_clicked(coord: Vector4i)
 
 static var piece_script = preload("res://scripts/piece_scripts/piece.gd")
 static var square_scene = preload("res://scenes/pieces/solid_color_piece.tscn")
@@ -52,5 +52,5 @@ func _on_click():
 func _on_gui_input(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed):
 		return
-	on_piece_clicked.emit(self)
+	on_piece_clicked.emit(full_coord)
 	_on_click()

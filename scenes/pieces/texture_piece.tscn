@@ -1,3 +1,8 @@
 [gd_scene format=3 uid="uid://juecf6emv05c"]
 
 [node name="TexturePiece" type="TextureRect"]
+custom_minimum_size = Vector2(48, 48)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5

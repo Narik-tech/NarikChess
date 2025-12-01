@@ -61,7 +61,7 @@ func make_move(origin: Vector4i, dest: Vector4i):
 	move_stack.append(new_boards)
 	clear_highlights()
 	
-	Chess.singleton._on_move_made.emit(piece_moving, origin_board, dest_board)
+	Chess.singleton._on_move_made.emit(piece_moving.full_coord, origin_board, dest_board)
 	boardstate_changed.emit()
 
 
@@ -99,7 +99,7 @@ func show_legal_moves(vec: Vector4i):
 				if dims == 1 and dest_piece != null: break
 				if dims == 2 and dest_piece == null: break
 				
-			get_board(squareToMove).place_piece(MoveHighlight.inst(), Vector2i(squareToMove.z,squareToMove.w))
+			get_board(squareToMove).place_piece(MoveHighlight.inst(Chess.singleton._on_piece_destination_selected), Vector2i(squareToMove.z,squareToMove.w))
 			
 			if dest_piece: break
 			
@@ -110,7 +110,7 @@ func show_legal_moves(vec: Vector4i):
 				break
 
 func clear_highlights():
-	for square in get_tree().get_nodes_in_group("Highlight"):
+	for square in get_tree().get_nodes_in_group("MoveHighlight"):
 		square.queue_free()
 
 func calculate_present():

@@ -7,7 +7,7 @@ func _on_starting_board(board: Board):
 		board.place_piece(ConwaySquare.inst(), Vector2i(x,y))
 
 ## progress game of life on any created boards
-func _on_move_made(_piece: Piece, _origin_board: Board, _dest_board: Board):
+func _on_move_made(_piece: Vector4i, _origin_board: Board, _dest_board: Board):
 	progress_squares(_origin_board)
 	if _dest_board != _origin_board:
 		progress_squares(_dest_board)
@@ -19,7 +19,7 @@ func progress_squares(board: Board):
 		piece_dict[piece.full_coord] = piece
 	
 	#determine conway progression for each case
-	for z in 7: for w in 7:
+	for z in 8: for w in 8:
 		var piece_coord = Vector4i(board.coord.x,board.coord.y,z,w)
 		var piece = piece_dict.get(piece_coord)
 		if piece is ConwaySquare:
