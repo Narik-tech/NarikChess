@@ -8,7 +8,6 @@ var piece_def: ChessPieceDef
 var is_white: bool = true
 var has_moved: bool = false
 
-
 static var piece := preload("res://scenes/pieces/chess_piece.tscn")
 
 static func inst(resource: ChessPieceDef, white: bool) -> ChessPiece:

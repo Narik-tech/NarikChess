@@ -5,7 +5,20 @@ extends Control
 signal on_piece_clicked(piece: Piece)
 
 static var piece_script = preload("res://scripts/piece_scripts/piece.gd")
-static var square_scene = preload("res://scenes/pieces/square.tscn")
+static var square_scene = preload("res://scenes/pieces/solid_color_piece.tscn")
+static var texture_piece = preload("res://scenes/pieces/texture_piece.tscn")
+
+static func color_inst(color: Color, script: GDScript = Piece) -> Piece:
+	var sq := square_scene.instantiate()
+	sq.set_script(script)
+	sq.color = color
+	return sq
+
+static func texture_inst(texture: Texture2D, script: GDScript = Piece) -> Piece:
+	var sq = texture_piece.instantiate()
+	sq.set_script(script)
+	sq.texture = texture
+	return sq as Piece
 
 var is_overlay: bool = false
 
@@ -25,6 +38,13 @@ var full_coord: Vector4i:
 func blocks_movement(_piece_moving: ChessPiece) -> bool:
 	push_warning("blocks_movement function not set on piece " + name + ", defaulting to false.")
 	return false
+
+func piece_ready():
+	pass
+
+func _ready() -> void:
+	self.gui_input.connect(_on_gui_input)
+	piece_ready()
 
 func _on_click():
 	pass

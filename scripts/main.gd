@@ -67,7 +67,7 @@ func create_mod_dict(path: String) -> Dictionary[String, String]:
 
 	while file_name != "":
 		if dir.current_is_dir():
-			print("[MOD]   Skipped (is directory)")
+			printlog("[MOD]   Skipped (is directory)")
 		else:
 			# Accept .gd, .gd.remap, .gdc, .gde
 			var is_script_like := (
@@ -78,7 +78,7 @@ func create_mod_dict(path: String) -> Dictionary[String, String]:
 			)
 
 			if not is_script_like:
-				print("[MOD]   Skipped (not script-like file)")
+				printlog("[MOD]   Skipped (not script-like file)")
 			else:
 				var mod_name := file_name.get_basename().get_basename()
 				var full_path := path.path_join("%s.gd" % mod_name)
@@ -86,21 +86,21 @@ func create_mod_dict(path: String) -> Dictionary[String, String]:
 				if script == null:
 					push_error("[MOD]   ERROR: failed to load script")
 				elif not (script is GDScript):
-					print("[MOD]   Skipped (not GDScript). Type:", typeof(script))
+					printlog("[MOD]   Skipped (not GDScript). Type:", typeof(script))
 				else:
-					print("[MOD]   Loaded script OK")
+					printlog("[MOD]   Loaded script OK")
 					var inst = script.new()
 					if inst is Mod:
 						scenes[mod_name] = full_path
-						print("[MOD]   ADDED mod:", mod_name, "=>", full_path)
+						printlog("[MOD]   ADDED mod:", mod_name, "=>", full_path)
 					else:
-						print("[MOD]   Skipped (instance is not Mod), class:", inst.get_class())
+						printlog("[MOD]   Skipped (instance is not Mod), class:", inst.get_class())
 
 		file_name = dir.get_next()
 
 	dir.list_dir_end()
 
-	print("[MOD] Finished. Total mods found:", scenes.size())
+	printlog("[MOD] Finished. Total mods found:", scenes.size())
 	return scenes
 
 
@@ -108,3 +108,6 @@ func run_tests():
 	var test_node := preload(TEST_SCRIPT).new()
 	self.add_child(test_node)
 	test_node.run_tests()
+
+func printlog(...args):
+	pass

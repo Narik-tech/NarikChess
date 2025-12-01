@@ -2,19 +2,20 @@
 class_name MoveHighlight
 extends Piece
 
-signal dest_selected(coord: Vector4i)
-static var move_highlight := preload("res://scenes/pieces/legal_move_highlight.tscn")
+signal selected(coord: Vector4i)
 
 static func inst() -> MoveHighlight:
-	return move_highlight.instantiate()
+	var highlight = Piece.color_inst(Color("#ff74ff92"), MoveHighlight)
+	highlight.selected.connect(Chess.singleton._on_piece_destination_selected)
+	return highlight
 
-func _ready():
+func piece_ready():
 	is_overlay = true
-	dest_selected.connect(Chess.singleton._on_piece_destination_selected)
+	add_to_group("Highlight")
 
 func blocks_movement(_piece_moving: ChessPiece) -> bool:
 	return false
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed:
-		dest_selected.emit(full_coord)
+		selected.emit(full_coord)

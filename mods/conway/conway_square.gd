@@ -3,10 +3,7 @@ class_name ConwaySquare
 extends Piece
 
 static func inst() -> ConwaySquare:
-	var sq := Piece.square_scene.instantiate()
-	sq.set_script(ConwaySquare)
-	sq.color = Color.FOREST_GREEN
-	return sq
+	return Piece.color_inst(Color.FOREST_GREEN, ConwaySquare)
 	
 func blocks_movement(_piece_moving: ChessPiece) -> bool:
 	return true
