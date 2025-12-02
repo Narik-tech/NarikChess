@@ -20,13 +20,6 @@ var chess_logic: ChessLogic:
 	get:
 		return get_parent()
 
-static var pawn := preload("res://piece_definitions/pawn.tres")
-static var bishop := preload("res://piece_definitions/bishop.tres")
-static var knight := preload("res://piece_definitions/knight.tres")
-static var rook := preload("res://piece_definitions/rook.tres")
-static var king := preload("res://piece_definitions/king.tres")
-static var queen := preload("res://piece_definitions/queen.tres")
-
 static var board_scene := preload("res://scenes/board.tscn")
 
 static func new_board(parent: Node):
@@ -69,7 +62,10 @@ func recalculateBoardPosition():
 	self.position = vec
 	$BoardOutline.color = Color.LIGHT_GRAY if is_white else Color.DIM_GRAY
 
-func place_piece(piece: Piece, placeCoord: Vector2i):
+func place_piece(piece: Piece, placeCoord):
+	if placeCoord is Vector4i:
+		placeCoord = Vector2i(placeCoord.z, placeCoord.w)
+	assert(placeCoord is Vector2i)
 	var stepSize = $BoardTexture.size / 8
 	piece.position = Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y)
 	piece.coord = Vector2i(placeCoord.x, placeCoord.y)
@@ -86,31 +82,31 @@ func piece_coord(vec) -> Vector2i:
 func createBaseBoard():
 	# Place pawns
 	for x in 8:
-		place_piece(ChessPiece.inst(pawn, false), Vector2i(x, 1)) # Black pawns
-		place_piece(ChessPiece.inst(pawn, true), Vector2i(x, 6)) # White pawns
+		place_piece(ChessPiece.inst(ChessPiece.pawn, false), Vector2i(x, 1)) # Black pawns
+		place_piece(ChessPiece.inst(ChessPiece.pawn, true), Vector2i(x, 6)) # White pawns
 
 	# Place rooks
-	place_piece(ChessPiece.inst(rook, false), Vector2i(0, 0))
-	place_piece(ChessPiece.inst(rook, false), Vector2i(7, 0))
-	place_piece(ChessPiece.inst(rook, true), Vector2i(0, 7))
-	place_piece(ChessPiece.inst(rook, true), Vector2i(7, 7))
+	place_piece(ChessPiece.inst(ChessPiece.rook, false), Vector2i(0, 0))
+	place_piece(ChessPiece.inst(ChessPiece.rook, false), Vector2i(7, 0))
+	place_piece(ChessPiece.inst(ChessPiece.rook, true), Vector2i(0, 7))
+	place_piece(ChessPiece.inst(ChessPiece.rook, true), Vector2i(7, 7))
 
 	# Place knights
-	place_piece(ChessPiece.inst(knight, false), Vector2i(1, 0))
-	place_piece(ChessPiece.inst(knight, false), Vector2i(6, 0))
-	place_piece(ChessPiece.inst(knight, true), Vector2i(1, 7))
-	place_piece(ChessPiece.inst(knight, true), Vector2i(6, 7))
+	place_piece(ChessPiece.inst(ChessPiece.knight, false), Vector2i(1, 0))
+	place_piece(ChessPiece.inst(ChessPiece.knight, false), Vector2i(6, 0))
+	place_piece(ChessPiece.inst(ChessPiece.knight, true), Vector2i(1, 7))
+	place_piece(ChessPiece.inst(ChessPiece.knight, true), Vector2i(6, 7))
 
 	# Place bishops
-	place_piece(ChessPiece.inst(bishop, false), Vector2i(2, 0))
-	place_piece(ChessPiece.inst(bishop, false), Vector2i(5, 0))
-	place_piece(ChessPiece.inst(bishop, true), Vector2i(2, 7))
-	place_piece(ChessPiece.inst(bishop, true), Vector2i(5, 7))
+	place_piece(ChessPiece.inst(ChessPiece.bishop, false), Vector2i(2, 0))
+	place_piece(ChessPiece.inst(ChessPiece.bishop, false), Vector2i(5, 0))
+	place_piece(ChessPiece.inst(ChessPiece.bishop, true), Vector2i(2, 7))
+	place_piece(ChessPiece.inst(ChessPiece.bishop, true), Vector2i(5, 7))
 
 	# Place queens
-	place_piece(ChessPiece.inst(queen, false), Vector2i(3, 0))
-	place_piece(ChessPiece.inst(queen, true), Vector2i(3, 7))
+	place_piece(ChessPiece.inst(ChessPiece.queen, false), Vector2i(3, 0))
+	place_piece(ChessPiece.inst(ChessPiece.queen, true), Vector2i(3, 7))
 
 	# Place kings
-	place_piece(ChessPiece.inst(king, false), Vector2i(4, 0))
-	place_piece(ChessPiece.inst(king, true), Vector2i(4, 7))
+	place_piece(ChessPiece.inst(ChessPiece.king, false), Vector2i(4, 0))
+	place_piece(ChessPiece.inst(ChessPiece.king, true), Vector2i(4, 7))
