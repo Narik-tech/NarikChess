@@ -8,7 +8,7 @@ func _can_play_move(origin: Vector4i, _dest):
 	var origin_board: Board = chess_logic.get_board(origin)
 	var duck_on_origin = origin_board.get_children().any(func (child): return child is DuckPiece)
 	if duck_on_origin == true: return true
-	return "Duck must be placed for playing a move"
+	return "Duck must be placed before playing a move"
 
 #Only allow turn submission if the duck on each board is at a different location to the preceding board
 func _can_submit_turn():
@@ -24,6 +24,7 @@ func _on_move_made(_piece: Vector4i, _origin_board: Board, _dest_board: Board):
 
 func has_duck_moved(board: Board):
 	var duck = board.get_children().filter(func(c): return c is DuckPiece)[0]
+	if not board.has_meta(duck_meta_string): return false
 	if duck.coord == board.get_meta(duck_meta_string):
 		return "Duck at " + Globals.v4i_to_5d_coord(duck.full_coord) + " must move before turn can be submitted"
 	return true

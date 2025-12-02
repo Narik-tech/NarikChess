@@ -59,7 +59,7 @@ func mods_allow_play_move(from: Vector4i, to) -> bool:
 	for mod: Mod in get_mods():
 		var ok = mod._can_play_move(from, to)
 		if ok is String:
-			print_debug(ok)
+			display_message(ok)
 			return false
 	return true
 
@@ -67,6 +67,9 @@ func mods_allow_submit_turn() -> bool:
 	for mod: Mod in get_mods():
 		var ok = mod._can_submit_turn()
 		if ok is String:
-			print_debug(ok)
+			display_message(ok)
 			return false
 	return true
+
+func display_message(text: String):
+	$ChessUI/InfoDisplay.text = text

@@ -54,12 +54,11 @@ static func is_valid_node(node: Node) -> bool:
 	return true
 
 # v = Vector4i(T, L, file, rank)
-# assumes file and rank are 0-based (file: 0 = a, rank: 0 = 1)
 static func v4i_to_5d_coord(v: Vector4i) -> String:
 	var T    := v.x
 	var L    := v.y
 	var file := v.z
-	var rank := v.w
+	var rank := 8-v.w
 	var file_char := char("a".unicode_at(0) + file)
-	var rank_num  := rank + 1
+	var rank_num  := rank
 	return "T%d:L%d:%s%d" % [T, L, file_char, rank_num]
