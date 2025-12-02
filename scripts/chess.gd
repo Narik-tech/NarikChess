@@ -1,3 +1,4 @@
+## Central game node that spawns logic, handles selection inputs, and relays UI actions for a match session.
 class_name Chess
 extends Node
 
@@ -5,7 +6,7 @@ extends Node
 #### (T,L,x,y)  ####
 
 signal _on_starting_board_created(board: Board)
-signal _on_move_made(piece: Piece, origin_board: Board, dest_board: Board)
+signal _on_move_made(piece: Vector4i, origin_board: Board, dest_board: Board)
 
 static var chess_logic_scene := preload("res://scenes/chess_logic.tscn")
 static var singleton : Chess
@@ -29,14 +30,16 @@ func _ready():
 	game_start()
 
 func _on_piece_selected(coord: Vector4i):
+	if not mods_allow_play_move(selected_piece, coord): return
 	selected_piece = coord
 	chess_logic.show_legal_moves(selected_piece)
 
-
 func _on_piece_destination_selected(coord: Vector4i):
+	if not mods_allow_play_move(selected_piece, coord): return
 	chess_logic.make_move(selected_piece, coord)
 
 func _on_submit_pressed() -> void:
+	if not mods_allow_submit_turn(): return
 	chess_logic.submit_turn()
 
 func _on_undo_pressed() -> void:
@@ -44,3 +47,29 @@ func _on_undo_pressed() -> void:
 
 func _on_restart_pressed() -> void:
 	get_tree().reload_current_scene()
+	
+func get_mods() -> Array[Mod]:
+	var mods: Array[Mod] = []
+	for c in get_children():
+		if c is Mod:
+			mods.append(c)
+	return mods
+
+func mods_allow_play_move(from: Vector4i, to) -> bool:
+	for mod: Mod in get_mods():
+		var ok = mod._can_play_move(from, to)
+		if ok is String:
+			display_message(ok)
+			return false
+	return true
+
+func mods_allow_submit_turn() -> bool:
+	for mod: Mod in get_mods():
+		var ok = mod._can_submit_turn()
+		if ok is String:
+			display_message(ok)
+			return false
+	return true
+
+func display_message(text: String):
+	$ChessUI/InfoDisplay.text = text

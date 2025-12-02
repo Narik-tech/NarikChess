@@ -1,3 +1,4 @@
+## Entry point that runs tests, loads available mods and modes, and starts selected game scenes.
 extends Node
 
 const TEST_SCRIPT := "res://tests/test_chess_game.gd"
@@ -54,8 +55,6 @@ func change_scene(scene: Node):
 	add_child(scene)
 
 func create_mod_dict(path: String) -> Dictionary[String, String]:
-	print("[MOD] Scanning path:", path)
-
 	var dir := DirAccess.open(path)
 	if dir == null:
 		push_error("[MOD] Cannot open folder: %s" % path)
@@ -67,10 +66,8 @@ func create_mod_dict(path: String) -> Dictionary[String, String]:
 	var file_name := dir.get_next()
 
 	while file_name != "":
-		print("[MOD] Found entry:", file_name)
-
 		if dir.current_is_dir():
-			print("[MOD]   Skipped (is directory)")
+			printlog("[MOD]   Skipped (is directory)")
 		else:
 			# Accept .gd, .gd.remap, .gdc, .gde
 			var is_script_like := (
@@ -81,37 +78,29 @@ func create_mod_dict(path: String) -> Dictionary[String, String]:
 			)
 
 			if not is_script_like:
-				print("[MOD]   Skipped (not script-like file)")
+				printlog("[MOD]   Skipped (not script-like file)")
 			else:
-				# Normalize to the canonical *.gd resource path.
-				# file_name.get_basename():
-				#   "4D Chess.gd.remap" -> "4D Chess.gd"
-				#   "4D Chess.gdc"     -> "4D Chess"
-				# calling get_basename() again strips the .gd -> "4D Chess"
 				var mod_name := file_name.get_basename().get_basename()
 				var full_path := path.path_join("%s.gd" % mod_name)
-
-				print("[MOD]   Treating as script:", full_path)
-
 				var script = load(full_path)
 				if script == null:
-					print("[MOD]   ERROR: failed to load script")
+					push_error("[MOD]   ERROR: failed to load script")
 				elif not (script is GDScript):
-					print("[MOD]   Skipped (not GDScript). Type:", typeof(script))
+					printlog("[MOD]   Skipped (not GDScript). Type:", typeof(script))
 				else:
-					print("[MOD]   Loaded script OK")
+					printlog("[MOD]   Loaded script OK")
 					var inst = script.new()
 					if inst is Mod:
 						scenes[mod_name] = full_path
-						print("[MOD]   ADDED mod:", mod_name, "=>", full_path)
+						printlog("[MOD]   ADDED mod:", mod_name, "=>", full_path)
 					else:
-						print("[MOD]   Skipped (instance is not Mod), class:", inst.get_class())
+						printlog("[MOD]   Skipped (instance is not Mod), class:", inst.get_class())
 
 		file_name = dir.get_next()
 
 	dir.list_dir_end()
 
-	print("[MOD] Finished. Total mods found:", scenes.size())
+	printlog("[MOD] Finished. Total mods found:", scenes.size())
 	return scenes
 
 
@@ -119,3 +108,6 @@ func run_tests():
 	var test_node := preload(TEST_SCRIPT).new()
 	self.add_child(test_node)
 	test_node.run_tests()
+
+func printlog(...args):
+	pass

@@ -61,6 +61,18 @@ theme_override_font_sizes/normal_font_size = 72
 text = "White Turn"
 script = ExtResource("3_8vtbg")
 
+[node name="InfoDisplay" type="RichTextLabel" parent="ChessUI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 35.0
+offset_top = -236.0
+offset_right = 652.0
+offset_bottom = -113.0
+grow_vertical = 0
+theme_override_colors/default_color = Color(0.10372748, 0.103118084, 0.10812221, 1)
+theme_override_font_sizes/normal_font_size = 43
+
 [connection signal="pressed" from="ChessUI/Submit" to="." method="_on_submit_pressed"]
 [connection signal="pressed" from="ChessUI/Undo" to="." method="_on_undo_pressed"]
 [connection signal="pressed" from="ChessUI/Restart" to="." method="_on_restart_pressed"]

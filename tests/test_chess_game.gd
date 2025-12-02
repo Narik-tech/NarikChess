@@ -1,3 +1,4 @@
+## Summary: Basic integration test harness that simulates a move and reports pass or fail.
 extends Node
 
 const _ChessGame = preload("res://scenes/chess.tscn")
