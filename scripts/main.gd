@@ -55,19 +55,41 @@ func change_scene(scene: Node):
 	add_child(scene)
 
 func create_mod_dict(path: String) -> Dictionary[String, String]:
-	var dir := DirAccess.open(path)
-	if dir == null:
-		push_error("[MOD] Cannot open folder: %s" % path)
-		return {}
-
 	var scenes: Dictionary[String, String] = {}
+
+	# Try the virtual path first (works in the editor if mods/ is in the project)
+	var dir := DirAccess.open(path)
+	var real_path := path
+
+	# If that fails (exported game), fall back to a folder next to the .exe
+	if dir == null and path.begins_with("res://"):
+		var folder_name := path.get_file()        # "mods" from "res://mods"
+		var exe_dir := OS.get_executable_path().get_base_dir()
+		var fs_path := exe_dir.path_join(folder_name)
+
+		dir = DirAccess.open(fs_path)
+		if dir == null:
+			push_error("[MOD] Cannot open folder: %s or %s" % [path, fs_path])
+			return scenes
+		else:
+			printlog("[MOD] Using external mods folder:", fs_path)
+			real_path = fs_path
+	elif dir == null:
+		push_error("[MOD] Cannot open folder: %s" % path)
+		return scenes
 
 	dir.list_dir_begin()
 	var file_name := dir.get_next()
 
 	while file_name != "":
+		if file_name == "." or file_name == "..":
+			file_name = dir.get_next()
+			continue
+
+		var full_path := real_path.path_join(file_name)
+
 		if dir.current_is_dir():
-			printlog("[MOD]   Skipped (is directory)")
+			printlog("[MOD]   Skipped directory: %s" % file_name)
 		else:
 			# Accept .gd, .gd.remap, .gdc, .gde
 			var is_script_like := (
@@ -78,21 +100,23 @@ func create_mod_dict(path: String) -> Dictionary[String, String]:
 			)
 
 			if not is_script_like:
-				printlog("[MOD]   Skipped (not script-like file)")
+				printlog("[MOD]   Skipped (not script-like file): %s" % file_name)
 			else:
-				var mod_name := file_name.get_basename().get_basename()
-				var full_path := path.path_join("%s.gd" % mod_name)
-				var script = load(full_path)
+				var script_path := full_path
+				if script_path.ends_with(".gd.remap"):
+					script_path = script_path.get_basename()  # drop .remap
+
+				var script = load(script_path)
 				if script == null:
-					push_error("[MOD]   ERROR: failed to load script")
+					push_error("[MOD]   ERROR: failed to load script: %s" % script_path)
 				elif not (script is GDScript):
 					printlog("[MOD]   Skipped (not GDScript). Type:", typeof(script))
 				else:
-					printlog("[MOD]   Loaded script OK")
 					var inst = script.new()
 					if inst is Mod:
-						scenes[mod_name] = full_path
-						printlog("[MOD]   ADDED mod:", mod_name, "=>", full_path)
+						var mod_name := file_name.get_basename().get_basename()
+						scenes[mod_name] = script_path
+						printlog("[MOD]   ADDED mod:", mod_name, "=>", script_path)
 					else:
 						printlog("[MOD]   Skipped (instance is not Mod), class:", inst.get_class())
 
@@ -102,7 +126,6 @@ func create_mod_dict(path: String) -> Dictionary[String, String]:
 
 	printlog("[MOD] Finished. Total mods found:", scenes.size())
 	return scenes
-
 
 func run_tests():
 	var test_node := preload(TEST_SCRIPT).new()
