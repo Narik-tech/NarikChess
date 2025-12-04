@@ -7,3 +7,4 @@ static func inst() -> ConwaySquare:
 	
 func blocks_movement(_piece_moving: ChessPiece) -> bool:
 	return true
+ 

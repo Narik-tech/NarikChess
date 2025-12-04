@@ -5,8 +5,15 @@ extends Node
 ### Piece Coords ###
 #### (T,L,x,y)  ####
 
+@export var info_display: RichTextLabel 
+@export var mod_ui_container: HFlowContainer
+
+@warning_ignore("unused_signal")
 signal _on_starting_board_created(board: Board)
+@warning_ignore("unused_signal")
 signal _on_move_made(piece: Vector4i, origin_board: Board, dest_board: Board)
+@warning_ignore("unused_signal")
+signal _on_empty_space_selected(board: Board, coord: Vector2i)
 
 static var chess_logic_scene := preload("res://scenes/chess_logic.tscn")
 static var singleton : Chess
@@ -24,29 +31,6 @@ func game_start():
 func load_mods(mods: Array[Mod]):
 	for mod in mods:
 		self.add_child(mod)
-
-func _ready():
-	singleton = self
-	game_start()
-
-func _on_piece_selected(coord: Vector4i):
-	if not mods_allow_play_move(selected_piece, coord): return
-	selected_piece = coord
-	chess_logic.show_legal_moves(selected_piece)
-
-func _on_piece_destination_selected(coord: Vector4i):
-	if not mods_allow_play_move(selected_piece, coord): return
-	chess_logic.make_move(selected_piece, coord)
-
-func _on_submit_pressed() -> void:
-	if not mods_allow_submit_turn(): return
-	chess_logic.submit_turn()
-
-func _on_undo_pressed() -> void:
-	chess_logic.undo()
-
-func _on_restart_pressed() -> void:
-	get_tree().reload_current_scene()
 	
 func get_mods() -> Array[Mod]:
 	var mods: Array[Mod] = []
@@ -71,5 +55,31 @@ func mods_allow_submit_turn() -> bool:
 			return false
 	return true
 
+func add_mod_ui(control: Control):
+	mod_ui_container.add_child(control)
+
 func display_message(text: String):
-	$ChessUI/InfoDisplay.text = text
+	info_display.text = text
+
+func _ready():
+	singleton = self
+	game_start()
+
+func _on_piece_selected(coord: Vector4i):
+	if not mods_allow_play_move(selected_piece, coord): return
+	selected_piece = coord
+	chess_logic.show_legal_moves(selected_piece)
+
+func _on_piece_destination_selected(coord: Vector4i):
+	if not mods_allow_play_move(selected_piece, coord): return
+	chess_logic.make_move(selected_piece, coord)
+
+func _on_submit_pressed() -> void:
+	if not mods_allow_submit_turn(): return
+	chess_logic.submit_turn()
+
+func _on_undo_pressed() -> void:
+	chess_logic.undo()
+
+func _on_restart_pressed() -> void:
+	get_tree().reload_current_scene()
