@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://55q5ptt3ibt1"]
+[gd_scene load_steps=2 format=3 uid="uid://55q5ptt3ibt1"]
+
+[ext_resource type="Script" uid="uid://bsbsedihy5jn4" path="res://mods/spell_chess/spell_button.gd" id="1_mbhyk"]
 
 [node name="SpellButton" type="TextureButton"]
 custom_minimum_size = Vector2(200, 200)
@@ -7,3 +9,6 @@ offset_bottom = 50.0
 toggle_mode = true
 ignore_texture_size = true
 stretch_mode = 5
+script = ExtResource("1_mbhyk")
+
+[connection signal="toggled" from="." to="." method="_toggled"]

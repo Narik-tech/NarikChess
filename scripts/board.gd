@@ -27,7 +27,7 @@ static func new_board(parent: Node):
 	var instance = board_scene.instantiate()
 	instance.createBaseBoard()
 	parent.add_child(instance)
-	Chess.singleton._on_starting_board_created.emit(instance)
+	Chess.singleton.on_starting_board_created.emit(instance)
 	return instance
 	
 func board_playable() -> bool:
@@ -117,4 +117,4 @@ func _on_background_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			var local_pos = $BoardBounds/Background.get_local_mouse_position()
-			Chess.singleton._on_empty_space_selected.emit(self, Vector2i(floor(local_pos.x), floor(local_pos.y)))
+			Chess.singleton.on_empty_space_selected.emit(self, Vector2i(floor(local_pos.x), floor(local_pos.y)))

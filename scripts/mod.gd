@@ -13,8 +13,11 @@ var chess_logic: ChessLogic:
 		return chess.chess_logic
 
 func _ready():
-	chess._on_starting_board_created.connect(_on_starting_board)
-	chess._on_move_made.connect(_on_move_made)
+	chess.on_starting_board_created.connect(_on_starting_board)
+	chess.on_move_made.connect(_on_move_made)
+	chess.on_empty_space_selected.connect(_on_empty_space_selected)
+	chess.on_empty_space_selected.connect(_on_any_select)
+	chess.on_piece_selected.connect(_on_piece_selected)
 
 func _on_starting_board(_board: Board):
 	pass
@@ -22,8 +25,18 @@ func _on_starting_board(_board: Board):
 func _on_move_made(_piece: Vector4i, _origin_board: Board, _dest_board: Board):
 	pass
 
+func _on_piece_selected(_piece: Piece):
+	_on_any_select(_piece.board, _piece.coord)
+
+func _on_empty_space_selected(_board: Board, _coord: Vector2i):
+	pass
+
+## Called when an empty space or piece is selected
+func _on_any_select(_board: Board, _coord: Vector2i):
+	pass
+
 ## If a move cannot be played, returns a string indicating why
-func _can_play_move(origin: Vector4i, dest):
+func _can_play_move(_origin: Vector4i, _dest):
 	return true
 
 ## If a turn cannot be submitted, returns a string indicating why
