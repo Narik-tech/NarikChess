@@ -2,5 +2,5 @@
 class_name Chess_2D
 extends Mod
 
-func _on_starting_board(_board: Board):
+func _ready():
 	chess.is_classic_chess = true

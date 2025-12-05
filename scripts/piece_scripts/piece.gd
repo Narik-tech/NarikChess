@@ -52,5 +52,6 @@ func _on_click():
 func _on_gui_input(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed):
 		return
+	Chess.singleton.on_piece_selected.emit(self)
 	on_piece_clicked.emit(full_coord)
 	_on_click()

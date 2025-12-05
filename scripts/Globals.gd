@@ -75,7 +75,11 @@ func create_script_dict(path: String, filter: Callable = func(m): return m is Mo
 		var fs_path = OS.get_executable_path().get_base_dir().path_join(path.get_file())
 		dir = DirAccess.open(fs_path)
 		real_path = fs_path
-
+	
+	if dir == null:
+		push_warning("folder not found")
+		return {}
+			
 	dir.list_dir_begin()
 	var file_name := dir.get_next()
 
