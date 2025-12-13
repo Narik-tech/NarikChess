@@ -22,11 +22,12 @@ var chess_logic: ChessLogic:
 
 static var board_scene := preload("res://scenes/board.tscn")
 
+##instances a board under the provided parent
 static func new_board(parent: Node):
 	var instance = board_scene.instantiate()
 	instance.createBaseBoard()
 	parent.add_child(instance)
-	Chess.singleton._on_starting_board_created.emit(instance)
+	Chess.singleton.on_starting_board_created.emit(instance)
 	return instance
 	
 func board_playable() -> bool:
@@ -45,7 +46,7 @@ func duplicate_board(coord) -> Board:
 				var new_piece = ChessPiece.inst(piece.piece_def, piece.is_white)
 				new_piece.has_moved = piece.has_moved
 				instance.place_piece(new_piece, piece.coord)
-			else:
+			elif not piece.is_overlay:
 				var new_piece = piece.duplicate()
 				instance.place_piece(new_piece, piece.coord)
 	return instance
@@ -66,7 +67,7 @@ func place_piece(piece: Piece, placeCoord):
 	if placeCoord is Vector4i:
 		placeCoord = Vector2i(placeCoord.z, placeCoord.w)
 	assert(placeCoord is Vector2i)
-	var stepSize = $BoardTexture.size / 8
+	var stepSize = $BoardBounds.size / 8
 	piece.position = Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y)
 	piece.coord = Vector2i(placeCoord.x, placeCoord.y)
 	if piece.get_parent() == self: return
@@ -110,3 +111,10 @@ func createBaseBoard():
 	# Place kings
 	place_piece(ChessPiece.inst(ChessPiece.king, false), Vector2i(4, 0))
 	place_piece(ChessPiece.inst(ChessPiece.king, true), Vector2i(4, 7))
+
+
+func _on_background_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			var local_pos = $BoardBounds/Background.get_local_mouse_position()
+			Chess.singleton.on_empty_space_selected.emit(self, Vector2i(floor(local_pos.x), floor(local_pos.y)))

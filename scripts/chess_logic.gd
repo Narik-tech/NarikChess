@@ -20,6 +20,7 @@ func submit_turn() -> bool:
 	calculate_present()
 	if present.is_white == is_white_turn:
 		return false
+	
 	move_stack.clear()
 	is_white_turn = !is_white_turn
 	return true
@@ -61,7 +62,7 @@ func make_move(origin: Vector4i, dest: Vector4i):
 	move_stack.append(new_boards)
 	clear_highlights()
 	
-	Chess.singleton._on_move_made.emit(piece_moving.full_coord, origin_board, dest_board)
+	Chess.singleton.on_move_made.emit(piece_moving.full_coord, origin_board, dest_board)
 	boardstate_changed.emit()
 
 

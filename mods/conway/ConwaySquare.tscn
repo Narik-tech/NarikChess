@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cuxergbu5h8vo"]
+
+[ext_resource type="Script" uid="uid://08sfyd8ywin1" path="res://scripts/piece_scripts/piece.gd" id="1_7nt7l"]
+
+[node name="ConwaySquare" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_7nt7l")
+metadata/_custom_type_script = "uid://08sfyd8ywin1"

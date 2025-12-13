@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="ChessPieceDef" load_steps=3 format=3 uid="uid://ub6387nfqofg"]
 
 [ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://scripts/piece_scripts/chess_piece_def.gd" id="1_pc3o6"]
-[ext_resource type="Texture2D" uid="uid://c5tgcjltyig8g" path="res://sprites/CrazyPenguins-5D-Chess-Set/white_rook.svg" id="2_sqmq0"]
+[ext_resource type="Texture2D" uid="uid://co5lftyxhoesw" path="res://sprites/CrazyPenguins-5D-Chess-Set/rook.png" id="2_vn4gy"]
 
 [resource]
 script = ExtResource("1_pc3o6")
-white_texture = ExtResource("2_sqmq0")
+white_texture = ExtResource("2_vn4gy")
 uniagonal = true
 rider = true
 metadata/_custom_type_script = "uid://b7olitqm78mbo"

@@ -1,11 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://ca8xd7ra6en0h"]
+[gd_scene load_steps=5 format=3 uid="uid://ca8xd7ra6en0h"]
 
 [ext_resource type="Script" uid="uid://bkstioe7xue8q" path="res://scripts/chess.gd" id="1_iqcxx"]
 [ext_resource type="Script" uid="uid://wfpt25m8phqm" path="res://scripts/user_interface/camera_pan.gd" id="2_7ohv5"]
+[ext_resource type="PackedScene" uid="uid://dp8y7jqouk46g" path="res://scenes/chess_logic.tscn" id="2_8vtbg"]
 [ext_resource type="Script" uid="uid://b6wp1qbd66t5m" path="res://scripts/user_interface/turn_indicator.gd" id="3_8vtbg"]
 
-[node name="Chess" type="Node"]
+[node name="Chess" type="Node" node_paths=PackedStringArray("info_display", "mod_ui_container", "chess_logic")]
 script = ExtResource("1_iqcxx")
+info_display = NodePath("ChessUI/InfoDisplay")
+mod_ui_container = NodePath("ChessUI/ModUIContainer")
+chess_logic = NodePath("ChessLogic")
+
+[node name="ChessLogic" parent="." instance=ExtResource("2_8vtbg")]
 
 [node name="CameraPan" type="Camera2D" parent="."]
 position = Vector2(50.255, 74.38)
@@ -72,6 +78,25 @@ offset_bottom = -113.0
 grow_vertical = 0
 theme_override_colors/default_color = Color(0.10372748, 0.103118084, 0.10812221, 1)
 theme_override_font_sizes/normal_font_size = 43
+
+[node name="ModUIContainer" type="HFlowContainer" parent="ChessUI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -949.0
+offset_top = -261.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
+reverse_fill = true
+
+[node name="TextureButton" type="TextureButton" parent="ChessUI"]
+offset_right = 40.0
+offset_bottom = 40.0
 
 [connection signal="pressed" from="ChessUI/Submit" to="." method="_on_submit_pressed"]
 [connection signal="pressed" from="ChessUI/Undo" to="." method="_on_undo_pressed"]
