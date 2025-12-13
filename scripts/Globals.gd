@@ -67,14 +67,19 @@ static func v4i_to_5d_coord(v: Vector4i) -> String:
 ##Filter defaults to Mod scripts.
 func create_script_dict(path: String, filter: Callable = func(m): return m is Mod) -> Dictionary[String, GDScript]:
 	var scenes: Dictionary[String, GDScript] = {}
-
 	var real_path := path
-	# Try the virtual path first (works in the editor if mods/ is in the project)
+	
+	
+	#try orig path
 	var dir := DirAccess.open(path)
+	
+	#try executable folder
 	if dir == null:
-		var fs_path = OS.get_executable_path().get_base_dir().path_join(path.get_file())
-		dir = DirAccess.open(fs_path)
-		real_path = fs_path
+		var exe_path = OS.get_executable_path().get_base_dir()
+		var path_trimmed = path.replace("res://", "")
+		dir = DirAccess.open(exe_path.path_join(path_trimmed))
+		if dir == null:
+			printlog("not found in " + exe_path.path_join(path_trimmed))
 	
 	if dir == null:
 		push_warning("folder not found")
@@ -122,3 +127,5 @@ func create_script_dict(path: String, filter: Callable = func(m): return m is Mo
 
 static func printlog(...args):
 	pass
+	#for log in args:
+	#	print_debug(log)

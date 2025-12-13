@@ -46,6 +46,7 @@ func _can_submit_turn():
 static func load_texture_from_png(filename: String) -> Texture2D:
 	#try orig path
 	var bytes := FileAccess.get_file_as_bytes(filename)
+	
 	#try res:// texture folder
 	if bytes == null or bytes.size() < 1:
 		var path = mod_texture_folder.path_join(filename)

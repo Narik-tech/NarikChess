@@ -1,10 +1,8 @@
-class_name SpellChess
 extends Mod
 
 var spell_used_this_turn := false
 var spell_folder = "res://mods/spell_chess/spell_scripts/"
 var spell_dict: Dictionary[String, GDScript]
-var spell_button = preload("res://mods/spell_chess/core/spell_button.tscn")
 
 func _ready():
 	super()

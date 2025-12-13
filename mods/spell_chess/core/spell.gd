@@ -8,7 +8,7 @@ signal _on_spell_cast()
 
 var texture: CompressedTexture2D
 var spell_button: TextureButton
-var spell_chess: SpellChess
+var spell_chess: Mod
 var chess_logic: ChessLogic:
 	get: return spell_chess.chess_logic
 
