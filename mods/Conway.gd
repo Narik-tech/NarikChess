@@ -15,7 +15,7 @@ func _on_move_made(_piece: Vector4i, _origin_board: Board, _dest_board: Board):
 func progress_squares(board: Board):
 	#determine all piece locations on board
 	var piece_dict : Dictionary[Vector4i, Piece] = {}
-	for piece in board.get_children().filter(func(x): return x is Piece and x.is_overlay == false):
+	for piece in board.all_pieces().filter(func(x): return x is Piece and x.is_overlay == false):
 		piece_dict[piece.full_coord] = piece
 	
 	#determine conway progression for each case

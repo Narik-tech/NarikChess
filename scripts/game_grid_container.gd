@@ -11,23 +11,22 @@ extends Container
 # (x,y,layer) -> Control
 var _map: Dictionary[Vector3i, Control] = {}
 
-func _ready() -> void:
-	_rebuild_map()
-	queue_sort()
+
 
 ## Places `control` at `coord`.
 ## Returns false if coord is outside range (when an axis is non-zero), or if the cell is occupied by a different control.
 func place_control(control: Control, coord: Vector2i, layer: int = 0) -> bool:
 	if control is TextureRect:
 		(control as TextureRect).expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	var key = coord_layer_to_vector3i(coord, layer)
+	var key = _coord_layer_to_vector3i(coord, layer)
 	if not _coord_in_range(coord):
 		return false
 
 	if _map.has(key):
-		var existing: Control = _map[key]
-		if is_instance_valid(existing) and existing != control:
-			return false
+		_map[key].queue_free()
+		#var existing: Control = _map[key]
+		#if is_instance_valid(existing) and existing != control:
+			#return false
 
 	# Remove old mapping for this control if it already had a coord
 	#if control.has_meta("coord"):
@@ -43,12 +42,13 @@ func place_control(control: Control, coord: Vector2i, layer: int = 0) -> bool:
 	control.set_meta("coord", coord)
 	_map[key] = control
 	queue_sort()
+	_rebuild_map()
 	return true
 
 
 ## Gets the control at `coord`
 func get_control(coord: Vector2i, layer: int = 0) -> Control:
-	var key = coord_layer_to_vector3i(coord, layer)
+	var key = _coord_layer_to_vector3i(coord, layer)
 	if _map.has(key):
 		var c: Control = _map[key]
 		if is_instance_valid(c):
@@ -57,11 +57,24 @@ func get_control(coord: Vector2i, layer: int = 0) -> Control:
 
 	#for child in get_children():
 		#if child is Control and child.has_meta("coord") and (child.get_meta("coord") as Vector2i) == coord:
-			#_map[coord] = child
+			#_map[key] = child
 			#return child
 
 	return null
 
+func all_controls():
+	return get_children()
+
+func mouse_coord() -> Vector2i:
+	var local_pos = get_local_mouse_position()
+	var horz = local_pos.x/(size.x/_divisor(horizontal_items))
+	var vert = local_pos.y/(size.y/_divisor(vertical_items))
+	var local_coord_pos = Vector2i(floor(horz), floor(vert))
+	return local_coord_pos
+
+func _ready() -> void:
+	_rebuild_map()
+	queue_sort()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_SORT_CHILDREN or what == NOTIFICATION_RESIZED:
@@ -113,8 +126,8 @@ func _rebuild_map() -> void:
 	for child in get_children():
 		if child is Control and child.has_meta("coord"):
 			var child_coord: Vector2i = child.get_meta("coord")
-			_map[coord_layer_to_vector3i(child_coord, (child as Control).z_index)] = child
+			_map[_coord_layer_to_vector3i(child_coord, (child as Control).z_index)] = child
 
-func coord_layer_to_vector3i(coord: Vector2i, layer: int) -> Vector3i:
+func _coord_layer_to_vector3i(coord: Vector2i, layer: int) -> Vector3i:
 	return Vector3i(coord.x, coord.y, layer)
 	 

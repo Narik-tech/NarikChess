@@ -2,7 +2,7 @@
 class_name Piece
 extends Control
 
-signal on_piece_clicked(coord: Vector4i)
+signal on_piece_clicked(coord: Vector2i)
 
 static var piece_script = preload("res://scripts/piece_scripts/piece.gd")
 static var square_scene = preload("res://scenes/pieces/solid_color_piece.tscn")
@@ -22,15 +22,16 @@ static func texture_inst(texture: Texture2D, script: GDScript = Piece) -> Piece:
 
 var is_overlay: bool = false
 
-var coord: Vector2i
+var coord: Vector2i:
+	get:
+		return get_meta("coord")
 var board: Board:
 	get:
-		return get_parent()
+		return get_parent().get_parent()
 
 var full_coord: Vector4i:
 	get:
-		var p = get_parent()
-		return Vector4i(p.coord.x,p.coord.y,coord.x,coord.y)
+		return Vector4i(board.coord.x,board.coord.y,coord.x,coord.y)
 	set(val):
 		coord.x = val.z
 		coord.y = val.w

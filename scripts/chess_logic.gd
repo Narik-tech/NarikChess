@@ -51,7 +51,7 @@ func make_move(origin: Vector4i, dest: Vector4i):
 	var dest_piece = dest_board.get_piece(dest)
 	if dest_piece != null: dest_piece.queue_free()
 	
-	var piece_moving: ChessPiece = origin_board.get_piece(origin)
+	var piece_moving = origin_board.get_piece(origin)
 	piece_moving.has_moved = true
 	dest_board.place_piece(piece_moving, Vector2i(dest.z, dest.w))
 	
@@ -98,8 +98,8 @@ func show_legal_moves(vec: Vector4i):
 				
 			if piece_to_move.piece_def.pawn:
 				if dims == 1 and dest_piece != null: break
-				if dims == 2 and dest_piece == null: break
-				
+				if dims == 2 and (dest_piece == null or dest_piece.is_overlay): break
+#				
 			get_board(squareToMove).place_piece(MoveHighlight.inst(Chess.singleton._on_piece_destination_selected), Vector2i(squareToMove.z,squareToMove.w))
 			
 			if dest_piece: break

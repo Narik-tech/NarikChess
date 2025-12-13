@@ -6,7 +6,7 @@ const duck_meta_string = "prev_duck"
 #Before playing a move, require the player to place a duck on the board if it has no duck
 func _can_play_move(origin: Vector4i, _dest):
 	var origin_board: Board = chess_logic.get_board(origin)
-	var duck_on_origin = origin_board.get_children().any(func (child): return child is DuckPiece)
+	var duck_on_origin = origin_board.all_pieces().any(func (child): return child is DuckPiece)
 	if duck_on_origin == true: return true
 	return "Duck must be placed before playing a move"
 
@@ -23,7 +23,7 @@ func _on_move_made(_piece: Vector4i, _origin_board: Board, _dest_board: Board):
 	if _dest_board != _origin_board: set_duck_meta(_dest_board)
 
 func has_duck_moved(board: Board):
-	var duck_array = board.get_children().filter(func(c): return c is DuckPiece)
+	var duck_array = board.all_pieces().filter(func(c): return c is DuckPiece)
 	var duck
 	if duck_array.size() > 0:
 		duck = duck_array[0]
@@ -33,7 +33,7 @@ func has_duck_moved(board: Board):
 	return true
 
 func set_duck_meta(board: Board):
-	var duck = board.get_children().filter(func(c): return c is DuckPiece)[0]
+	var duck = board.all_pieces().filter(func(c): return c is DuckPiece)[0]
 	board.set_meta(duck_meta_string, duck.coord)
 
 func _on_starting_board(_board: Board):
@@ -46,7 +46,7 @@ func highlight_valid_duck_squares(board: Board):
 
 func place_duck(coord: Vector4i):
 	#remove any existing ducks
-	for duck in chess_logic.get_board(coord).get_children().filter(func (child): return child is DuckPiece):
+	for duck in chess_logic.get_board(coord).all_pieces().filter(func (child): return child is DuckPiece):
 		duck.queue_free()
 	
 	#new duck
