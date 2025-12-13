@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c5l1xlivlp1fe"
-path="res://.godot/imported/duck.png-4a19d1633307a0c2dd2a2c9a8f94045b.ctex"
+uid="uid://bhix0v5qvyybd"
+path="res://.godot/imported/freeze.png-0fd2c2ea8f0bf80c8d118bc5c4eeb2ca.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/duck/duck.png"
-dest_files=["res://.godot/imported/duck.png-4a19d1633307a0c2dd2a2c9a8f94045b.ctex"]
+source_file="res://mods/textures/freeze.png"
+dest_files=["res://.godot/imported/freeze.png-0fd2c2ea8f0bf80c8d118bc5c4eeb2ca.ctex"]
 
 [params]
 

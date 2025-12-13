@@ -23,7 +23,10 @@ func _on_move_made(_piece: Vector4i, _origin_board: Board, _dest_board: Board):
 	if _dest_board != _origin_board: set_duck_meta(_dest_board)
 
 func has_duck_moved(board: Board):
-	var duck = board.get_children().filter(func(c): return c is DuckPiece)[0]
+	var duck_array = board.get_children().filter(func(c): return c is DuckPiece)
+	var duck
+	if duck_array.size() > 0:
+		duck = duck_array[0]
 	if not board.has_meta(duck_meta_string): return false
 	if duck.coord == board.get_meta(duck_meta_string):
 		return "Duck at " + Globals.v4i_to_5d_coord(duck.full_coord) + " must move before turn can be submitted"

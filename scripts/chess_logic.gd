@@ -20,6 +20,7 @@ func submit_turn() -> bool:
 	calculate_present()
 	if present.is_white == is_white_turn:
 		return false
+	
 	move_stack.clear()
 	is_white_turn = !is_white_turn
 	return true

@@ -17,17 +17,14 @@ signal on_empty_space_selected(board: Board, coord: Vector2i)
 @warning_ignore("unused_signal")
 signal on_piece_selected(piece: Piece)
 
-static var chess_logic_scene := preload("res://scenes/chess_logic.tscn")
+#static var chess_logic_scene := preload("res://scenes/chess_logic.tscn")
 static var singleton : Chess
 
-var chess_logic: ChessLogic
+@export var chess_logic: ChessLogic
 var selected_piece: Vector4i
 var is_classic_chess: bool = false
 
 func game_start():
-	if chess_logic != null: chess_logic.queue_free()
-	chess_logic = chess_logic_scene.instantiate()
-	self.add_child(chess_logic)
 	chess_logic.start_game()
 
 func load_mods(mods: Array[Mod]):
@@ -64,6 +61,9 @@ func display_message(text: String):
 	info_display.text = text
 
 func _ready():
+	#if chess_logic != null: chess_logic.queue_free()
+	#chess_logic = chess_logic_scene.instantiate()
+	#self.add_child(chess_logic)
 	singleton = self
 	game_start()
 

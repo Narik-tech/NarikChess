@@ -46,7 +46,7 @@ func duplicate_board(coord) -> Board:
 				var new_piece = ChessPiece.inst(piece.piece_def, piece.is_white)
 				new_piece.has_moved = piece.has_moved
 				instance.place_piece(new_piece, piece.coord)
-			else:
+			elif not piece.is_overlay:
 				var new_piece = piece.duplicate()
 				instance.place_piece(new_piece, piece.coord)
 	return instance

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://coiipk07tlxxf"
-path="res://.godot/imported/wall.png-44be21fdb4afd608b441e10cb63fd123.ctex"
+uid="uid://oicfqe231d5h"
+path="res://.godot/imported/duck.png-2ca92a129a128479de6187c18a168cff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/spell_chess/wall.png"
-dest_files=["res://.godot/imported/wall.png-44be21fdb4afd608b441e10cb63fd123.ctex"]
+source_file="res://mods/textures/duck.png"
+dest_files=["res://.godot/imported/duck.png-2ca92a129a128479de6187c18a168cff.ctex"]
 
 [params]
 

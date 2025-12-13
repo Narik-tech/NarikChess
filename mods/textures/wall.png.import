@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhix0v5qvyybd"
-path="res://.godot/imported/freeze.png-88222205c96b43aa6ac294da12e93e37.ctex"
+uid="uid://coiipk07tlxxf"
+path="res://.godot/imported/wall.png-1040ea2752c07c120c8c2a080d0ba060.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/spell_chess/freeze.png"
-dest_files=["res://.godot/imported/freeze.png-88222205c96b43aa6ac294da12e93e37.ctex"]
+source_file="res://mods/textures/wall.png"
+dest_files=["res://.godot/imported/wall.png-1040ea2752c07c120c8c2a080d0ba060.ctex"]
 
 [params]
 
