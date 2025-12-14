@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://ca8xd7ra6en0h"]
+[gd_scene load_steps=7 format=3 uid="uid://ca8xd7ra6en0h"]
 
 [ext_resource type="Script" uid="uid://bkstioe7xue8q" path="res://scripts/chess.gd" id="1_iqcxx"]
 [ext_resource type="Script" uid="uid://wfpt25m8phqm" path="res://scripts/user_interface/camera_pan.gd" id="2_7ohv5"]
-[ext_resource type="PackedScene" uid="uid://dp8y7jqouk46g" path="res://scenes/chess_logic.tscn" id="2_8vtbg"]
+[ext_resource type="Script" uid="uid://o4ohxqxvdj54" path="res://scripts/chess_logic.gd" id="2_urbgs"]
 [ext_resource type="Script" uid="uid://b6wp1qbd66t5m" path="res://scripts/user_interface/turn_indicator.gd" id="3_8vtbg"]
+[ext_resource type="Script" uid="uid://dwidaer5v3rcr" path="res://scripts/game_grid_container.gd" id="5_8vtbg"]
+[ext_resource type="Script" uid="uid://cfd3waac0w4b1" path="res://scripts/user_interface/present_line.gd" id="6_urbgs"]
 
 [node name="Chess" type="Node" node_paths=PackedStringArray("info_display", "mod_ui_container", "chess_logic")]
 script = ExtResource("1_iqcxx")
@@ -11,7 +13,28 @@ info_display = NodePath("ChessUI/InfoDisplay")
 mod_ui_container = NodePath("ChessUI/ModUIContainer")
 chess_logic = NodePath("ChessLogic")
 
-[node name="ChessLogic" parent="." instance=ExtResource("2_8vtbg")]
+[node name="PresentLine" type="ColorRect" parent="." node_paths=PackedStringArray("chess_logic")]
+offset_left = 12.0
+offset_top = 50000.0
+offset_right = 52.0
+offset_bottom = 1050000.0
+scale = Vector2(4.28261, -5.46906)
+pivot_offset = Vector2(-30, 0)
+mouse_filter = 2
+color = Color(0.619608, 0.0823529, 0.411765, 0.811765)
+script = ExtResource("6_urbgs")
+chess_logic = NodePath("../ChessLogic")
+
+[node name="ChessLogic" type="Node" parent="." node_paths=PackedStringArray("board_grid", "present")]
+script = ExtResource("2_urbgs")
+board_grid = NodePath("BoardGrid")
+present = NodePath("../PresentLine")
+
+[node name="BoardGrid" type="Container" parent="ChessLogic"]
+offset_right = 500.0
+offset_bottom = 500.0
+script = ExtResource("5_8vtbg")
+metadata/_custom_type_script = "uid://dwidaer5v3rcr"
 
 [node name="CameraPan" type="Camera2D" parent="."]
 position = Vector2(50.255, 74.38)

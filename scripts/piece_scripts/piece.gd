@@ -4,7 +4,6 @@ extends Control
 
 signal on_piece_clicked(coord: Vector2i)
 
-static var piece_script = preload("res://scripts/piece_scripts/piece.gd")
 static var square_scene = preload("res://scenes/pieces/solid_color_piece.tscn")
 static var texture_piece = preload("res://scenes/pieces/texture_piece.tscn")
 
@@ -25,6 +24,7 @@ var is_overlay: bool = false
 var coord: Vector2i:
 	get:
 		return get_meta("coord")
+		
 var board: Board:
 	get:
 		return get_parent().get_parent()

@@ -64,6 +64,6 @@ func _on_duck_clicked(duck: Vector4i):
 func duck_placable(board: Board) -> bool:
 	if board.is_white == chess_logic.is_white_turn:
 		return false
-	if chess_logic.get_board(board.coord + board.time_plus) != null:
+	if chess_logic.get_board(board.coord + Vector2i.RIGHT) != null:
 		return false
 	return true

@@ -1,35 +1,26 @@
 ## Represents a single board instance, managing piece placement, duplication, and spatial attributes.
 class_name Board
-extends Node
+extends Control
 
 @export var board_grid: GameGrid 
 
-static var board_interval = 480
-const time_plus = Vector2i(1,0)
-const board_size = 8
-const block_pixel_size = 60
-
 var coord: Vector2i:
-	set(val):
-		coord = val
-		recalculateBoardPosition()
+	get:
+		return get_meta("coord")
 
 var is_white: bool:
 	get:
 		return coord.x % 2 == 0
 
-var chess_logic: ChessLogic:
-	get:
-		return get_parent()
+var chess_logic: ChessLogic
 
 static var board_scene := preload("res://scenes/board.tscn")
 
-##instances a board under the provided parent
-static func new_board(parent: Node):
+##instances a board
+static func inst(_chess_logic: ChessLogic):
 	var instance = board_scene.instantiate()
+	instance.chess_logic = _chess_logic
 	instance.createBaseBoard()
-	parent.add_child(instance)
-	Chess.singleton.on_starting_board_created.emit(instance)
 	return instance
 
 func all_pieces() -> Array:
@@ -38,13 +29,13 @@ func all_pieces() -> Array:
 func board_playable() -> bool:
 	if is_white != chess_logic.is_white_turn:
 		return false
-	if chess_logic.get_board(coord + time_plus) != null:
+	if chess_logic.get_board(coord + Vector2i.RIGHT) != null:
 		return false
 	return true
 
-func duplicate_board(coord) -> Board:
+func duplicate_board() -> Board:
 	var instance: Board = board_scene.instantiate()
-	instance.coord = Vector2i(coord.x, coord.y)
+	instance.chess_logic = chess_logic
 	for piece in all_pieces():
 		if piece is Piece:
 			if piece is ChessPiece:
@@ -59,21 +50,20 @@ func duplicate_board(coord) -> Board:
 func get_piece(vec) -> Piece:
 	return board_grid.get_control(piece_coord(vec))
 
-func recalculateBoardPosition():
-	var vec =  Vector2i(coord.x * board_interval, coord.y * board_interval)
-	self.position = vec
+func _ready():
 	$BoardOutline.color = Color.LIGHT_GRAY if is_white else Color.DIM_GRAY
 
 func place_piece(piece: Piece, place_coord, layer = null) -> bool:
-	if layer is int:
-		board_grid.place_control(piece, piece_coord(place_coord), layer)
-	return board_grid.place_control(piece, piece_coord(place_coord), 1 if piece.is_overlay else 0)
+	return board_grid.place_control(piece, piece_coord(place_coord), layer if layer is int else 1 if piece.is_overlay else 0)
 
 func piece_coord(vec) -> Vector2i:
 	if vec is Vector2i: return vec
 	if vec is Vector4i: return Vector2i(vec.z, vec.w)
 	assert(false)
 	return Vector2i.ZERO
+
+func piece_coord_valid(vec: Vector2i):
+	return board_grid.coord_in_range(vec)
 
 func createBaseBoard():
 	# Place pawns
