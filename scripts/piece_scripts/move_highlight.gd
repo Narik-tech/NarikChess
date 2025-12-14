@@ -4,7 +4,7 @@ extends Piece
 
 static func inst(callback: Callable) -> MoveHighlight:
 	var highlight = Piece.color_inst(Color("#ff74ff92"), MoveHighlight)
-	highlight.on_piece_clicked.connect(callback)
+	highlight._on_piece_clicked.connect(callback)
 	highlight.add_to_group("MoveHighlight")
 	return highlight
 

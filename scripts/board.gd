@@ -1,46 +1,44 @@
 ## Represents a single board instance, managing piece placement, duplication, and spatial attributes.
 class_name Board
-extends Node
+extends Control
 
-static var board_interval = 480
-const time_plus = Vector2i(1,0)
-const board_size = 8
-const block_pixel_size = 60
+signal _on_empty_space_selected(board: Board, coord: Vector2i)
+
+@export var piece_grid: GameGrid 
 
 var coord: Vector2i:
-	set(val):
-		coord = val
-		recalculateBoardPosition()
+	get:
+		return get_meta("coord")
 
 var is_white: bool:
 	get:
 		return coord.x % 2 == 0
 
-var chess_logic: ChessLogic:
-	get:
-		return get_parent()
+var chess_logic: ChessLogic
 
 static var board_scene := preload("res://scenes/board.tscn")
 
-##instances a board under the provided parent
-static func new_board(parent: Node):
+##instances a board
+static func inst(_chess_logic: ChessLogic):
 	var instance = board_scene.instantiate()
+	instance.chess_logic = _chess_logic
 	instance.createBaseBoard()
-	parent.add_child(instance)
-	Chess.singleton.on_starting_board_created.emit(instance)
 	return instance
-	
+
+func all_pieces() -> Array:
+	return piece_grid.all_controls()
+
 func board_playable() -> bool:
 	if is_white != chess_logic.is_white_turn:
 		return false
-	if chess_logic.get_board(coord + time_plus) != null:
+	if chess_logic.get_board(coord + Vector2i.RIGHT) != null:
 		return false
 	return true
 
-func duplicate_board(coord) -> Board:
+func duplicate_board() -> Board:
 	var instance: Board = board_scene.instantiate()
-	instance.coord = Vector2i(coord.x, coord.y)
-	for piece in get_children():
+	instance.chess_logic = chess_logic
+	for piece in all_pieces():
 		if piece is Piece:
 			if piece is ChessPiece:
 				var new_piece = ChessPiece.inst(piece.piece_def, piece.is_white)
@@ -52,33 +50,22 @@ func duplicate_board(coord) -> Board:
 	return instance
 
 func get_piece(vec) -> Piece:
-	var pieces = get_children().filter(func(p): return p is Piece and p.is_overlay == false and p.coord == piece_coord(vec))
-	if pieces.size() > 0:
-		return pieces.front()
-	else:
-		return null
+	return piece_grid.get_control(piece_coord(vec))
 
-func recalculateBoardPosition():
-	var vec =  Vector2i(coord.x * board_interval, coord.y * board_interval)
-	self.position = vec
+func _ready():
 	$BoardOutline.color = Color.LIGHT_GRAY if is_white else Color.DIM_GRAY
 
-func place_piece(piece: Piece, placeCoord):
-	if placeCoord is Vector4i:
-		placeCoord = Vector2i(placeCoord.z, placeCoord.w)
-	assert(placeCoord is Vector2i)
-	var stepSize = $BoardBounds.size / 8
-	piece.position = Vector2(stepSize.x * placeCoord.x, stepSize.y * placeCoord.y)
-	piece.coord = Vector2i(placeCoord.x, placeCoord.y)
-	if piece.get_parent() == self: return
-	if piece.get_parent(): piece.get_parent().remove_child(piece)
-	self.add_child(piece)
+func place_piece(piece: Piece, place_coord, layer = null) -> bool:
+	return piece_grid.place_control(piece, piece_coord(place_coord), layer if layer is int else 1 if piece.is_overlay else 0)
 
 func piece_coord(vec) -> Vector2i:
 	if vec is Vector2i: return vec
 	if vec is Vector4i: return Vector2i(vec.z, vec.w)
 	assert(false)
 	return Vector2i.ZERO
+
+func piece_coord_valid(vec: Vector2i):
+	return piece_grid.coord_in_range(vec)
 
 func createBaseBoard():
 	# Place pawns
@@ -112,9 +99,9 @@ func createBaseBoard():
 	place_piece(ChessPiece.inst(ChessPiece.king, false), Vector2i(4, 0))
 	place_piece(ChessPiece.inst(ChessPiece.king, true), Vector2i(4, 7))
 
-
-func _on_background_gui_input(event: InputEvent) -> void:
+func _on_game_grid_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			var local_pos = $BoardBounds/Background.get_local_mouse_position()
-			Chess.singleton.on_empty_space_selected.emit(self, Vector2i(floor(local_pos.x), floor(local_pos.y)))
+			var local_pos = piece_grid.mouse_coord()
+			if get_piece(local_pos) == null:
+				_on_empty_space_selected.emit(self, Vector2i(floor(local_pos.x), floor(local_pos.y)))

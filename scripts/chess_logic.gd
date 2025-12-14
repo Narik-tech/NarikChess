@@ -2,19 +2,21 @@
 class_name ChessLogic
 extends Node
 
-static var board := preload("res://scenes/board.tscn")
+signal _on_starting_board_created(board: Board)
+signal _boardstate_changed()
+signal _turn_changed(white_turn: bool)
+signal _on_move_made(piece: Vector4i, origin_board: Board, dest_board: Board)
 
-signal boardstate_changed()
-signal turn_changed(white_turn: bool)
+@export var board_grid: GameGrid
+@export var present: ColorRect
 
 var move_stack := []
 const time_plus = Vector4i(1,0,0,0)
 var is_white_turn: bool = true:
 	set(val):
 		is_white_turn = val
-		turn_changed.emit(is_white_turn)
+		_turn_changed.emit(is_white_turn)
 		
-@onready var present = $PresentLine
 
 func submit_turn() -> bool:
 	calculate_present()
@@ -30,16 +32,18 @@ func undo():
 	var move_set = move_stack.pop_back()
 	for move in move_set.values():
 		move.queue_free()
-	boardstate_changed.emit()
+	_boardstate_changed.emit()
 
 
 func _ready() -> void:
-	boardstate_changed.connect(calculate_present)
-	turn_changed.connect($"../ChessUI/TurnIndicator"._on_turn_changed)
+	_boardstate_changed.connect(calculate_present)
+	_turn_changed.connect($"../ChessUI/TurnIndicator"._on_turn_changed)
 
 func start_game():
-	Board.new_board(self)
-	boardstate_changed.emit()
+	var board = Board.inst(self)
+	board_grid.place_control(board, Vector2i.ZERO)
+	_on_starting_board_created.emit(board)
+	_boardstate_changed.emit()
 
 
 func make_move(origin: Vector4i, dest: Vector4i):
@@ -51,7 +55,7 @@ func make_move(origin: Vector4i, dest: Vector4i):
 	var dest_piece = dest_board.get_piece(dest)
 	if dest_piece != null: dest_piece.queue_free()
 	
-	var piece_moving: ChessPiece = origin_board.get_piece(origin)
+	var piece_moving = origin_board.get_piece(origin)
 	piece_moving.has_moved = true
 	dest_board.place_piece(piece_moving, Vector2i(dest.z, dest.w))
 	
@@ -62,21 +66,23 @@ func make_move(origin: Vector4i, dest: Vector4i):
 	move_stack.append(new_boards)
 	clear_highlights()
 	
-	Chess.singleton.on_move_made.emit(piece_moving.full_coord, origin_board, dest_board)
-	boardstate_changed.emit()
+	_on_move_made.emit(piece_moving.full_coord, origin_board, dest_board)
+	_boardstate_changed.emit()
 
 
 ## returns the next board in time, creating one if there isn't one
-func next_board(orig_board: Vector4i, branch: bool = false):
-	var next_vec = orig_board + time_plus
+func next_board(orig_board, branch: bool = false):
+	if orig_board is Vector4i:
+		orig_board = Vector2i(orig_board.x, orig_board.y)
+	var next_vec = orig_board + Vector2i.RIGHT
 	var next = get_board(next_vec)
 	if branch and next != null:
-		next = get_board(orig_board).duplicate_board(Vector2i(next_vec.x, new_line_position(orig_board)))
-		self.add_child(next)
+		next = get_board(orig_board).duplicate_board()
+		board_grid.place_control(next, Vector2i(next_vec.x, new_line_position(orig_board)))
 	
 	if next == null:
-		next = get_board(orig_board).duplicate_board(next_vec)
-		self.add_child(next)
+		next = get_board(orig_board).duplicate_board()
+		board_grid.place_control(next, next_vec)
 	return next
 
 func show_legal_moves(vec: Vector4i):
@@ -98,9 +104,11 @@ func show_legal_moves(vec: Vector4i):
 				
 			if piece_to_move.piece_def.pawn:
 				if dims == 1 and dest_piece != null: break
-				if dims == 2 and dest_piece == null: break
-				
-			get_board(squareToMove).place_piece(MoveHighlight.inst(Chess.singleton._on_piece_destination_selected), Vector2i(squareToMove.z,squareToMove.w))
+				if dims == 2 and (dest_piece == null or dest_piece.is_overlay): break
+#			
+			var highlight = MoveHighlight.inst(Chess.singleton._on_piece_destination_selected)
+			highlight.is_overlay = true
+			get_board(squareToMove).place_piece(highlight, Vector2i(squareToMove.z,squareToMove.w))
 			
 			if dest_piece: break
 			
@@ -122,25 +130,31 @@ func calculate_present():
 			black = board.coord.y
 		if board.coord.y > white: 
 			white = board.coord.y
-	var max = -black + 1
-	var min = -white - 1
+	var max_line = -black + 1
+	var min_line = -white - 1
 	var present_position: int = 1000000
-	for active in get_boards().filter(func(b): return b.coord.y <= max and b.coord.y >= min and get_board(b.coord + Vector2i(1,0)) == null):
+	
+	var boards = get_boards()
+	boards = boards.filter(func(b): return b.coord.y <= max_line)
+	boards = boards.filter(func(b): return b.coord.y >= min_line)
+	boards = boards.filter(func(b): return get_board(b.coord + Vector2i(1,0)) == null)
+	
+	for active in boards:
 		if active.coord.x < present_position:
 			present_position = active.coord.x
+	#board_grid.place_control(present, Vector2i(present_position, 0), 0)
 	present.coord = present_position
 
 func coord_valid(piece_vec: Vector4i) -> bool:
-	return not (piece_vec.z < 0 or piece_vec.z > 7 or piece_vec.w < 0 or piece_vec.w > 7 or get_board(piece_vec) == null)
+	var board = get_board(piece_vec)
+	if board == null: return false
+	return board.piece_coord_valid(Vector2i(piece_vec.z,piece_vec.w))
 
 func get_piece(vec: Vector4i) -> Piece:
 	return get_board(vec).get_piece(vec)
 	
 func get_board(vec) -> Board:
-	var boards = get_boards().filter(func(board): return Vector2i(vec.x, vec.y) == board.coord)
-	assert(boards.size() < 2)
-	if boards.size() != 1: return null
-	return boards.front()
+	return board_grid.get_control(Vector2i(vec.x, vec.y))
 
 func get_boards() -> Array:
 	var boards = get_tree().get_nodes_in_group("Board").filter(Globals.is_valid_node)

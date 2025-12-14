@@ -8,15 +8,6 @@ extends Node
 @export var info_display: RichTextLabel 
 @export var mod_ui_container: HFlowContainer
 
-@warning_ignore("unused_signal")
-signal on_starting_board_created(board: Board)
-@warning_ignore("unused_signal")
-signal on_move_made(piece: Vector4i, origin_board: Board, dest_board: Board)
-@warning_ignore("unused_signal")
-signal on_empty_space_selected(board: Board, coord: Vector2i)
-@warning_ignore("unused_signal")
-signal on_piece_selected(piece: Piece)
-
 #static var chess_logic_scene := preload("res://scenes/chess_logic.tscn")
 static var singleton : Chess
 

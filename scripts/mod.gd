@@ -13,11 +13,16 @@ var chess_logic: ChessLogic:
 		return chess.chess_logic
 
 func _ready():
-	chess.on_starting_board_created.connect(_on_starting_board)
-	chess.on_move_made.connect(_on_move_made)
-	chess.on_empty_space_selected.connect(_on_empty_space_selected)
-	chess.on_empty_space_selected.connect(_on_any_select)
-	chess.on_piece_selected.connect(_on_piece_selected)
+	chess_logic._on_starting_board_created.connect(_on_starting_board)
+	chess_logic._on_move_made.connect(_on_move_made)
+	chess_logic.board_grid._on_control_placed.connect(_on_board_placed)
+
+func _on_board_placed(board: Board):
+	board._on_empty_space_selected.connect(_on_empty_space_selected)
+	board._on_empty_space_selected.connect(_on_any_select)
+
+func _on_piece_placed(piece: Piece):
+	piece._on_piece_clicked.connect(_on_piece_selected)
 
 func _on_starting_board(_board: Board):
 	pass
