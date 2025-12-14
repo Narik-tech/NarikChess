@@ -44,5 +44,5 @@ func _on_click():
 	
 	if not board.is_white == is_white:
 		return
-	
+		
 	piece_selected.emit(full_coord)
