@@ -2,7 +2,9 @@
 class_name Board
 extends Control
 
-@export var board_grid: GameGrid 
+signal _on_empty_space_selected(board: Board, coord: Vector2i)
+
+@export var piece_grid: GameGrid 
 
 var coord: Vector2i:
 	get:
@@ -24,7 +26,7 @@ static func inst(_chess_logic: ChessLogic):
 	return instance
 
 func all_pieces() -> Array:
-	return board_grid.all_controls()
+	return piece_grid.all_controls()
 
 func board_playable() -> bool:
 	if is_white != chess_logic.is_white_turn:
@@ -48,13 +50,13 @@ func duplicate_board() -> Board:
 	return instance
 
 func get_piece(vec) -> Piece:
-	return board_grid.get_control(piece_coord(vec))
+	return piece_grid.get_control(piece_coord(vec))
 
 func _ready():
 	$BoardOutline.color = Color.LIGHT_GRAY if is_white else Color.DIM_GRAY
 
 func place_piece(piece: Piece, place_coord, layer = null) -> bool:
-	return board_grid.place_control(piece, piece_coord(place_coord), layer if layer is int else 1 if piece.is_overlay else 0)
+	return piece_grid.place_control(piece, piece_coord(place_coord), layer if layer is int else 1 if piece.is_overlay else 0)
 
 func piece_coord(vec) -> Vector2i:
 	if vec is Vector2i: return vec
@@ -63,7 +65,7 @@ func piece_coord(vec) -> Vector2i:
 	return Vector2i.ZERO
 
 func piece_coord_valid(vec: Vector2i):
-	return board_grid.coord_in_range(vec)
+	return piece_grid.coord_in_range(vec)
 
 func createBaseBoard():
 	# Place pawns
@@ -100,6 +102,6 @@ func createBaseBoard():
 func _on_game_grid_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			var local_pos = board_grid.mouse_coord()
+			var local_pos = piece_grid.mouse_coord()
 			if get_piece(local_pos) == null:
-				Chess.singleton.on_empty_space_selected.emit(self, Vector2i(floor(local_pos.x), floor(local_pos.y)))
+				_on_empty_space_selected.emit(self, Vector2i(floor(local_pos.x), floor(local_pos.y)))

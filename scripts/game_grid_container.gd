@@ -3,6 +3,8 @@
 class_name GameGrid
 extends Container
 
+signal _on_control_placed(control: Control)
+
 ## Number of items to fit horizontally. Value of 0 will tile infinitely
 @export var horizontal_items: int = 0
 ## Number of items to fit vertically. Value of 0 will tile infinitely
@@ -10,8 +12,6 @@ extends Container
 
 # (x,y,layer) -> Control
 var _map: Dictionary[Vector3i, Control] = {}
-
-
 
 ## Places `control` at `coord`.
 ## Returns false if coord is outside range (when an axis is non-zero), or if the cell is occupied by a different control.
@@ -31,6 +31,7 @@ func place_control(control: Control, coord: Vector2i, layer: int = 0) -> bool:
 	control.z_index = layer
 	add_child(control)
 	_map[key] = control
+	_on_control_placed.emit(control)
 	queue_sort()
 	_rebuild_map()
 	return true

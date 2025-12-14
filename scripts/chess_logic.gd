@@ -2,18 +2,20 @@
 class_name ChessLogic
 extends Node
 
+signal _on_starting_board_created(board: Board)
+signal _boardstate_changed()
+signal _turn_changed(white_turn: bool)
+signal _on_move_made(piece: Vector4i, origin_board: Board, dest_board: Board)
+
 @export var board_grid: GameGrid
 @export var present: ColorRect
-
-signal boardstate_changed()
-signal turn_changed(white_turn: bool)
 
 var move_stack := []
 const time_plus = Vector4i(1,0,0,0)
 var is_white_turn: bool = true:
 	set(val):
 		is_white_turn = val
-		turn_changed.emit(is_white_turn)
+		_turn_changed.emit(is_white_turn)
 		
 
 func submit_turn() -> bool:
@@ -30,18 +32,18 @@ func undo():
 	var move_set = move_stack.pop_back()
 	for move in move_set.values():
 		move.queue_free()
-	boardstate_changed.emit()
+	_boardstate_changed.emit()
 
 
 func _ready() -> void:
-	boardstate_changed.connect(calculate_present)
-	turn_changed.connect($"../ChessUI/TurnIndicator"._on_turn_changed)
+	_boardstate_changed.connect(calculate_present)
+	_turn_changed.connect($"../ChessUI/TurnIndicator"._on_turn_changed)
 
 func start_game():
 	var board = Board.inst(self)
 	board_grid.place_control(board, Vector2i.ZERO)
-	Chess.singleton.on_starting_board_created.emit(board)
-	boardstate_changed.emit()
+	_on_starting_board_created.emit(board)
+	_boardstate_changed.emit()
 
 
 func make_move(origin: Vector4i, dest: Vector4i):
@@ -64,8 +66,8 @@ func make_move(origin: Vector4i, dest: Vector4i):
 	move_stack.append(new_boards)
 	clear_highlights()
 	
-	Chess.singleton.on_move_made.emit(piece_moving.full_coord, origin_board, dest_board)
-	boardstate_changed.emit()
+	_on_move_made.emit(piece_moving.full_coord, origin_board, dest_board)
+	_boardstate_changed.emit()
 
 
 ## returns the next board in time, creating one if there isn't one
