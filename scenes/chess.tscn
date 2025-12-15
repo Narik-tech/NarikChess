@@ -86,6 +86,7 @@ offset_top = -116.0
 offset_right = 475.0
 offset_bottom = -17.0
 grow_vertical = 0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 72
 text = "White Turn"
 script = ExtResource("3_8vtbg")
@@ -99,6 +100,7 @@ offset_top = -236.0
 offset_right = 652.0
 offset_bottom = -113.0
 grow_vertical = 0
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.10372748, 0.103118084, 0.10812221, 1)
 theme_override_font_sizes/normal_font_size = 43
 
@@ -114,6 +116,7 @@ grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 alignment = 2
 reverse_fill = true
 
