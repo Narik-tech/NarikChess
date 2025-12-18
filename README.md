@@ -39,6 +39,9 @@
 # Current Limitations
 - Local play only.
 - No check or checkmate detection. A player wins by capturing the enemy king.
+- No Castling
+- No En Passant
+- No Promotion
 
 # Build Structure
 - All variants are implemented as mods in a **Mods** folder, separate from the main build.
