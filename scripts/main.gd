@@ -10,7 +10,7 @@ var mod_dict : Dictionary[String, GDScript]
 var game_mode_dict : Dictionary[String, GDScript]
 
 func _ready():
-	run_tests()
+	#run_tests()
 	mod_dict = Globals.create_script_dict(mod_path)
 	game_mode_dict = Globals.create_script_dict(game_modes_path)
 	
@@ -31,7 +31,7 @@ func _ready():
 	dropdown.select(0)
 
 func _on_start_pressed() -> void:
-	var instance: Chess = chess.instantiate()
+	var instance: BoardGame = chess.instantiate()
 	
 	var selected_mods: Array[Mod] = []
 	for child in $MainMenu/Options/Mods.get_children():
@@ -42,7 +42,7 @@ func _on_start_pressed() -> void:
 	var mode_dropdown = $MainMenu/Options/Modes/Options
 	var mode_script: GDScript = game_mode_dict.get(mode_dropdown.get_item_text(mode_dropdown.selected))
 	selected_mods.append(mode_script.new())
-	instance.load_mods(selected_mods)
+	#instance.load_mods(selected_mods)
 	change_scene(instance)
 
 func change_scene(scene: Node):

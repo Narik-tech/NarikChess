@@ -1,31 +1,34 @@
 ## Summary: Camera controller that pans and zooms based on input actions.
 extends Camera2D
 
-const SPEED = 1000
-const scrollSpeed = .1
+const speed = 1000
+const base_zoom = Vector2(1, 1)
+var calc_zoom: Vector2 = Vector2(1, 1)
+
 @export var scroll_speed := 0.3
-@export var min_zoom := Vector2.ONE * 0.1
-@export var max_zoom := Vector2.ONE * 6.0
+@export var min_zoom := base_zoom * 0.1
+@export var max_zoom := base_zoom * 6.0
 
 func _process(delta: float) -> void:
 	var velocity := Vector2.ZERO
 
 	if Input.is_action_pressed("Down"):
-		velocity += Vector2.DOWN * SPEED
+		velocity += Vector2.DOWN * speed
 	if Input.is_action_pressed("Left"):
-		velocity += Vector2.LEFT * SPEED
+		velocity += Vector2.LEFT * speed
 	if Input.is_action_pressed("Right"):
-		velocity += Vector2.RIGHT * SPEED
+		velocity += Vector2.RIGHT * speed
 	if Input.is_action_pressed("Up"):
-		velocity += Vector2.UP * SPEED
+		velocity += Vector2.UP * speed
 
 	if velocity != Vector2.ZERO:
-		position += velocity * (1/zoom.x) * delta
+		position += velocity * (1/calc_zoom.x) * delta
 		
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Scroll Out"):
-		zoom -= Vector2.ONE * scroll_speed
+		calc_zoom -= base_zoom * scroll_speed
 	elif event.is_action_pressed("Scroll In"):
-		zoom += Vector2.ONE * scroll_speed
+		calc_zoom += base_zoom * scroll_speed
 
-	zoom = zoom.clamp(min_zoom, max_zoom)
+	calc_zoom = calc_zoom.clamp(min_zoom, max_zoom)
+	zoom = Vector2(calc_zoom.x, calc_zoom.y)

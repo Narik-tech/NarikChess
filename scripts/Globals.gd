@@ -129,3 +129,17 @@ static func printlog(...args):
 	pass
 	#for log in args:
 	#	print_debug(log)
+
+static func read_json_file(path: String) -> Variant:
+	var file := FileAccess.open(path, FileAccess.READ)
+	var text := file.get_as_text()
+	file.close()
+	var json := JSON.new()
+	var err := json.parse(text)
+	if err != OK:
+		push_error("JSON parse error: %s at line %d" % [json.get_error_message(), json.get_error_line()])
+		return null
+	return json.data
+
+static func concat_vec(a: Vector2i, b: Vector2i) -> Vector4i:
+	return Vector4i(a.x, a.y, b.x, b.y)

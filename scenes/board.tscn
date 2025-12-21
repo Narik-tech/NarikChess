@@ -4,11 +4,11 @@
 [ext_resource type="Script" uid="uid://dwidaer5v3rcr" path="res://scripts/game_grid_container.gd" id="3_fv4ni"]
 [ext_resource type="Texture2D" uid="uid://doap1im4ykctm" path="res://sprites/twobytwo.png" id="3_nglv8"]
 
-[node name="Board" type="Control" node_paths=PackedStringArray("board_grid") groups=["Board"]]
+[node name="Board" type="Control" node_paths=PackedStringArray("piece_grid") groups=["Board"]]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_p0ybc")
-board_grid = NodePath("GameGrid")
+piece_grid = NodePath("PieceGrid")
 
 [node name="BoardOutline" type="ColorRect" parent="."]
 layout_mode = 0
@@ -26,7 +26,7 @@ texture = ExtResource("3_nglv8")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="GameGrid" type="Container" parent="."]
+[node name="PieceGrid" type="Container" parent="."]
 layout_mode = 0
 offset_right = 384.0
 offset_bottom = 384.0
@@ -35,4 +35,5 @@ horizontal_items = 8
 vertical_items = 8
 metadata/_custom_type_script = "uid://dwidaer5v3rcr"
 
-[connection signal="gui_input" from="GameGrid" to="." method="_on_game_grid_gui_input"]
+[connection signal="gui_input" from="PieceGrid" to="." method="_on_game_grid_gui_input"]
+[connection signal="space_selected" from="PieceGrid" to="." method="_on_piece_grid_space_selected"]

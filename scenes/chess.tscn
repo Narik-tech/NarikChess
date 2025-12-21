@@ -1,17 +1,30 @@
-[gd_scene load_steps=7 format=3 uid="uid://ca8xd7ra6en0h"]
+[gd_scene load_steps=13 format=3 uid="uid://ca8xd7ra6en0h"]
 
-[ext_resource type="Script" uid="uid://bkstioe7xue8q" path="res://scripts/chess.gd" id="1_iqcxx"]
+[ext_resource type="Script" uid="uid://c46usd6nh8gdb" path="res://new_scripts/board_game.gd" id="1_mygcs"]
 [ext_resource type="Script" uid="uid://wfpt25m8phqm" path="res://scripts/user_interface/camera_pan.gd" id="2_7ohv5"]
-[ext_resource type="Script" uid="uid://o4ohxqxvdj54" path="res://scripts/chess_logic.gd" id="2_urbgs"]
 [ext_resource type="Script" uid="uid://b6wp1qbd66t5m" path="res://scripts/user_interface/turn_indicator.gd" id="3_8vtbg"]
+[ext_resource type="Script" uid="uid://ckwfm67ctrk1c" path="res://new_scripts/game_state.gd" id="3_11cx3"]
 [ext_resource type="Script" uid="uid://dwidaer5v3rcr" path="res://scripts/game_grid_container.gd" id="5_8vtbg"]
 [ext_resource type="Script" uid="uid://cfd3waac0w4b1" path="res://scripts/user_interface/present_line.gd" id="6_urbgs"]
+[ext_resource type="Script" uid="uid://b7yeoilye7w6f" path="res://new_scripts/move_handling.gd" id="7_eh1fl"]
+[ext_resource type="Script" uid="uid://dw3p10fx6ec2y" path="res://new_scripts/move_legality.gd" id="8_2nt42"]
+[ext_resource type="Script" uid="uid://4mkdyq1lvd57" path="res://new_scripts/board_initializer.gd" id="10_8bbvj"]
+[ext_resource type="Resource" uid="uid://ce1q6q78rlo2s" path="res://board_set_definition/Standard.tres" id="11_11cx3"]
+[ext_resource type="Script" uid="uid://dl2tl22474k7u" path="res://new_scripts/turn_handling.gd" id="11_eh1fl"]
 
-[node name="Chess" type="Node" node_paths=PackedStringArray("info_display", "mod_ui_container", "chess_logic")]
-script = ExtResource("1_iqcxx")
+[sub_resource type="GDScript" id="GDScript_11cx3"]
+script/source = "extends Node
+"
+
+[node name="Chess" type="Node" node_paths=PackedStringArray("game_state", "move_handling", "move_legality", "turn_handling", "board_init", "info_display", "mod_ui_container")]
+script = ExtResource("1_mygcs")
+game_state = NodePath("GameState")
+move_handling = NodePath("Scripts/MoveHandling")
+move_legality = NodePath("Scripts/MoveLegality")
+turn_handling = NodePath("Scripts/TurnHandling")
+board_init = NodePath("Scripts/BoardInitializer")
 info_display = NodePath("ChessUI/InfoDisplay")
 mod_ui_container = NodePath("ChessUI/ModUIContainer")
-chess_logic = NodePath("ChessLogic")
 
 [node name="PresentLine" type="ColorRect" parent="." node_paths=PackedStringArray("chess_logic")]
 offset_left = 12.0
@@ -23,14 +36,13 @@ pivot_offset = Vector2(-30, 0)
 mouse_filter = 2
 color = Color(0.619608, 0.0823529, 0.411765, 0.811765)
 script = ExtResource("6_urbgs")
-chess_logic = NodePath("../ChessLogic")
+chess_logic = NodePath("../GameState")
 
-[node name="ChessLogic" type="Node" parent="." node_paths=PackedStringArray("board_grid", "present")]
-script = ExtResource("2_urbgs")
+[node name="GameState" type="Node" parent="." node_paths=PackedStringArray("board_grid")]
+script = ExtResource("3_11cx3")
 board_grid = NodePath("BoardGrid")
-present = NodePath("../PresentLine")
 
-[node name="BoardGrid" type="Container" parent="ChessLogic"]
+[node name="BoardGrid" type="Container" parent="GameState"]
 offset_right = 500.0
 offset_bottom = 500.0
 script = ExtResource("5_8vtbg")
@@ -38,10 +50,10 @@ metadata/_custom_type_script = "uid://dwidaer5v3rcr"
 
 [node name="CameraPan" type="Camera2D" parent="."]
 position = Vector2(50.255, 74.38)
-zoom = Vector2(0.615, 0.615)
 script = ExtResource("2_7ohv5")
 
 [node name="ChessUI" type="CanvasLayer" parent="."]
+script = SubResource("GDScript_11cx3")
 
 [node name="Submit" type="Button" parent="ChessUI"]
 anchors_preset = 5
@@ -124,6 +136,30 @@ reverse_fill = true
 offset_right = 40.0
 offset_bottom = 40.0
 
-[connection signal="pressed" from="ChessUI/Submit" to="." method="_on_submit_pressed"]
+[node name="Scripts" type="Node" parent="."]
+
+[node name="BoardInitializer" type="Node" parent="Scripts"]
+script = ExtResource("10_8bbvj")
+starting_boardset = ExtResource("11_11cx3")
+metadata/_custom_type_script = "uid://4mkdyq1lvd57"
+
+[node name="MoveLegality" type="Node" parent="Scripts"]
+script = ExtResource("8_2nt42")
+metadata/_custom_type_script = "uid://dw3p10fx6ec2y"
+
+[node name="MoveHandling" type="Node" parent="Scripts" node_paths=PackedStringArray("game_state")]
+script = ExtResource("7_eh1fl")
+game_state = NodePath("../../GameState")
+metadata/_custom_type_script = "uid://b7yeoilye7w6f"
+
+[node name="TurnHandling" type="Node" parent="Scripts" node_paths=PackedStringArray("present")]
+script = ExtResource("11_eh1fl")
+present = NodePath("../../PresentLine")
+metadata/_custom_type_script = "uid://dl2tl22474k7u"
+
+[connection signal="_game_state_changed" from="GameState" to="PresentLine" method="_on_game_state_changed"]
+[connection signal="_space_selected" from="GameState" to="." method="on_space_selected"]
+[connection signal="pressed" from="ChessUI/Submit" to="Scripts/TurnHandling" method="_on_submit_pressed"]
 [connection signal="pressed" from="ChessUI/Undo" to="." method="_on_undo_pressed"]
 [connection signal="pressed" from="ChessUI/Restart" to="." method="_on_restart_pressed"]
+[connection signal="turn_changed" from="Scripts/TurnHandling" to="ChessUI/TurnIndicator" method="_on_turn_changed"]

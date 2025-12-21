@@ -22,10 +22,13 @@ static func inst(resource: ChessPieceDef, white: bool) -> ChessPiece:
 	return instance
 	
 func blocks_movement(_piece_moving: ChessPiece) -> bool:
+	var selfcolor = self.is_white
+	var incoming_color = _piece_moving.is_white
 	return _piece_moving.is_white == self.is_white
 
 func piece_ready() -> void:
-	piece_selected.connect(Chess.singleton._on_piece_selected)
+	pass
+	#piece_selected.connect(Chess.singleton._on_piece_selected)
 
 func set_color(isWhitePiece: bool):
 	if isWhitePiece:

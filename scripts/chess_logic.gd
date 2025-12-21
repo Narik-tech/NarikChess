@@ -38,10 +38,11 @@ func _ready() -> void:
 	turn_changed.connect($"../ChessUI/TurnIndicator"._on_turn_changed)
 
 func start_game():
-	var board = Board.inst(self)
-	board_grid.place_control(board, Vector2i.ZERO)
-	Chess.singleton.on_starting_board_created.emit(board)
-	boardstate_changed.emit()
+	pass
+	#var board = Board.inst()
+	#board_grid.place_control(board, Vector2i.ZERO)
+	#Chess.singleton.on_starting_board_created.emit(board)
+	#boardstate_changed.emit()
 
 
 func make_move(origin: Vector4i, dest: Vector4i):
@@ -140,7 +141,6 @@ func calculate_present():
 	for active in boards:
 		if active.coord.x < present_position:
 			present_position = active.coord.x
-	#board_grid.place_control(present, Vector2i(present_position, 0), 0)
 	present.coord = present_position
 
 func coord_valid(piece_vec: Vector4i) -> bool:

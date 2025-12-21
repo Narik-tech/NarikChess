@@ -3,19 +3,22 @@
 class_name GameGrid
 extends Container
 
+signal space_selected(position: Vector2i, control: Control)
+
 ## Number of items to fit horizontally. Value of 0 will tile infinitely
 @export var horizontal_items: int = 0
 ## Number of items to fit vertically. Value of 0 will tile infinitely
 @export var vertical_items: int = 0
 
+var _top_layer = 0
+
 # (x,y,layer) -> Control
 var _map: Dictionary[Vector3i, Control] = {}
-
-
 
 ## Places `control` at `coord`.
 ## Returns false if coord is outside range (when an axis is non-zero), or if the cell is occupied by a different control.
 func place_control(control: Control, coord: Vector2i, layer: int = 0) -> bool:
+	if layer > _top_layer: _top_layer = layer
 	if control is TextureRect:
 		(control as TextureRect).expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	var key = _coord_layer_to_vector3i(coord, layer)
@@ -35,15 +38,19 @@ func place_control(control: Control, coord: Vector2i, layer: int = 0) -> bool:
 	_rebuild_map()
 	return true
 
-
 ## Gets the control at `coord`
-func get_control(coord: Vector2i, layer: int = 0) -> Control:
-	var key = _coord_layer_to_vector3i(coord, layer)
-	if _map.has(key):
-		var c: Control = _map[key]
-		if _is_valid_node(c):
-			return c
-		_map.erase(key)
+## Checks layers from the given layer (or top) down to 0
+func get_control(coord: Vector2i, layer: int = -1) -> Control:
+	if layer == -1:
+		layer = _top_layer
+
+	for l in range(layer, -1, -1):
+		var key = _coord_layer_to_vector3i(coord, l)
+		if _map.has(key):
+			var c: Control = _map[key]
+			if _is_valid_node(c):
+				return c
+			_map.erase(key)
 	return null
 
 func all_controls():
@@ -74,6 +81,7 @@ func coord_in_range(coord: Vector2i) -> bool:
 	return true
 
 func _ready() -> void:
+	gui_input.connect(_on_gui_input)
 	_rebuild_map()
 	queue_sort()
 
@@ -95,10 +103,8 @@ func _sort_into_grid() -> void:
 		var coord := Vector2i.ZERO
 		if child.has_meta("coord"):
 			coord = child.get_meta("coord") as Vector2i
-
 		var rect := Rect2(Vector2(coord.x * cell.x, coord.y * cell.y), cell)
 		fit_child_in_rect(child, rect)
-
 
 func _divisor(n: int) -> int:
 	return 1 if n <= 1 else n
@@ -119,4 +125,15 @@ func _is_valid_node(node: Node) -> bool:
 	if node.is_queued_for_deletion():
 		return false
 	return true
-	 
+
+func flip_y(coord: Vector2i) -> Vector2i:
+	return Vector2i(coord.x, _divisor(vertical_items) - coord.y -1)
+
+func _on_gui_input(event: InputEvent) -> void:
+	if not (event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed):
+		return
+	var coord = mouse_coord()
+	#var controls = all_controls()
+	#var filtered_controls = controls.filter(func(cont): (cont as Node).get_meta("coord") == coord)
+	#filtered_controls.sort_custom(func(a, b):return a.z_index < b.z_index)
+	space_selected.emit(coord, get_control(coord))

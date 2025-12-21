@@ -2,7 +2,7 @@
 class_name Piece
 extends Control
 
-signal on_piece_clicked(coord: Vector2i)
+#signal on_piece_clicked(coord: Vector2i)
 
 static var square_scene = preload("res://scenes/pieces/solid_color_piece.tscn")
 static var texture_piece = preload("res://scenes/pieces/texture_piece.tscn")
@@ -53,6 +53,6 @@ func _on_click():
 func _on_gui_input(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed):
 		return
-	Chess.singleton.on_piece_selected.emit(self)
-	on_piece_clicked.emit(full_coord)
+	#Chess.singleton.on_piece_selected.emit(self)
+	#on_piece_clicked.emit(full_coord)
 	_on_click()
