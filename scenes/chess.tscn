@@ -20,7 +20,7 @@ script/source = "extends Node
 script = ExtResource("1_mygcs")
 game_state = NodePath("GameState")
 move_handling = NodePath("Scripts/MoveHandling")
-move_legality = NodePath("Scripts/MoveLegality")
+move_legality = NodePath("Scripts/MoveHandling/MoveLegality")
 turn_handling = NodePath("Scripts/TurnHandling")
 board_init = NodePath("Scripts/BoardInitializer")
 info_display = NodePath("ChessUI/InfoDisplay")
@@ -143,14 +143,16 @@ script = ExtResource("10_8bbvj")
 starting_boardset = ExtResource("11_11cx3")
 metadata/_custom_type_script = "uid://4mkdyq1lvd57"
 
-[node name="MoveLegality" type="Node" parent="Scripts"]
-script = ExtResource("8_2nt42")
-metadata/_custom_type_script = "uid://dw3p10fx6ec2y"
-
-[node name="MoveHandling" type="Node" parent="Scripts" node_paths=PackedStringArray("game_state")]
+[node name="MoveHandling" type="Node" parent="Scripts" node_paths=PackedStringArray("game_state", "move_legality")]
 script = ExtResource("7_eh1fl")
 game_state = NodePath("../../GameState")
+move_legality = NodePath("MoveLegality")
 metadata/_custom_type_script = "uid://b7yeoilye7w6f"
+
+[node name="MoveLegality" type="Node" parent="Scripts/MoveHandling" node_paths=PackedStringArray("board_game")]
+script = ExtResource("8_2nt42")
+board_game = NodePath("../../..")
+metadata/_custom_type_script = "uid://dw3p10fx6ec2y"
 
 [node name="TurnHandling" type="Node" parent="Scripts" node_paths=PackedStringArray("present")]
 script = ExtResource("11_eh1fl")
@@ -164,4 +166,5 @@ metadata/_custom_type_script = "uid://dl2tl22474k7u"
 [connection signal="pressed" from="ChessUI/Restart" to="." method="_on_restart_pressed"]
 [connection signal="_move_completed" from="Scripts/MoveHandling" to="GameState" method="_on_move_handling_move_completed"]
 [connection signal="_move_started" from="Scripts/MoveHandling" to="GameState" method="_on_move_handling_move_started"]
+[connection signal="turn_changed" from="Scripts/TurnHandling" to="GameState" method="_on_turn_changed"]
 [connection signal="turn_changed" from="Scripts/TurnHandling" to="ChessUI/TurnIndicator" method="_on_turn_changed"]

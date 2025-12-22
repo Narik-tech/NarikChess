@@ -87,4 +87,6 @@ func _on_move_handling_move_completed() -> void:
 	move_to_undo.undo_calls = staged_undos.duplicate_deep()
 	staged_undos.clear()
 	undo_queue.push_back(move_to_undo)
-	var s = undo_queue
+
+func _on_turn_changed(white_turn: bool):
+	undo_queue.clear()
