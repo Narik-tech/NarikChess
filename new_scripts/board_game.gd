@@ -9,7 +9,7 @@ extends Node
 
 @export var info_display: RichTextLabel 
 @export var mod_ui_container: HFlowContainer
- 
+
 
 func _ready():
 	game_start()
@@ -22,7 +22,7 @@ func on_space_selected(position: Vector4i, piece: Piece):
 	move_handling.space_selected(position, piece)
 	
 func undo():
-	game_state.undo()
+	game_state.undo_move()
  
 #func _on_submit_pressed() -> void:
 	#if present.is_white == is_white_turn:

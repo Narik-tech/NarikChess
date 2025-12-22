@@ -37,7 +37,7 @@ func show_legal_moves(vec: Vector4i, piece: ChessPiece):
 #			
 			var highlight = MoveHighlight.inst(chess_move.bind(vec, squareToMove))
 			highlight.is_overlay = true
-			game_state.place_piece(highlight, squareToMove)
+			game_state.place_piece(highlight, squareToMove, 1)
 			
 			if dest_piece: break
 			
