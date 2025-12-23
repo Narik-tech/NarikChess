@@ -5,14 +5,14 @@ const duck_meta_string = "prev_duck"
 
 #Before playing a move, require the player to place a duck on the board if it has no duck
 func _can_play_move(origin: Vector4i, _dest):
-	var origin_board: Board = chess_logic.get_board(origin)
+	var origin_board: Board = game_state.get_board(origin)
 	var duck_on_origin = origin_board.all_pieces().any(func (child): return child is DuckPiece)
 	if duck_on_origin == true: return true
 	return "Duck must be placed before playing a move"
 
 #Only allow turn submission if the duck on each board is at a different location to the preceding board
 func _can_submit_turn():
-	for board in chess_logic.get_boards():
+	for board in game_state.get_boards():
 		var duck_moved = has_duck_moved(board)
 		if duck_placable(board) and duck_moved is String:
 			return duck_moved
@@ -46,24 +46,24 @@ func highlight_valid_duck_squares(board: Board):
 
 func place_duck(coord: Vector4i):
 	#remove any existing ducks
-	for duck in chess_logic.get_board(coord).all_pieces().filter(func (child): return child is DuckPiece):
+	for duck in game_state.get_board(coord).all_pieces().filter(func (child): return child is DuckPiece):
 		duck.queue_free()
 	
 	#new duck
-	chess_logic.clear_highlights()
-	var board = chess_logic.get_board(coord)
+	game_state.clear_highlights()
+	var board = game_state.get_board(coord)
 	var duck: Piece = DuckPiece.inst()
 	duck.on_piece_clicked.connect(_on_duck_clicked, 2)
 	board.place_piece(duck, coord)
 
 func _on_duck_clicked(duck: Vector4i):
-	var board = chess_logic.get_board(duck)
+	var board = game_state.get_board(duck)
 	if duck_placable(board):
 		highlight_valid_duck_squares(board)
 
 func duck_placable(board: Board) -> bool:
-	if board.is_white == chess_logic.is_white_turn:
+	if board.is_white == game_state.is_white_turn:
 		return false
-	if chess_logic.get_board(board.coord + Vector2i.RIGHT) != null:
+	if game_state.get_board(board.coord + Vector2i.RIGHT) != null:
 		return false
 	return true

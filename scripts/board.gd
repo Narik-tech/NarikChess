@@ -14,7 +14,7 @@ var is_white: bool:
 	get:
 		return coord.x % 2 == 0
 
-var chess_logic: ChessLogic
+var chess_logic: GameState
 
 static var board_scene := preload("res://scenes/board.tscn")
 

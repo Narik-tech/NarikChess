@@ -19,8 +19,9 @@ class MoveToUndo:
 func get_board(position) -> Board:
 	return board_grid.get_control(Vector2i(position.x, position.y))
 
-func get_piece(position: Vector4i):
+func get_piece(position: Vector4i) -> Piece:
 	var board = get_board(position)
+	if board == null: return
 	return board.get_piece(position)
 
 func place_board(board: Board, position: Vector2i) -> bool:
@@ -50,7 +51,7 @@ func remove_board(position: Vector2i):
 	var board := get_board(Vector4i(position.x, position.y, 0, 0))
 	if board != null:
 		# undo(remove) = place a duplicate back
-		var board_copy = board.duplicate(DUPLICATE_USE_INSTANTIATION)
+		var board_copy = board.duplicate(DUPLICATE_USE_INSTANTIATION + DUPLICATE_SCRIPTS)
 		staged_undos.append(Callable(self, "place_board").bind(board_copy, position))
 		board.queue_free()
 		_game_state_changed.emit(self)
@@ -58,7 +59,7 @@ func remove_board(position: Vector2i):
 func remove_piece(position: Vector4i):
 	var piece = get_piece(position)
 	if piece != null:
-		var piece_copy = piece.duplicate(DUPLICATE_USE_INSTANTIATION)
+		var piece_copy = piece.duplicate(DUPLICATE_USE_INSTANTIATION + DUPLICATE_SCRIPTS)
 		staged_undos.append(Callable(self, "place_piece").bind(piece_copy, position, piece_copy.z_index))
 		piece.queue_free()
 		_game_state_changed.emit(self)

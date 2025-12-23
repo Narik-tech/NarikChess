@@ -10,7 +10,9 @@ signal _move_started()
 signal _move_completed()
 
 func _ready():
-	move_generators.append(MultiverseMoveGen.new())
+	move_generators.append(StraightMoveGen.new())
+	move_generators.append(PawnMoveGen.new())
+	
 
 func space_selected(position: Vector4i, piece: Piece):
 	if not move_legality.piece_selectable(position, piece):
@@ -31,17 +33,19 @@ func show_legal_moves(start_pos: Vector4i, piece: ChessPiece):
 	for generator in move_generators:
 		moves.append_array(generator.get_moves(game_state, start_pos, piece))
 	for move in moves:
-		var highlight = MoveHighlight.inst(chess_move.bind(move.start_position, move.end_position))	
+		var highlight = MoveHighlight.inst(chess_move.bind(move))	
 		highlight.is_overlay = true
 		game_state.place_piece(highlight, move.end_position, 1)
 
-func chess_move(origin: Vector4i, dest: Vector4i):
+func chess_move(move: Move):
 	var time_plus := Vector4i(1,0,0,0)
-	var dest_board: Board = next_board(dest, true)
-	next_board(origin)
-	var piece_moving = game_state.get_piece(origin + time_plus)
+	var dest_board: Board = next_board(move.end_position, true)
+	next_board(move.start_position)
+	var piece_moving = game_state.get_piece(move.start_position + time_plus)
+	for piece in move.pieces_to_take:
+		game_state.remove_piece(Vector4i(dest_board.coord.x, dest_board.coord.y, piece.coord.x, piece.coord.y))
 	piece_moving.has_moved = true
-	game_state.place_piece(piece_moving, Vector4i(dest_board.coord.x, dest_board.coord.y, dest.z, dest.w))
+	game_state.place_piece(piece_moving, Vector4i(dest_board.coord.x, dest_board.coord.y, move.end_position.z, move.end_position.w))
 	clear_highlights()
 
 ## returns the next board in time, creating one if there isn't one

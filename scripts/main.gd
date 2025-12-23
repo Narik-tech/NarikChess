@@ -10,7 +10,7 @@ var mod_dict : Dictionary[String, GDScript]
 var game_mode_dict : Dictionary[String, GDScript]
 
 func _ready():
-	#run_tests()
+	run_tests()
 	mod_dict = Globals.create_script_dict(mod_path)
 	game_mode_dict = Globals.create_script_dict(game_modes_path)
 	

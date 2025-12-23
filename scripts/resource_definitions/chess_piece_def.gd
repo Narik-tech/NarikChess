@@ -16,6 +16,7 @@ class_name ChessPieceDef
 @export var pawn: bool
 @export var rider: bool
 
+## Returns valid movement directions for a piece
 func get_direction_vectors(is_white: bool) -> Array[Vector4i]:
 	var vecs: Array[Vector4i] = []
 	if uniagonal:

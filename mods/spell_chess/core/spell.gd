@@ -9,7 +9,7 @@ signal _on_spell_cast()
 var texture: CompressedTexture2D
 var spell_button: TextureButton
 var spell_chess: Mod
-var chess_logic: ChessLogic:
+var game_state: GameState:
 	get: return spell_chess.chess_logic
 
 func _ready():
@@ -25,8 +25,8 @@ func valid_spell_turn():
 	return spell_button.button_pressed
 
 func on_any_select(_board: Board, _coord: Vector2i):
-	if chess_logic.is_white_turn:
-		if chess_logic.is_white_turn and valid_spell_turn() and spell_count_white > 0 and not spell_chess.spell_used_this_turn:
+	if game_state.is_white_turn:
+		if game_state.is_white_turn and valid_spell_turn() and spell_count_white > 0 and not spell_chess.spell_used_this_turn:
 			if _attempt_spell(_board, _coord):
 				# spell casted
 				spell_count_white -= 1

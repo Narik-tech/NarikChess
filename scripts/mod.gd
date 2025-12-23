@@ -4,20 +4,20 @@ extends Node
 
 static var mod_texture_folder = "res://mods/textures/"
 
-var chess: Chess:
+var board_game: BoardGame:
 	get:
 		return get_parent()
 
-var chess_logic: ChessLogic:
+var game_state: GameState:
 	get:
-		return chess.chess_logic
+		return board_game.game_state
 
 func _ready():
-	chess.on_starting_board_created.connect(_on_starting_board)
-	chess.on_move_made.connect(_on_move_made)
-	chess.on_empty_space_selected.connect(_on_empty_space_selected)
-	chess.on_empty_space_selected.connect(_on_any_select)
-	chess.on_piece_selected.connect(_on_piece_selected)
+	game_state.on_starting_board_created.connect(_on_starting_board)
+	game_state.on_move_made.connect(_on_move_made)
+	game_state.on_empty_space_selected.connect(_on_empty_space_selected)
+	game_state.on_empty_space_selected.connect(_on_any_select)
+	game_state.on_piece_selected.connect(_on_piece_selected)
 
 func _on_starting_board(_board: Board):
 	pass

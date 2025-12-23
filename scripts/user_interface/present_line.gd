@@ -2,8 +2,6 @@
 class_name Present
 extends ColorRect
 
-@export var chess_logic: ChessLogic
-
 var coord: int
 
 var is_white: bool:
