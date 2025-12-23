@@ -1,3 +1,4 @@
+##Restricts board and piece selection to current players turn
 class_name CurrentTurnCriteria
 extends PieceSelectableCriteria
 

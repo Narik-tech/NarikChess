@@ -2,8 +2,6 @@
 class_name ChessPiece
 extends Piece
 
-signal piece_selected(coord: Vector4i)
-
 var piece_def: ChessPieceDef
 var is_white: bool = true
 var has_moved: bool = false
@@ -22,13 +20,7 @@ static func inst(resource: ChessPieceDef, white: bool) -> ChessPiece:
 	return instance
 	
 func blocks_movement(_piece_moving: ChessPiece) -> bool:
-	var selfcolor = self.is_white
-	var incoming_color = _piece_moving.is_white
 	return _piece_moving.is_white == self.is_white
-
-func piece_ready() -> void:
-	pass
-	#piece_selected.connect(Chess.singleton._on_piece_selected)
 
 func set_color(isWhitePiece: bool):
 	if isWhitePiece:
@@ -40,12 +32,3 @@ func set_color(isWhitePiece: bool):
 
 func get_direction_vectors() -> Array[Vector4i]:
 	return piece_def.get_direction_vectors(is_white)
-
-func _on_click():
-	if not board.board_playable():
-		return
-	
-	if not board.is_white == is_white:
-		return
-		
-	piece_selected.emit(full_coord)

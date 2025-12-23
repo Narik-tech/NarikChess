@@ -5,7 +5,7 @@ extends Node
 
 func create_starting_boardset(game_state: GameState):
 	for board in starting_boardset.boards:
-		game_state.place_board(Board.inst(game_state), board.pos)
+		game_state.place_board(Board.inst(), board.pos)
 		place_from_fen(game_state, board.pos, board.fen)
 
 func place_from_fen(game_state: GameState, board_coord: Vector2i, fen: String) -> void:

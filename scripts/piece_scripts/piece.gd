@@ -39,20 +39,3 @@ var full_coord: Vector4i:
 func blocks_movement(_piece_moving: ChessPiece) -> bool:
 	push_warning("blocks_movement function not set on piece " + name + ", defaulting to false.")
 	return false
-
-func piece_ready():
-	pass
-
-func _ready() -> void:
-	self.gui_input.connect(_on_gui_input)
-	piece_ready()
-
-func _on_click():
-	pass
-
-func _on_gui_input(event: InputEvent) -> void:
-	if not (event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed):
-		return
-	#Chess.singleton.on_piece_selected.emit(self)
-	#on_piece_clicked.emit(full_coord)
-	_on_click()

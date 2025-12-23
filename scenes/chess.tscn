@@ -1,16 +1,16 @@
 [gd_scene load_steps=13 format=3 uid="uid://ca8xd7ra6en0h"]
 
-[ext_resource type="Script" uid="uid://c46usd6nh8gdb" path="res://new_scripts/board_game.gd" id="1_mygcs"]
+[ext_resource type="Script" uid="uid://c46usd6nh8gdb" path="res://scripts/board_game.gd" id="1_mygcs"]
 [ext_resource type="Script" uid="uid://wfpt25m8phqm" path="res://scripts/user_interface/camera_pan.gd" id="2_7ohv5"]
 [ext_resource type="Script" uid="uid://b6wp1qbd66t5m" path="res://scripts/user_interface/turn_indicator.gd" id="3_8vtbg"]
-[ext_resource type="Script" uid="uid://ckwfm67ctrk1c" path="res://new_scripts/game_state.gd" id="3_11cx3"]
+[ext_resource type="Script" uid="uid://ckwfm67ctrk1c" path="res://scripts/game_state.gd" id="3_11cx3"]
 [ext_resource type="Script" uid="uid://dwidaer5v3rcr" path="res://scripts/game_grid_container.gd" id="5_8vtbg"]
 [ext_resource type="Script" uid="uid://cfd3waac0w4b1" path="res://scripts/user_interface/present_line.gd" id="6_urbgs"]
-[ext_resource type="Script" uid="uid://b7yeoilye7w6f" path="res://new_scripts/move_handling.gd" id="7_eh1fl"]
-[ext_resource type="Script" uid="uid://dw3p10fx6ec2y" path="res://new_scripts/move_legality.gd" id="8_2nt42"]
-[ext_resource type="Script" uid="uid://4mkdyq1lvd57" path="res://new_scripts/board_initializer.gd" id="10_8bbvj"]
+[ext_resource type="Script" uid="uid://b7yeoilye7w6f" path="res://scripts/movement_scripts/move_handling.gd" id="7_eh1fl"]
+[ext_resource type="Script" uid="uid://dw3p10fx6ec2y" path="res://scripts/movement_scripts/move_legality.gd" id="8_2nt42"]
+[ext_resource type="Script" uid="uid://4mkdyq1lvd57" path="res://scripts/board_scripts/board_initializer.gd" id="10_8bbvj"]
 [ext_resource type="Resource" uid="uid://ce1q6q78rlo2s" path="res://board_set_definition/Standard.tres" id="11_11cx3"]
-[ext_resource type="Script" uid="uid://dl2tl22474k7u" path="res://new_scripts/turn_handling.gd" id="11_eh1fl"]
+[ext_resource type="Script" uid="uid://dl2tl22474k7u" path="res://scripts/turn_handling.gd" id="11_eh1fl"]
 
 [sub_resource type="GDScript" id="GDScript_11cx3"]
 script/source = "extends Node
