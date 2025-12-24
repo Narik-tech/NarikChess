@@ -8,10 +8,11 @@ func _ready():
 func spell_texture():
 	return Mod.load_texture_from_png("wall.png")
 
-func _attempt_spell(board: Board, coord: Vector2i):
-	if board.is_white == chess_logic.is_white_turn:
+func _attempt_spell(_position: Vector4i, _piece: Control):
+	var board = game_state.get_board(Vector2i(_position.x, _position.y))
+	if board.is_white == spell_chess.board_game.turn_handling.is_white_turn:
 		return false
-	if board.get_piece(coord) != null:
+	if board.get_piece(_position) != null:
 		return false
-	board.place_piece(WallPiece.inst(), coord)
+	board.place_piece(WallPiece.inst(), _position)
 	return true

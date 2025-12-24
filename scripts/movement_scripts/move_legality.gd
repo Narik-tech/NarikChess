@@ -3,10 +3,10 @@ extends Node
 
 @export var board_game: BoardGame
 
+var _piece_selectable_criteria: Array[PieceSelectableCriteria]
+
 func _ready():
 	add_criteria(CurrentTurnCriteria.new())
-
-var _piece_selectable_criteria: Array[PieceSelectableCriteria]
 
 func piece_selectable(position, piece: Piece) -> bool:
 	for criteria in _piece_selectable_criteria:

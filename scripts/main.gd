@@ -42,7 +42,9 @@ func _on_start_pressed() -> void:
 	var mode_dropdown = $MainMenu/Options/Modes/Options
 	var mode_script: GDScript = game_mode_dict.get(mode_dropdown.get_item_text(mode_dropdown.selected))
 	selected_mods.append(mode_script.new())
-	#instance.load_mods(selected_mods)
+	for mod in selected_mods:
+		mod.board_game = instance
+		instance.add_child(mod)
 	change_scene(instance)
 
 func change_scene(scene: Node):

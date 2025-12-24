@@ -14,13 +14,14 @@ var is_white: bool:
 	get:
 		return coord.x % 2 == 0
 
-var chess_logic: GameState
+var game_state: GameState
 
 static var board_scene := preload("res://scenes/board.tscn")
 
 ##instances a board
-static func inst() -> Board:
+static func inst(_game_state: GameState) -> Board:
 	var instance: Board = board_scene.instantiate()
+	instance.game_state = _game_state
 	return instance
 
 func all_pieces() -> Array:
@@ -28,7 +29,7 @@ func all_pieces() -> Array:
 
 func duplicate_board() -> Board:
 	var instance: Board = board_scene.instantiate()
-	instance.chess_logic = chess_logic
+	instance.game_state = game_state
 	for piece in all_pieces():
 		if piece is Piece:
 			if piece is ChessPiece:
@@ -40,8 +41,12 @@ func duplicate_board() -> Board:
 				instance.piece_grid.place_control(new_piece, piece.coord)
 	return instance
 
-func get_piece(vec) -> Piece:
-	return piece_grid.get_control(piece_coord(vec))
+func get_piece(vec, layer: int = -1) -> Piece:
+	return piece_grid.get_control(piece_coord(vec), layer)
+
+func place_piece(piece: Piece, _position, layer: int = 0):
+	_position = piece_coord(_position)
+	game_state.place_piece(piece, Vector4i(coord.x, coord.y,_position.x, _position.y), layer)
 
 func _ready():
 	$BoardOutline.color = Color.LIGHT_GRAY if is_white else Color.DIM_GRAY

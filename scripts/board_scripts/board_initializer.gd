@@ -1,12 +1,16 @@
 class_name BoardInitializer
 extends Node
 
+signal _starting_board_created(board: Board)
+
 @export var starting_boardset: BoardSet
 
 func create_starting_boardset(game_state: GameState):
 	for board in starting_boardset.boards:
-		game_state.place_board(Board.inst(), board.pos)
+		var instance := Board.inst(game_state)
+		game_state.place_board(instance, board.pos)
 		place_from_fen(game_state, board.pos, board.fen)
+		_starting_board_created.emit(instance)
 
 func place_from_fen(game_state: GameState, board_coord: Vector2i, fen: String) -> void:
 	var placement := fen.split(" ", false)[0]

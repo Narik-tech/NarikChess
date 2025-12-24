@@ -19,10 +19,10 @@ class MoveToUndo:
 func get_board(position) -> Board:
 	return board_grid.get_control(Vector2i(position.x, position.y))
 
-func get_piece(position: Vector4i) -> Piece:
+func get_piece(position: Vector4i, layer: int = -1) -> Piece:
 	var board = get_board(position)
 	if board == null: return
-	return board.get_piece(position)
+	return board.get_piece(position, layer)
 
 func place_board(board: Board, position: Vector2i) -> bool:
 	board._space_selected.connect(_on_board_space_selected)
@@ -63,6 +63,9 @@ func remove_piece(position: Vector4i):
 		staged_undos.append(Callable(self, "place_piece").bind(piece_copy, position, piece_copy.z_index))
 		piece.queue_free()
 		_game_state_changed.emit(self)
+
+func all_boards() -> Array:
+	return board_grid.all_controls()
 
 func _on_board_space_selected(position: Vector4i, control: Control):
 	_space_selected.emit(position, control)

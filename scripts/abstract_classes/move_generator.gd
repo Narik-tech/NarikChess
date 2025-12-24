@@ -14,7 +14,7 @@ func simple_move_gen(game_state: GameState, start_pos: Vector4i, piece: ChessPie
 		var mag = 1
 		while(game_state.coord_valid(squareToMove)):
 			var move = Move.new()
-			var dest_piece = game_state.get_piece(squareToMove)
+			var dest_piece = game_state.get_piece(squareToMove, 0)
 			if dest_piece != null:
 				if dest_piece.blocks_movement(piece):
 					break

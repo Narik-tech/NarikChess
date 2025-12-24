@@ -3,4 +3,5 @@ class_name Chess_4D
 extends Mod
 
 func _ready():
-	game_state.is_classic_chess = false
+	pass
+	#game_state.is_classic_chess = false

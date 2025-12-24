@@ -8,12 +8,12 @@ var move_generators: Array[MoveGenerator]
 
 signal _move_started()
 signal _move_completed()
+signal _on_chess_move(_piece: Vector4i, _origin_board: Board, _dest_board: Board)
 
 func _ready():
 	move_generators.append(StraightMoveGen.new())
 	move_generators.append(PawnMoveGen.new())
 	
-
 func space_selected(position: Vector4i, piece: Piece):
 	if not move_legality.piece_selectable(position, piece):
 		return false
@@ -22,10 +22,13 @@ func space_selected(position: Vector4i, piece: Piece):
 	if piece is MoveHighlight:
 		make_move((piece as MoveHighlight).highlight_action)
 
-func make_move(move_call: Callable):
+func make_move(move_call: Callable, undo_callback = null):
 	_move_started.emit()
-	move_call.call()
+	var result = move_call.call()
+	if undo_callback is Callable and game_state.staged_undos.size() > 0:
+		game_state.staged_undos.append(undo_callback)
 	_move_completed.emit()
+	return result
 
 func show_legal_moves(start_pos: Vector4i, piece: ChessPiece):
 	clear_highlights()
@@ -40,12 +43,14 @@ func show_legal_moves(start_pos: Vector4i, piece: ChessPiece):
 func chess_move(move: Move):
 	var time_plus := Vector4i(1,0,0,0)
 	var dest_board: Board = next_board(move.end_position, true)
-	next_board(move.start_position)
+	var orig_board: Board = next_board(move.start_position)
 	var piece_moving = game_state.get_piece(move.start_position + time_plus)
 	for piece in move.pieces_to_take:
 		game_state.remove_piece(Vector4i(dest_board.coord.x, dest_board.coord.y, piece.coord.x, piece.coord.y))
 	piece_moving.has_moved = true
-	game_state.place_piece(piece_moving, Vector4i(dest_board.coord.x, dest_board.coord.y, move.end_position.z, move.end_position.w))
+	var piece_place_position := Vector4i(dest_board.coord.x, dest_board.coord.y, move.end_position.z, move.end_position.w)
+	game_state.place_piece(piece_moving, piece_place_position)
+	_on_chess_move.emit(piece_place_position, orig_board, dest_board)
 	clear_highlights()
 
 ## returns the next board in time, creating one if there isn't one

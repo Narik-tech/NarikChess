@@ -4,20 +4,18 @@ extends Node
 
 static var mod_texture_folder = "res://mods/textures/"
 
-var board_game: BoardGame:
-	get:
-		return get_parent()
+var board_game: BoardGame
 
 var game_state: GameState:
 	get:
 		return board_game.game_state
 
 func _ready():
-	game_state.on_starting_board_created.connect(_on_starting_board)
-	game_state.on_move_made.connect(_on_move_made)
-	game_state.on_empty_space_selected.connect(_on_empty_space_selected)
-	game_state.on_empty_space_selected.connect(_on_any_select)
-	game_state.on_piece_selected.connect(_on_piece_selected)
+	board_game.board_init._starting_board_created.connect(_on_starting_board)
+	board_game.move_handling._on_chess_move.connect(_on_move_made)
+	board_game.game_state._space_selected.connect(_on_space_selected)
+	board_game.turn_handling.turn_changed.connect(_turn_changed)
+
 
 func _on_starting_board(_board: Board):
 	pass
@@ -25,14 +23,7 @@ func _on_starting_board(_board: Board):
 func _on_move_made(_piece: Vector4i, _origin_board: Board, _dest_board: Board):
 	pass
 
-func _on_piece_selected(_piece: Piece):
-	_on_any_select(_piece.board, _piece.coord)
-
-func _on_empty_space_selected(_board: Board, _coord: Vector2i):
-	pass
-
-## Called when an empty space or piece is selected
-func _on_any_select(_board: Board, _coord: Vector2i):
+func _on_space_selected(_position: Vector4i, _piece: Control):
 	pass
 
 ## If a move cannot be played, returns a string indicating why
@@ -42,6 +33,9 @@ func _can_play_move(_origin: Vector4i, _dest):
 ## If a turn cannot be submitted, returns a string indicating why
 func _can_submit_turn():
 	return true
+
+func _turn_changed(_color):
+	pass
 
 static func load_texture_from_png(filename: String) -> Texture2D:
 	#try orig path

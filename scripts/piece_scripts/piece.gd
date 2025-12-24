@@ -2,8 +2,6 @@
 class_name Piece
 extends Control
 
-#signal on_piece_clicked(coord: Vector2i)
-
 static var square_scene = preload("res://scenes/pieces/solid_color_piece.tscn")
 static var texture_piece = preload("res://scenes/pieces/texture_piece.tscn")
 

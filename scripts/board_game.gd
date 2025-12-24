@@ -18,16 +18,13 @@ func game_start():
 	board_init.create_starting_boardset(game_state)
 
 func on_space_selected(position: Vector4i, piece: Piece):
-	print_debug(position, piece)
 	move_handling.space_selected(position, piece)
 	
 func undo():
 	game_state.undo_move()
- 
-#func _on_submit_pressed() -> void:
-	#if present.is_white == is_white_turn:
-		#return false
-	#
-	#move_stack.clear()
-	#is_white_turn = !is_white_turn
-	#return true
+
+func add_ui_element(control: Control):
+	mod_ui_container.add_child(control)
+
+func display_message(text: String):
+	info_display.text = text

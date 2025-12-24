@@ -15,17 +15,22 @@ static func inst(_spell: Spell) -> SpellButton:
 func _ready():
 	self.modulate = inactive_color
 	spell._on_spell_cast.connect(_on_spell_cast)
-	spell.spell_chess.chess_logic.turn_changed.connect(update_spell_count_ui)
-	update_spell_count_ui(spell.spell_chess.chess_logic.is_white_turn)
+	spell._on_spell_undo.connect(_on_spell_undo)
+	spell.spell_chess.board_game.turn_handling.turn_changed.connect(update_spell_count_ui)
+	update_spell_count_ui()
 
 func _toggled(toggled_on):
 	self.modulate = active_color if toggled_on else inactive_color
 
 func _on_spell_cast():
 	button_pressed = false
-	update_spell_count_ui(spell.spell_chess.chess_logic.is_white_turn)
+	update_spell_count_ui()
 
-func update_spell_count_ui(white_turn: bool):
+func _on_spell_undo():
+	update_spell_count_ui()
+
+func update_spell_count_ui():
+	var white_turn = spell.spell_chess.board_game.turn_handling.is_white_turn
 	if white_turn:
 		$Label.text = str(spell.spell_count_white)
 	else:
