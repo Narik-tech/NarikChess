@@ -9,6 +9,9 @@ func get_moves(game_state: GameState, start_pos: Vector4i, piece: ChessPiece) ->
 func simple_move_gen(game_state: GameState, start_pos: Vector4i, piece: ChessPiece) -> Array[Move]:
 	var moves: Array[Move] = []
 	for dir in piece.get_direction_vectors():
+		if game_state.classic_chess:
+			if dir.x != 0 or dir.y != 0:
+				continue
 		var squareToMove = dir + start_pos
 		var dims = Globals.dims_count(dir)
 		var mag = 1

@@ -8,6 +8,7 @@ extends Node
 signal _space_selected(position: Vector4i, piece: Control)
 signal _game_state_changed(game_state: GameState)
 
+@export var classic_chess: bool 
 var undo_queue: Array[MoveToUndo] = []
 var staged_undos: Array[Callable] = []
 
