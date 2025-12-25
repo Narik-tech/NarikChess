@@ -7,7 +7,6 @@ var spell_dict: Dictionary[String, GDScript]
 func _ready():
 	super()
 	spell_dict = Globals.create_script_dict(spell_folder, func(spell): return spell is Spell)
-	chess_logic.turn_changed.connect(_turn_changed)
 	for spell in spell_dict:
 		#add spell script as child
 		var spell_inst: Spell = spell_dict[spell].new()
@@ -19,12 +18,12 @@ func _ready():
 		spell_inst._on_spell_cast.connect(_on_spell_cast)
 
 		self.add_child(spell_inst)
-		chess.add_mod_ui(button)
+		board_game.add_ui_element(button)
 
-func _on_any_select(_board: Board, _coord: Vector2i):
+func _on_space_selected(_position: Vector4i, _piece: Control):
 	for spell in get_children():
 		if spell is Spell:
-			spell.on_any_select(_board, _coord)
+			spell.on_space_selected(_position, _piece)
 
 func _on_spell_cast():
 	spell_used_this_turn = true

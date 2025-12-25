@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ChessPieceDef" load_steps=3 format=3 uid="uid://bfrwvoko0h4ah"]
 
-[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://scripts/piece_scripts/chess_piece_def.gd" id="1_6gedj"]
+[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://scripts/resource_definitions/chess_piece_def.gd" id="1_6gedj"]
 [ext_resource type="Texture2D" uid="uid://c6678x3qndtjm" path="res://sprites/CrazyPenguins-5D-Chess-Set/king.png" id="2_iai1v"]
 
 [resource]
@@ -10,4 +10,5 @@ uniagonal = true
 diagonal = true
 triagonal = true
 quadragonal = true
+royalty = true
 metadata/_custom_type_script = "uid://b7olitqm78mbo"

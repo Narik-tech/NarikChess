@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ChessPieceDef" load_steps=3 format=3 uid="uid://d23y84uttaahb"]
 
-[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://scripts/piece_scripts/chess_piece_def.gd" id="1_n7rgx"]
+[ext_resource type="Script" uid="uid://b7olitqm78mbo" path="res://scripts/resource_definitions/chess_piece_def.gd" id="1_n7rgx"]
 [ext_resource type="Texture2D" uid="uid://27rb6uyvp6k4" path="res://sprites/CrazyPenguins-5D-Chess-Set/bishop.png" id="2_eh5ck"]
 
 [resource]

@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Globals="*res://scripts/Globals.gd"
+Globals="*res://scripts/helper_scripts/Globals.gd"
 
 [display]
 
@@ -34,6 +34,10 @@ project/assembly_name="5D Chess Godot"
 Highlight=""
 Board=""
 Piece=""
+
+[gui]
+
+theme/custom="uid://bcrkkcim6ywhh"
 
 [input]
 

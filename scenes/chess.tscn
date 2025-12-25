@@ -1,60 +1,65 @@
-[gd_scene load_steps=5 format=3 uid="uid://ca8xd7ra6en0h"]
+[gd_scene load_steps=15 format=3 uid="uid://ca8xd7ra6en0h"]
 
-[ext_resource type="Script" uid="uid://bkstioe7xue8q" path="res://scripts/chess.gd" id="1_iqcxx"]
+[ext_resource type="Script" uid="uid://c46usd6nh8gdb" path="res://scripts/board_game.gd" id="1_mygcs"]
 [ext_resource type="Script" uid="uid://wfpt25m8phqm" path="res://scripts/user_interface/camera_pan.gd" id="2_7ohv5"]
-[ext_resource type="PackedScene" uid="uid://dp8y7jqouk46g" path="res://scenes/chess_logic.tscn" id="2_8vtbg"]
 [ext_resource type="Script" uid="uid://b6wp1qbd66t5m" path="res://scripts/user_interface/turn_indicator.gd" id="3_8vtbg"]
+[ext_resource type="Script" uid="uid://ckwfm67ctrk1c" path="res://scripts/game_state.gd" id="3_11cx3"]
+[ext_resource type="Script" uid="uid://dwidaer5v3rcr" path="res://scripts/helper_scripts/game_grid_container.gd" id="5_8vtbg"]
+[ext_resource type="Script" uid="uid://cfd3waac0w4b1" path="res://scripts/user_interface/present_line.gd" id="6_urbgs"]
+[ext_resource type="Script" uid="uid://dtiots5at8gew" path="res://scripts/user_interface/info_display.gd" id="7_2nt42"]
+[ext_resource type="Script" uid="uid://b7yeoilye7w6f" path="res://scripts/movement_scripts/move_handling.gd" id="7_eh1fl"]
+[ext_resource type="Script" uid="uid://dw3p10fx6ec2y" path="res://scripts/movement_scripts/move_legality.gd" id="8_2nt42"]
+[ext_resource type="Script" uid="uid://4mkdyq1lvd57" path="res://scripts/board_scripts/board_initializer.gd" id="10_8bbvj"]
+[ext_resource type="Resource" uid="uid://ce1q6q78rlo2s" path="res://board_set_definition/Standard.tres" id="11_11cx3"]
+[ext_resource type="Script" uid="uid://dl2tl22474k7u" path="res://scripts/turn_scripts/turn_handling.gd" id="11_eh1fl"]
+[ext_resource type="Texture2D" uid="uid://yorjnrtl30el" path="res://sprites/galaxy_tiled.png" id="13_2nt42"]
 
-[node name="Chess" type="Node" node_paths=PackedStringArray("info_display", "mod_ui_container", "chess_logic")]
-script = ExtResource("1_iqcxx")
-info_display = NodePath("ChessUI/InfoDisplay")
-mod_ui_container = NodePath("ChessUI/ModUIContainer")
-chess_logic = NodePath("ChessLogic")
+[sub_resource type="GDScript" id="GDScript_11cx3"]
+script/source = "extends Node
+"
 
-[node name="ChessLogic" parent="." instance=ExtResource("2_8vtbg")]
+[node name="Chess" type="Node" node_paths=PackedStringArray("game_state", "move_handling", "move_legality", "turn_handling", "board_init", "info_display", "mod_ui_container")]
+script = ExtResource("1_mygcs")
+game_state = NodePath("MainLayer/GameState")
+move_handling = NodePath("MainLayer/Scripts/MoveHandling")
+move_legality = NodePath("MainLayer/Scripts/MoveHandling/MoveLegality")
+turn_handling = NodePath("MainLayer/Scripts/TurnHandling")
+board_init = NodePath("MainLayer/Scripts/BoardInitializer")
+info_display = NodePath("MainLayer/ChessUI/InfoDisplay")
+mod_ui_container = NodePath("MainLayer/ChessUI/ModUIContainer")
 
-[node name="CameraPan" type="Camera2D" parent="."]
+[node name="MainLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="PresentLine" type="ColorRect" parent="MainLayer"]
+offset_left = 12.0
+offset_top = 50000.0
+offset_right = 52.0
+offset_bottom = 1050000.0
+scale = Vector2(4.28261, -5.46906)
+pivot_offset = Vector2(-30, 0)
+mouse_filter = 2
+color = Color(0.619608, 0.0823529, 0.411765, 0.811765)
+script = ExtResource("6_urbgs")
+
+[node name="GameState" type="Node" parent="MainLayer" node_paths=PackedStringArray("board_grid")]
+script = ExtResource("3_11cx3")
+board_grid = NodePath("BoardGrid")
+
+[node name="BoardGrid" type="Container" parent="MainLayer/GameState"]
+offset_right = 500.0
+offset_bottom = 500.0
+script = ExtResource("5_8vtbg")
+metadata/_custom_type_script = "uid://dwidaer5v3rcr"
+
+[node name="CameraPan" type="Camera2D" parent="MainLayer"]
 position = Vector2(50.255, 74.38)
-zoom = Vector2(0.615, 0.615)
 script = ExtResource("2_7ohv5")
 
-[node name="ChessUI" type="CanvasLayer" parent="."]
+[node name="ChessUI" type="CanvasLayer" parent="MainLayer"]
+script = SubResource("GDScript_11cx3")
 
-[node name="Submit" type="Button" parent="ChessUI"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -61.0
-offset_top = 47.0
-offset_right = 154.0
-offset_bottom = 99.0
-grow_horizontal = 2
-scale = Vector2(1.20228, 1.19062)
-text = "Submit Move
-"
-
-[node name="Undo" type="Button" parent="ChessUI"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -310.0
-offset_top = 42.0
-offset_right = -116.0
-offset_bottom = 96.0
-grow_horizontal = 2
-scale = Vector2(1.20228, 1.19062)
-text = "Undo
-"
-
-[node name="Restart" type="Button" parent="ChessUI"]
-offset_left = 19.0
-offset_top = 140.0
-offset_right = 213.0
-offset_bottom = 194.0
-scale = Vector2(1.20387, 1.19957)
-text = "Restart"
-
-[node name="TurnIndicator" type="RichTextLabel" parent="ChessUI"]
+[node name="TurnIndicator" type="RichTextLabel" parent="MainLayer/ChessUI"]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -63,11 +68,12 @@ offset_top = -116.0
 offset_right = 475.0
 offset_bottom = -17.0
 grow_vertical = 0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 72
 text = "White Turn"
 script = ExtResource("3_8vtbg")
 
-[node name="InfoDisplay" type="RichTextLabel" parent="ChessUI"]
+[node name="InfoDisplay" type="RichTextLabel" parent="MainLayer/ChessUI"]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -76,10 +82,12 @@ offset_top = -236.0
 offset_right = 652.0
 offset_bottom = -113.0
 grow_vertical = 0
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.10372748, 0.103118084, 0.10812221, 1)
 theme_override_font_sizes/normal_font_size = 43
+script = ExtResource("7_2nt42")
 
-[node name="ModUIContainer" type="HFlowContainer" parent="ChessUI"]
+[node name="ModUIContainer" type="HFlowContainer" parent="MainLayer/ChessUI"]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -91,13 +99,91 @@ grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 alignment = 2
 reverse_fill = true
 
-[node name="TextureButton" type="TextureButton" parent="ChessUI"]
+[node name="TextureButton" type="TextureButton" parent="MainLayer/ChessUI"]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[connection signal="pressed" from="ChessUI/Submit" to="." method="_on_submit_pressed"]
-[connection signal="pressed" from="ChessUI/Undo" to="." method="_on_undo_pressed"]
-[connection signal="pressed" from="ChessUI/Restart" to="." method="_on_restart_pressed"]
+[node name="Main Menu" type="Button" parent="MainLayer/ChessUI"]
+offset_left = 628.0
+offset_top = 94.0
+offset_right = 852.0
+offset_bottom = 152.0
+size_flags_horizontal = 3
+text = "Main Menu"
+
+[node name="Undo" type="Button" parent="MainLayer/ChessUI"]
+offset_left = 885.0
+offset_top = 94.0
+offset_right = 1093.0
+offset_bottom = 152.0
+size_flags_horizontal = 3
+text = "Undo
+"
+
+[node name="Submit" type="Button" parent="MainLayer/ChessUI"]
+offset_left = 1121.0
+offset_top = 94.0
+offset_right = 1324.0
+offset_bottom = 152.0
+size_flags_horizontal = 3
+text = "Submit Move
+"
+
+[node name="Scripts" type="Node" parent="MainLayer"]
+
+[node name="BoardInitializer" type="Node" parent="MainLayer/Scripts"]
+script = ExtResource("10_8bbvj")
+starting_boardset = ExtResource("11_11cx3")
+metadata/_custom_type_script = "uid://4mkdyq1lvd57"
+
+[node name="MoveHandling" type="Node" parent="MainLayer/Scripts" node_paths=PackedStringArray("game_state", "move_legality")]
+script = ExtResource("7_eh1fl")
+game_state = NodePath("../../GameState")
+move_legality = NodePath("MoveLegality")
+metadata/_custom_type_script = "uid://b7yeoilye7w6f"
+
+[node name="MoveLegality" type="Node" parent="MainLayer/Scripts/MoveHandling" node_paths=PackedStringArray("board_game")]
+script = ExtResource("8_2nt42")
+board_game = NodePath("../../../..")
+metadata/_custom_type_script = "uid://dw3p10fx6ec2y"
+
+[node name="TurnHandling" type="Node" parent="MainLayer/Scripts" node_paths=PackedStringArray("present", "board_game")]
+script = ExtResource("11_eh1fl")
+present = NodePath("../../PresentLine")
+board_game = NodePath("../../..")
+metadata/_custom_type_script = "uid://dl2tl22474k7u"
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="Parallax2D" type="Parallax2D" parent="Background"]
+modulate = Color(1, 1, 1, 0.37254903)
+z_index = -1
+scroll_scale = Vector2(0.3, 0.3)
+scroll_offset = Vector2(-178, 119)
+repeat_size = Vector2(4112, 4096)
+repeat_times = 4
+follow_viewport = false
+
+[node name="TextureRect" type="TextureRect" parent="Background/Parallax2D"]
+modulate = Color(0.1568, 0.34006006, 0.49, 1)
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(4, 4)
+texture = ExtResource("13_2nt42")
+stretch_mode = 1
+
+[connection signal="_game_state_changed" from="MainLayer/GameState" to="MainLayer/PresentLine" method="_on_game_state_changed"]
+[connection signal="_space_selected" from="MainLayer/GameState" to="." method="on_space_selected"]
+[connection signal="pressed" from="MainLayer/ChessUI/Main Menu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="MainLayer/ChessUI/Undo" to="." method="undo"]
+[connection signal="pressed" from="MainLayer/ChessUI/Submit" to="MainLayer/Scripts/TurnHandling" method="_on_submit_pressed"]
+[connection signal="_move_completed" from="MainLayer/Scripts/MoveHandling" to="MainLayer/GameState" method="_on_move_handling_move_completed"]
+[connection signal="_move_started" from="MainLayer/Scripts/MoveHandling" to="MainLayer/GameState" method="_on_move_handling_move_started"]
+[connection signal="turn_changed" from="MainLayer/Scripts/TurnHandling" to="MainLayer/GameState" method="_on_turn_changed"]
+[connection signal="turn_changed" from="MainLayer/Scripts/TurnHandling" to="MainLayer/ChessUI/TurnIndicator" method="_on_turn_changed"]
+[connection signal="turn_changed" from="MainLayer/Scripts/TurnHandling" to="MainLayer/ChessUI/InfoDisplay" method="_on_turn_handling_turn_changed"]
