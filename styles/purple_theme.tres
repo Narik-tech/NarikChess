@@ -1,0 +1,19 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://bcrkkcim6ywhh"]
+
+[ext_resource type="StyleBox" uid="uid://bteif4dxskmlo" path="res://styles/light_purple_style_box.tres" id="1_0xb4e"]
+[ext_resource type="StyleBox" uid="uid://lefnqchokrvx" path="res://styles/dark_purple_style_box.tres" id="2_ctpfq"]
+[ext_resource type="StyleBox" uid="uid://tmgf0xwxxfut" path="res://styles/purple_style_box.tres" id="3_pak2o"]
+
+[resource]
+Button/font_sizes/font_size = 20
+Button/fonts/font = null
+Button/styles/focus = ExtResource("1_0xb4e")
+Button/styles/hover = ExtResource("1_0xb4e")
+Button/styles/hover_pressed = ExtResource("1_0xb4e")
+Button/styles/normal = ExtResource("3_pak2o")
+Button/styles/pressed = ExtResource("2_ctpfq")
+CheckBox/styles/focus = ExtResource("1_0xb4e")
+CheckBox/styles/hover = ExtResource("1_0xb4e")
+CheckBox/styles/hover_pressed = ExtResource("2_ctpfq")
+CheckBox/styles/normal = ExtResource("3_pak2o")
+CheckBox/styles/pressed = ExtResource("2_ctpfq")

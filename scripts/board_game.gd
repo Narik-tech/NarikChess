@@ -28,3 +28,6 @@ func add_ui_element(control: Control):
 
 func display_message(text: String):
 	info_display.text = text
+
+func _on_main_menu_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/main.tscn")

@@ -1,76 +1,96 @@
-[gd_scene load_steps=3 format=3 uid="uid://b0lb35vhu6rsl"]
+[gd_scene load_steps=5 format=3 uid="uid://b0lb35vhu6rsl"]
 
 [ext_resource type="Script" uid="uid://bb3xuoi5nvxqo" path="res://scripts/main.gd" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://bomyhj8otrc0n" path="res://sprites/spaceship_chess.png" id="2_0wfyh"]
+[ext_resource type="Texture2D" uid="uid://bwwangcikr34i" path="res://sprites/menu_bg.png" id="2_sugp2"]
+[ext_resource type="StyleBox" uid="uid://tmgf0xwxxfut" path="res://styles/purple_style_box.tres" id="3_jyhfs"]
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" node_paths=PackedStringArray("mods", "mode_dropdown")]
 script = ExtResource("1_o5qli")
+mods = NodePath("MainMenu/NinePatchRect/Options/Mods")
+mode_dropdown = NodePath("MainMenu/NinePatchRect/Options/Modes/Options")
 
 [node name="MainMenu" type="CanvasLayer" parent="."]
 
-[node name="Start" type="Button" parent="MainMenu"]
-anchors_preset = 8
-anchor_left = 0.5
+[node name="NinePatchRect" type="NinePatchRect" parent="MainMenu"]
+anchors_preset = 4
 anchor_top = 0.5
-anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -877.0
-offset_top = -145.0
-offset_right = -665.0
-offset_bottom = -91.99994
-grow_horizontal = 2
+offset_top = -331.0
+offset_right = 510.0
+offset_bottom = 373.0
 grow_vertical = 2
-theme_override_font_sizes/font_size = 25
-text = "Start"
+texture = ExtResource("2_sugp2")
+region_rect = Rect2(221.1183, 68.36705, 1089.8655, 899.2218)
+patch_margin_left = 110
+patch_margin_top = 110
+patch_margin_right = 140
+patch_margin_bottom = 155
 
-[node name="Options" type="BoxContainer" parent="MainMenu"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -887.0
-offset_top = -46.0
-offset_right = -627.105
-offset_bottom = 364.39
+[node name="Options" type="BoxContainer" parent="MainMenu/NinePatchRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 126.0
+offset_top = 121.0
+offset_right = -133.0
+offset_bottom = -86.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 vertical = true
 
-[node name="Modes" type="VBoxContainer" parent="MainMenu/Options"]
+[node name="Start" type="Button" parent="MainMenu/NinePatchRect/Options"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = ExtResource("3_jyhfs")
+text = "Start"
+
+[node name="LoadFromPGN" type="Button" parent="MainMenu/NinePatchRect/Options"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = ExtResource("3_jyhfs")
+text = "Load 5DPGN"
+
+[node name="HSeparator" type="HSeparator" parent="MainMenu/NinePatchRect/Options"]
+custom_minimum_size = Vector2(0, 31.975)
+layout_mode = 2
+
+[node name="Modes" type="VBoxContainer" parent="MainMenu/NinePatchRect/Options"]
 custom_minimum_size = Vector2(0, 97.365)
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MainMenu/Options/Modes"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MainMenu/NinePatchRect/Options/Modes"]
 custom_minimum_size = Vector2(0, 39.93)
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "Modes
 "
 
-[node name="Options" type="OptionButton" parent="MainMenu/Options/Modes"]
+[node name="Options" type="OptionButton" parent="MainMenu/NinePatchRect/Options/Modes"]
 layout_mode = 2
+theme_override_styles/normal = ExtResource("3_jyhfs")
 item_count = 1
 popup/item_0/text = "SampleMode"
 popup/item_0/id = 0
 
-[node name="Mods" type="BoxContainer" parent="MainMenu/Options"]
+[node name="Mods" type="BoxContainer" parent="MainMenu/NinePatchRect/Options"]
 layout_mode = 2
 vertical = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MainMenu/Options/Mods"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MainMenu/NinePatchRect/Options/Mods"]
 custom_minimum_size = Vector2(0, 31.965)
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 20
 text = "Variants"
 
-[node name="SampleDisplay" type="CheckBox" parent="MainMenu/Options/Mods"]
+[node name="SampleDisplay" type="CheckBox" parent="MainMenu/NinePatchRect/Options/Mods"]
 layout_mode = 2
 text = "SampleText"
 
-[node name="SampleDisplay3" type="CheckBox" parent="MainMenu/Options/Mods"]
+[node name="SampleDisplay3" type="CheckBox" parent="MainMenu/NinePatchRect/Options/Mods"]
 layout_mode = 2
 text = "SampleText"
 
@@ -86,4 +106,4 @@ texture = ExtResource("2_0wfyh")
 expand_mode = 1
 stretch_mode = 6
 
-[connection signal="pressed" from="MainMenu/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MainMenu/NinePatchRect/Options/Start" to="." method="_on_start_pressed"]

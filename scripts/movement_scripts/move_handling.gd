@@ -13,6 +13,7 @@ signal _on_chess_move(_piece: Vector4i, _origin_board: Board, _dest_board: Board
 func _ready():
 	move_generators.append(StraightMoveGen.new())
 	move_generators.append(PawnMoveGen.new())
+	move_generators.append(CastlingMoveGen.new())
 	
 func space_selected(position: Vector4i, piece: Piece):
 	if not move_legality.piece_selectable(position, piece):
@@ -50,6 +51,8 @@ func chess_move(move: Move):
 	piece_moving.has_moved = true
 	var piece_place_position := Vector4i(dest_board.coord.x, dest_board.coord.y, move.end_position.z, move.end_position.w)
 	game_state.place_piece(piece_moving, piece_place_position)
+	if move.post_move_callable is Callable:
+		move.post_move_callable.call()
 	_on_chess_move.emit(piece_place_position, orig_board, dest_board)
 	clear_highlights()
 

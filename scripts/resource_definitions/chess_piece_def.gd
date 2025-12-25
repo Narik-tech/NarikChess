@@ -15,6 +15,7 @@ class_name ChessPieceDef
 @export_category("Flags")
 @export var pawn: bool
 @export var rider: bool
+@export var royalty: bool
 
 ## Returns valid movement directions for a piece
 func get_direction_vectors(is_white: bool) -> Array[Vector4i]:

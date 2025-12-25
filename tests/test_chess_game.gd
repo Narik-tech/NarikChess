@@ -8,7 +8,9 @@ var _errors: Array[String] = []
 var board_game: BoardGame 
 var current_test: String
 
+var example_pgn: String='[Mode "5D"] [Result "1-0"] [Date "2025.11.27"] [Time "09:09:07 (+05:30)"] [Size "8x8"] [White "recon"] [Black "SweepingBishops"] [Board "custom"] [r*nbqk*bnr*/p*p*p*p*p*p*p*p*/8/8/8/8/P*P*P*P*P*P*P*P*/R*NBQK*BNR*:0:0:b] [r*nbqk*bnr*/p*p*p*p*p*p*p*p*/8/8/8/8/P*P*P*P*P*P*P*P*/R*NBQK*BNR*:0:1:w] 1.{20:05}(0T1)Ng1f3 / {20:05}(0T1)Ng8f6 2.{20:05}(0T2)c2c4 / {19:14}(0T2)c7c5 3.{19:17}(0T3)e2e3 / {19:11}(0T3)Nb8c6 4.{19:06}(0T4)Nb1c3 / {18:12}(0T4)Qd8c7'
 func _ready():
+	var parsedpgn = FiveDPGN.parse_string(example_pgn)
 	var args = OS.get_cmdline_args()
 	if "--run-tests" in args:
 		run_tests()

@@ -35,6 +35,10 @@ Highlight=""
 Board=""
 Piece=""
 
+[gui]
+
+theme/custom="uid://bcrkkcim6ywhh"
+
 [input]
 
 Up={
